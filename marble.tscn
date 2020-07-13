@@ -2,13 +2,13 @@
 
 [ext_resource path="res://marble_materials/red.tres" type="Material" id=1]
 
-[sub_resource type="SphereMesh" id=2]
+[sub_resource type="SphereMesh" id=1]
 material = ExtResource( 1 )
-radius = 0.4
-height = 0.8
+radius = 0.27
+height = 0.54
 
 [node name="Spatial" type="Spatial"]
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 material/0 = null

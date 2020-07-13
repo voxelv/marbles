@@ -4,5 +4,7 @@
 
 [node name="marble_hole" type="CSGSphere"]
 operation = 2
-radius = 0.4
+radius = 0.3
+radial_segments = 20
+rings = 10
 material = ExtResource( 1 )

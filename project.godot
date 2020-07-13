@@ -16,9 +16,10 @@ _global_script_class_icons={
 [application]
 
 config/name="marbles"
-run/main_scene="res://main.tscn"
+run/main_scene="res://viewer.tscn"
 config/icon="res://icon.png"
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 environment/default_environment="res://default_env.tres"
