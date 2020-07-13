@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://wood512_material.tres" type="Material" id=1]
+
+[node name="marble_hole" type="CSGSphere"]
+operation = 2
+radius = 0.4
+material = ExtResource( 1 )

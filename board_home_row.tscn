@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://wood512_material.tres" type="Material" id=1]
+[ext_resource path="res://marble_hole.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CubeMesh" id=1]
+material = ExtResource( 1 )
+size = Vector3( 6, 1, 2 )
+
+[node name="CSGMesh" type="CSGMesh"]
+mesh = SubResource( 1 )
+
+[node name="Spatial" type="CSGCombiner" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, 0 )
+operation = 2
+
+[node name="marble_hole1" parent="Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.5, 0 )
+operation = 0
+
+[node name="marble_hole2" parent="Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.5, 0 )
+operation = 0
+
+[node name="marble_hole3" parent="Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+operation = 0
+
+[node name="marble_hole4" parent="Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.5, 0 )
+operation = 0
+
+[node name="marble_hole5" parent="Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.5, 0 )
+operation = 0
+
+[node name="positions" type="Spatial" parent="."]
+
+[node name="1" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.501, 0 )
+
+[node name="2" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.501, 0 )
+
+[node name="3" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501, 0 )
+
+[node name="4" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.501, 0 )
+
+[node name="5" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.501, 0 )
