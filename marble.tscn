@@ -7,7 +7,7 @@ material = ExtResource( 1 )
 radius = 0.27
 height = 0.54
 
-[node name="Spatial" type="Spatial"]
+[node name="marble" type="Spatial"]
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )

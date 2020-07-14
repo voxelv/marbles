@@ -14,12 +14,21 @@ const materials = [
 	preload("res://marble_materials/yellow.tres")
 ]
 
-var positions = []
+onready var center := (find_node("center") as Spatial).to_global(Vector3.ZERO)
+
+onready var a_home_row := (find_node("a_home_row") as Spatial).to_global(Vector3.ZERO)
+onready var b_home_row := (find_node("b_home_row") as Spatial).to_global(Vector3.ZERO)
+onready var c_home_row := (find_node("c_home_row") as Spatial).to_global(Vector3.ZERO)
+onready var d_home_row := (find_node("d_home_row") as Spatial).to_global(Vector3.ZERO)
+
+onready var main_track_section := find_node("main_track_section")
+
+var main_track = []
 
 func _ready() -> void:
 	randomize()
-	trecurse(self)
-	for p in positions:
+	trecurse(main_track_section)
+	for p in main_track:
 		var new_marble = marble_preload.instance()
 		new_marble.translate(p.to_global(Vector3.ZERO))
 		var mesh_instance = new_marble.find_node("MeshInstance")
