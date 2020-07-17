@@ -27,9 +27,6 @@ func _ready() -> void:
 	all_areas = _tmp_array.duplicate(true)
 	_tmp_array.clear()
 	
-	# TODO: REMOVE
-	connect_areas("mouse_entered", self, "_on_mouse_entered")
-	
 	main_track_indices = range(21, 21+48)
 	
 	a_track_indices += range(21, 21+48)
@@ -51,52 +48,6 @@ func _ready() -> void:
 	b_home_indices += range(21+48+5, 21+48+10)
 	c_home_indices += range(21+48+10, 21+48+15)
 	d_home_indices += range(21+48+15, 21+48+20)
-	
-#	# Calculate a_track
-#	for p in main_track.slice(0, len(main_track) - 1):
-#		a_track.append(p)
-#	positions_recurse(a_home_row)
-#	for p in _tmp_array:
-#		a_track.append(p)
-#	_tmp_array.clear()
-#
-#	# Calculate b_track
-#	for p in main_track.slice(12, len(main_track) - 1):
-#		b_track.append(p)
-#	for p in main_track.slice(0, 11):
-#		b_track.append(p)
-#	positions_recurse(b_home_row)
-#	for p in _tmp_array:
-#		b_track.append(p)
-#	_tmp_array.clear()
-#
-#	# Calculate c_track
-#	for p in main_track.slice(24, len(main_track) - 1):
-#		c_track.append(p)
-#	for p in main_track.slice(0, 23):
-#		c_track.append(p)
-#	positions_recurse(c_home_row)
-#	for p in _tmp_array:
-#		c_track.append(p)
-#	_tmp_array.clear()
-#
-#	# Calculate d_track
-#	for p in main_track.slice(36, len(main_track) - 1):
-#		d_track.append(p)
-#	for p in main_track.slice(0, 35):
-#		d_track.append(p)
-#	positions_recurse(d_home_row)
-#	for p in _tmp_array:
-#		d_track.append(p)
-#	_tmp_array.clear()
-	
-#	for p in main_track:
-#		var new_marble = marble_preload.instance()
-#		new_marble.translate(p)
-#		var mesh_instance = new_marble.find_node("MeshInstance")
-#		mesh_instance.mesh = mesh_instance.mesh.duplicate(true)
-#		mesh_instance.mesh.material = materials[randi() % materials.size()]
-#		self.add_child(new_marble)
 
 func _positions_recurse(node:Node)->void:
 	for N in node.get_children():
@@ -140,12 +91,8 @@ func get_all_clickables()->Dictionary:
 	return ret
 
 func connect_areas(signal_name:String, node:Node, function_name:String):
-	print("Connecting %d areas" % len(all_areas))
 	for i in range(len(all_areas)):
 		(all_areas[i] as Area).connect(signal_name, node, function_name, [i])
 
 func _on_mouse_entered(idx:int)->void:
 	print("Entered %d" % idx)
-
-func _unhandled_input(event):
-	print("unhandled!")
