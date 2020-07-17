@@ -66,7 +66,7 @@ material/0 = null
 [node name="clickables" type="Spatial" parent="."]
 
 [node name="1" type="Area" parent="clickables"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.501, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 0 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -75,7 +75,7 @@ __meta__ = {
 shape = SubResource( 3 )
 
 [node name="2" type="Area" parent="clickables"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.501, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, 0 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -84,7 +84,6 @@ __meta__ = {
 shape = SubResource( 3 )
 
 [node name="3" type="Area" parent="clickables"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501, 0 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -93,7 +92,7 @@ __meta__ = {
 shape = SubResource( 3 )
 
 [node name="4" type="Area" parent="clickables"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.501, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 0 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -102,7 +101,7 @@ __meta__ = {
 shape = SubResource( 3 )
 
 [node name="5" type="Area" parent="clickables"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.501, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 0 )
 __meta__ = {
 "_edit_group_": true
 }
