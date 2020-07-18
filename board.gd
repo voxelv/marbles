@@ -9,7 +9,6 @@ var all_areas := []
 # 4 arrays: player n's 5 marbles indexes for n = 0, 1, 2, 3
 # corresponding to player a, b, c, d
 var _marbles := []
-var marbles_indices := []
 
 var _tmp_array := []
 
@@ -61,34 +60,25 @@ func _on_mouse_entered(idx:int)->void:
 func setup_marbles():
 	for i in range(4):
 		_marbles.append([]) # append an empty array
-		marbles_indices.append([]) # append an empty array
-		var home_indices := [
-			Logic.a_home_indices, 
-			Logic.b_home_indices, 
-			Logic.c_home_indices, 
-			Logic.d_home_indices
-			]
 		var color := [Factory.marble_color.RED, Factory.marble_color.BLUE, Factory.marble_color.GREEN, Factory.marble_color.YELLOW]
-		for idx in home_indices[i]:
+		for m in range(len(Logic.home_indices[i])):
+			var idx := Logic.home_indices[i][m] as int
 			var p := all_positions[idx] as Vector3
 			var new_marble := Factory.marble(color[i]) as Spatial
 			new_marble.translate(p)
 			self.add_child(new_marble)
 			_marbles[i].append(new_marble)
-			marbles_indices[i].append(idx)
+			Logic.set_player_marble_idx(i, m, idx)
 
 func set_board_state(marbles_in):
-	assert(len(marbles_in) == 4)
+	assert(len(marbles_in) == len(Logic.player))
 	for player in range(len(marbles_in)):
 		assert(marbles_in[player] is Array)
-		assert(len(marbles_in[player]) == 5)
+		assert(len(marbles_in[player]) == Logic.NUM_MARBLES_PER_PLAYER)
 		for marble in range(len(marbles_in[player])):
 			assert(marbles_in[player][marble] is int)
 			(_marbles[player][marble] as Spatial).translation = all_positions[marbles_in[player][marble]]
-			marbles_indices[player][marble] = marbles_in[player][marble]
 
-func get_board_state():
-	return marbles_indices.duplicate(true)
 
 
 

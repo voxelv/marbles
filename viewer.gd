@@ -1,7 +1,9 @@
 extends Node
 
+const Board := preload("res://board.gd")
+
 onready var board_viewport := find_node("board_viewport") as Viewport
-onready var board := find_node("board") as Spatial
+onready var board := find_node("board") as Board
 onready var camera := find_node("camera") as Camera
 onready var test_idx_label := find_node("test_idx_label")
 onready var world := find_node("world") as Spatial
@@ -10,6 +12,7 @@ onready var selector_highlight := find_node("selector_highlight") as Node2D
 onready var idx_readout_label := find_node("idx_readout_label") as Label
 
 func _ready():
+	Logic.set_viewer(self)
 	board.connect_areas("input_event", self, "_on_area_clicked")
 	board.connect_areas("mouse_entered", self, "_on_area_entered")
 	board.connect_areas("mouse_exited", self, "_on_area_exited")
@@ -28,12 +31,12 @@ func update_selector():
 			idx_readout_label.text = "%d" % Logic.select_index
 
 func _on_area_entered(idx:int):
-	selector_highlight.visible = true
-	var sel_pos := camera.unproject_position(board.all_positions[idx])
-	selector_highlight.position = sel_pos
-	pass
+	if Logic.player_can_select(Logic.player.A, idx):
+		selector_highlight.visible = true
+		var sel_pos := camera.unproject_position(board.all_positions[idx])
+		selector_highlight.position = sel_pos
 
-func _on_area_exited(idx:int):
+func _on_area_exited(_idx:int):
 	selector_highlight.visible = false
 	pass
 
