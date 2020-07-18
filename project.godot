@@ -19,6 +19,11 @@ config/name="marbles"
 run/main_scene="res://viewer.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Factory="*res://factory.gd"
+Logic="*res://logic.gd"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
