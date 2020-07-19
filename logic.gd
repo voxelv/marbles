@@ -107,6 +107,10 @@ func valid_movements(player:int)->Array:
 		if index_in_player_track(select_index) + dice_value < len(track_indices[player]):
 			# Movement along track
 			possible_moves.append(track_indices[player][index_in_player_track(select_index) + dice_value])
+			# Movement to center
+			# If moving dice_value results in an index one greater than position
+			if track_indices[player][index_in_player_track(select_index) + dice_value - 1] in position_indices:
+				possible_moves.append(0)
 			# Movement from position
 			if select_index in position_indices:
 				var positions_ordered_for_player := []
@@ -116,16 +120,14 @@ func valid_movements(player:int)->Array:
 				
 				var positions_index := positions_ordered_for_player.find(select_index)
 				for x in range(len(positions_ordered_for_player) - positions_index - 1):
+					if x + 1 > dice_value:
+						continue
 					var i := positions_index + x + 1
 					var i2 := track_indices[player].find(positions_ordered_for_player[i]) as int
-					var possible_idx := track_indices[player][i2 + dice_value - (x)] as int
+					var possible_idx := track_indices[player][i2 + dice_value - (x + 1)] as int
 					possible_moves.append(possible_idx)
 		
 	
-	# Movement to center
-	# If moving dice_value results in an index one greater than position
-	if track_indices[player][index_in_player_track(select_index) + dice_value - 1] in position_indices:
-		possible_moves.append(0)
 	
 	# Filter out own-marble passing and own-marble landing
 	# TODO
