@@ -12,6 +12,12 @@ onready var selector_highlight := find_node("selector_highlight") as Node2D
 onready var idx_readout_label := find_node("idx_readout_label") as Label
 
 func _ready():
+	# Temporary dice buttons
+	for i in range(6):
+		var dice_val := i + 1
+		var b := find_node("dice_button%d" % dice_val) as Button
+		b.connect("pressed", self, "_on_dice_button_pressed", [dice_val])
+	
 	Logic.set_viewer(self)
 	board.connect_areas("input_event", self, "_on_area_clicked")
 	board.connect_areas("mouse_entered", self, "_on_area_entered")
@@ -45,11 +51,8 @@ func _on_area_clicked(_camera, event, _click_position, _click_normal, _shape_idx
 		var e := (event as InputEventMouseButton)
 		if e.button_index == BUTTON_LEFT:
 			if e.pressed:
-				match Logic.select_state:
-					Logic.select_state_type.NONE:
-						Logic.select_index = idx
-						Logic.select_state = Logic.select_state_type.SLCT
-					Logic.select_state_type.SLCT:
-						Logic.select_index = -1
-						Logic.select_state = Logic.select_state_type.NONE
+				Logic.idx_pressed(idx)
 				update_selector()
+
+func _on_dice_button_pressed(dice_val:int):
+	Logic.dice_value = dice_val
