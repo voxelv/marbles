@@ -95,42 +95,40 @@ func valid_movements(player:int)->Array:
 	# Find all movements, regardless of contents
 	var possible_moves := []
 	
+	# Movement from center to track
+	if select_index == 0 and dice_value == 1:
+		possible_moves += position_indices
 	# Movement from home to track
-	if marble_is_at_home(player) and dice_value in [1, 6]:
+	elif marble_is_at_home(player) and dice_value in [1, 6]:
 		possible_moves.append(track_indices[player][0])
 	# Movement on track
-	else:
-		# Movement from center
-		if select_index == 0:
-			possible_moves += position_indices
-		# Movement from position
-		elif select_index in position_indices:
-			var i := position_indices.find(select_index)
-			match dice_value:
-				1:
-					if i + 1 >= len(position_indices):
-						i = 0
-					if index_in_player_track(position_indices[i]) > index_in_player_track(select_index):
-						possible_moves.append(position_indices[i])
-				2:
-					var increments_left = dice_value
-					while increments_left > 0:
-						if i + 1 >= len(position_indices):
-							i = 0
-						else:
-							i += 1
-						increments_left -= 1
-					if index_in_player_track(position_indices[i]) > index_in_player_track(select_index):
-						possible_moves.append(position_indices)
-			
+	elif select_index in track_indices[player]:
+		# Movement doesn't go off the end of track
+		if index_in_player_track(select_index) + dice_value < len(track_indices[player]):
+			# Movement along track
+			possible_moves.append(track_indices[player][index_in_player_track(select_index) + dice_value])
+			# Movement from position
+			if select_index in position_indices:
+				var positions_ordered_for_player := []
+				for x in track_indices[player]:
+					if x in position_indices:
+						positions_ordered_for_player.append(x)
+				
+				var positions_index := positions_ordered_for_player.find(select_index)
+				for x in range(len(positions_ordered_for_player) - positions_index - 1):
+					var i := positions_index + x + 1
+					var i2 := track_indices[player].find(positions_ordered_for_player[i]) as int
+					var possible_idx := track_indices[player][i2 + dice_value - (x)] as int
+					possible_moves.append(possible_idx)
+		
 	
 	# Movement to center
 	# If moving dice_value results in an index one greater than position
-	if track_indices[current_player][index_in_player_track(select_index) - 1] in position_indices:
+	if track_indices[player][index_in_player_track(select_index) + dice_value - 1] in position_indices:
 		possible_moves.append(0)
 	
 	# Filter out own-marble passing and own-marble landing
-	
+	# TODO
 	
 	ret += possible_moves
 	
