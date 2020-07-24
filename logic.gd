@@ -50,7 +50,7 @@ func _ready():
 
 func _set_dice_value(value:int):
 	dice_value = value
-	valid_moves = valid_movements(current_player)
+	valid_moves = calc_valid_movements(current_player, select_index)
 
 func setup_dag():
 	for i in range(len(viewer.board.all_positions)):
@@ -129,21 +129,11 @@ func marble_is_at_home(player:int)->bool:
 func selected_marble()->int:
 	return marbles[current_player].find(select_index)
 
-func index_in_player_track(idx:int)->int:
-	return track_indices[current_player].find(idx)
-
-func valid_movements(player:int)->Array:
+func calc_valid_movements(player:int, from_idx:int)->Array:
 	var ret := []
-	var idx := select_index
 	
-	var marble := selected_marble()
-	
-	# Find all movements, regardless of contents
-	var possible_moves := []
-	
-	possible_moves += _movements_recurser(dice_value, marbles[current_player][marble], [marbles[current_player][marble]])
-	
-	ret += possible_moves
+	if from_idx in marbles[player]:
+		ret += _movements_recurser(dice_value, from_idx, [from_idx])
 	
 	return ret
 
@@ -172,7 +162,7 @@ func _movements_recurser(dice_value_in:int, from_idx:int, path_here:Array)->Arra
 				ending_indices.append(position_indices[i])
 		for idx in ending_indices:
 			if not idx in marbles[current_player]:
-				print("%d: %s" % [idx, str(path_here)])
+#				print("%d: %s" % [idx, str(path_here)])
 				ret.append(idx)
 	else:
 		assert(dice_value_in in [2, 3, 4, 5, 6])
@@ -202,21 +192,19 @@ func _movements_recurser(dice_value_in:int, from_idx:int, path_here:Array)->Arra
 	return ret
 
 func idx_pressed(idx:int):
-	if true:
-		var node := (dag[idx] as DAGNode)
-		var next_nodes := []
-		var s := "%d -> " % node.idx
-		if node.next_main_track_node != null:
-			s += "T%d "% (node.next_main_track_node as DAGNode).idx
-		if node.next_position_node != null:
-			s += "P%d "% (node.next_position_node as DAGNode).idx
-		if node.next_center_node != null:
-			s += "C%d "% (node.next_center_node as DAGNode).idx
-		if node.next_home_row_node != null:
-			s += "H%d "% (node.next_home_row_node as DAGNode).idx
-		if node.home_row_owner != Logic.player.COUNT:
-			s += "owner: %d" % node.home_row_owner
-		print(s)
+	var node := (dag[idx] as DAGNode)
+	var s := "%d -> " % node.idx
+	if node.next_main_track_node != null:
+		s += "T%d "% (node.next_main_track_node as DAGNode).idx
+	if node.next_position_node != null:
+		s += "P%d "% (node.next_position_node as DAGNode).idx
+	if node.next_center_node != null:
+		s += "C%d "% (node.next_center_node as DAGNode).idx
+	if node.next_home_row_node != null:
+		s += "H%d "% (node.next_home_row_node as DAGNode).idx
+	if node.home_row_owner != Logic.player.COUNT:
+		s += "owner: %d" % node.home_row_owner
+#	print(s)
 	
 	if idx == -1:
 		select_index = -1
@@ -228,7 +216,7 @@ func idx_pressed(idx:int):
 				if player_can_select(current_player, idx):
 					select_index = idx
 					select_state = select_state_type.SLCT
-					valid_moves = valid_movements(current_player)
+					valid_moves = calc_valid_movements(current_player, idx)
 			select_state_type.SLCT:
 				if idx in valid_moves:
 					set_player_marble_idx(current_player, selected_marble(), idx)
@@ -238,7 +226,7 @@ func idx_pressed(idx:int):
 				elif idx in marbles[current_player]:
 					select_index = idx
 					select_state = select_state_type.SLCT
-					valid_moves = valid_movements(current_player)
+					valid_moves = calc_valid_movements(current_player, idx)
 				else:
 					select_index = -1
 					select_state = select_state_type.NONE
