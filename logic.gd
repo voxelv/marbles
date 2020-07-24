@@ -133,11 +133,11 @@ func calc_valid_movements(player:int, from_idx:int)->Array:
 	var ret := []
 	
 	if from_idx in marbles[player]:
-		ret += _movements_recurser(dice_value, from_idx, [from_idx])
+		ret += _movements_recurser(dice_value, from_idx, from_idx, [from_idx])
 	
 	return ret
 
-func _movements_recurser(dice_value_in:int, from_idx:int, path_here:Array)->Array:
+func _movements_recurser(dice_value_in:int, origin_idx:int, from_idx:int, path_here:Array)->Array:
 	var ret := []
 	
 	if from_idx in home_indices[current_player] and dice_value_in in [1, 6] and not track_indices[current_player][0] in marbles[current_player]:
@@ -148,12 +148,12 @@ func _movements_recurser(dice_value_in:int, from_idx:int, path_here:Array)->Arra
 		var ending_indices := []
 		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[current_player][0]:
 			ending_indices.append(node.next_main_track_node.idx)
-		if node.next_position_node != null and select_index in position_indices:
+		if node.next_position_node != null and origin_idx in position_indices:
 			ending_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
-			if dice_value == 1 and select_index in position_indices:
+			if dice_value == 1 and origin_idx in position_indices:
 				ending_indices.append(node.next_center_node.idx)
-			elif dice_value != 1 and not select_index in position_indices:
+			elif dice_value != 1 and not origin_idx in position_indices:
 				ending_indices.append(node.next_center_node.idx)
 		if node.next_home_row_node != null and node.next_home_row_node.home_row_owner == current_player:
 			ending_indices.append(node.next_home_row_node.idx)
@@ -170,7 +170,7 @@ func _movements_recurser(dice_value_in:int, from_idx:int, path_here:Array)->Arra
 		var recurse_indices := []
 		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[current_player][0]:
 			recurse_indices.append(node.next_main_track_node.idx)
-		if node.next_position_node != null and select_index in position_indices:
+		if node.next_position_node != null and origin_idx in position_indices:
 			recurse_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
 			recurse_indices.append(node.next_center_node.idx)
@@ -187,7 +187,7 @@ func _movements_recurser(dice_value_in:int, from_idx:int, path_here:Array)->Arra
 				):
 				var path = path_here.duplicate()
 				path.append(idx)
-				ret += _movements_recurser(dice_value_in - 1, idx, path)
+				ret += _movements_recurser(dice_value_in - 1, origin_idx, idx, path)
 	
 	return ret
 

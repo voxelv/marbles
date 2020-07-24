@@ -89,7 +89,6 @@ func _on_area_entered(idx:int):
 func _on_area_exited(_idx:int):
 	selector_highlight.visible = false
 	update_selector()
-	pass
 
 func _on_area_clicked(_camera, event, _click_position, _click_normal, _shape_idx, idx):
 	if event is InputEventMouseButton:
@@ -106,14 +105,6 @@ func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_i
 			if e.pressed:
 				Logic.idx_pressed(-1)
 				update_selector()
-
-#func _unhandled_input(event):
-#	if event is InputEventMouseButton:
-#		var e := (event as InputEventMouseButton)
-#		if e.button_index == BUTTON_LEFT:
-#			if e.pressed:
-#				Logic.idx_pressed(-1)
-#				update_selector()
 
 func _on_dice_button_pressed(dice_val:int):
 	Logic.dice_value = dice_val
