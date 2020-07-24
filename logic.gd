@@ -36,6 +36,7 @@ var select_state:int = select_state_type.NONE
 var select_index := -1
 var current_player = player.A
 var dice_value := 6
+var pass_own_position_marbles := true
 var marbles := [
 	[-1, -1, -1, -1, -1],
 	[-1, -1, -1, -1, -1],
@@ -148,20 +149,40 @@ func _movements_recurser(dice_value_in:int, from_idx:int)->Array:
 	
 	if dice_value_in == 1:
 		var node := (dag[from_idx] as DAGNode)
+		var ending_indices := []
 		if node.next_main_track_node != null:
-			ret.append(node.next_main_track_node.idx)
-		if node.next_position_node != null:
-			ret.append(node.next_position_node.idx)
+			ending_indices.append(node.next_main_track_node.idx)
+		if node.next_position_node != null and select_index in position_indices:
+			ending_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
-			ret.append(node.next_center_node.idx)
+			if dice_value == 1 and select_index in position_indices:
+				ending_indices.append(node.next_center_node.idx)
+			elif dice_value != 1 and not select_index in position_indices:
+				ending_indices.append(node.next_center_node.idx)
 		if node.next_home_row_node != null and node.next_home_row_node.home_row_owner == current_player:
-			ret.append(node.next_home_row_node.idx)
-		if from_idx == 0:
+			ending_indices.append(node.next_home_row_node.idx)
+		if from_idx == 0 and dice_value == 1:
 			for i in range(len(position_indices)):
-				ret.append(position_indices[i])
+				ending_indices.append(position_indices[i])
+		for idx in ending_indices:
+			if not idx in marbles[current_player]:
+				ret.append(idx)
 	else:
 		assert(dice_value_in in [2, 3, 4, 5, 6])
-		pass
+		var node := (dag[from_idx] as DAGNode)
+		var recurse_indices := []
+		if node.next_main_track_node != null:
+			recurse_indices.append(node.next_main_track_node.idx)
+		if node.next_position_node != null:
+			recurse_indices.append(node.next_position_node.idx)
+		if node.next_center_node != null:
+			recurse_indices.append(node.next_center_node.idx)
+		if node.next_home_row_node != null and node.next_home_row_node.home_row_owner == current_player:
+			recurse_indices.append(node.next_home_row_node.idx)
+		
+		for idx in recurse_indices:
+			if not idx in marbles[current_player] or (idx in position_indices and pass_own_position_marbles):
+				ret += _movements_recurser(dice_value_in - 1, idx)
 	
 	return ret
 

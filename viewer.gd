@@ -9,6 +9,7 @@ onready var test_idx_label := find_node("test_idx_label")
 onready var world := find_node("world") as Spatial
 onready var selector := find_node("selector") as Node2D
 onready var selector_highlight := find_node("selector_highlight") as Node2D
+onready var pass_own_position_checkbox := find_node("pass_own_position_checkbox") as CheckBox
 
 func _ready():
 	# Temporary dice buttons
@@ -17,12 +18,17 @@ func _ready():
 		var b := find_node("dice_button%d" % dice_val) as Button
 		b.connect("pressed", self, "_on_dice_button_pressed", [dice_val])
 	
+	pass_own_position_checkbox.connect("toggled", self, "_on_pass_own_position_marbles_toggled")
+	
 	Logic.set_viewer(self)
 	board.connect_areas("input_event", self, "_on_area_clicked")
 	board.connect_areas("mouse_entered", self, "_on_area_entered")
 	board.connect_areas("mouse_exited", self, "_on_area_exited")
 	
 	update_selector()
+
+func _on_pass_own_position_marbles_toggled(pressed:bool):
+	Logic.pass_own_position_marbles = pressed
 
 func update_selector():
 	match Logic.select_state:
