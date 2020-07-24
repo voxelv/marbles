@@ -9,7 +9,6 @@ onready var test_idx_label := find_node("test_idx_label")
 onready var world := find_node("world") as Spatial
 onready var selector := find_node("selector") as Node2D
 onready var selector_highlight := find_node("selector_highlight") as Node2D
-onready var idx_readout_label := find_node("idx_readout_label") as Label
 
 func _ready():
 	# Temporary dice buttons
@@ -34,7 +33,6 @@ func update_selector():
 			selector.visible = true
 			var sel_pos := camera.unproject_position(board.all_positions[Logic.select_index])
 			selector.position = sel_pos
-			idx_readout_label.text = "%d" % Logic.select_index
 
 func _on_area_entered(idx:int):
 	if Logic.player_can_select(Logic.player.A, idx):

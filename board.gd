@@ -71,14 +71,13 @@ func setup_marbles():
 			Logic.set_player_marble_idx(i, m, idx)
 
 func set_board_state(marbles_in):
-	assert(len(marbles_in) == len(Logic.player))
+	assert(len(marbles_in) == Logic.player.COUNT)
 	for player in range(len(marbles_in)):
 		assert(marbles_in[player] is Array)
 		assert(len(marbles_in[player]) == Logic.NUM_MARBLES_PER_PLAYER)
 		for marble in range(len(marbles_in[player])):
 			assert(marbles_in[player][marble] is int)
 			(_marbles[player][marble] as Spatial).translation = all_positions[marbles_in[player][marble]]
-
 
 
 

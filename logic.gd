@@ -1,10 +1,13 @@
 extends Node
 
-enum player{A, B, C, D}
+enum player{A, B, C, D, COUNT}
 enum select_state_type{NONE, SLCT}
 
 const Viewer := preload("res://viewer.gd")
+const DAGNode := preload("res://dag/dag_node.gd")
 const NUM_MARBLES_PER_PLAYER := 5
+
+var dag := []
 
 var main_track_indices := range(21, 21+48)
 
@@ -39,6 +42,42 @@ var marbles := [
 	[-1, -1, -1, -1, -1],
 	[-1, -1, -1, -1, -1],
 	]
+
+func _ready():
+	call_deferred("setup_dag")
+
+func setup_dag():
+	for i in range(len(viewer.board.all_positions)):
+		dag.append(DAGNode.new(i))
+	
+	# Main Track
+	for i in range(len(main_track_indices)):
+		if i == len(main_track_indices) - 1:
+			(dag[main_track_indices[i]] as DAGNode).next_main_track_node = dag[main_track_indices[0]]
+		else:
+			(dag[main_track_indices[i]] as DAGNode).next_main_track_node = dag[main_track_indices[i+1]]
+	
+	# Positions to Positions
+	for i in range(len(position_indices)):
+		if i == len(position_indices) - 1:
+			(dag[position_indices[i]] as DAGNode).next_position_node = dag[position_indices[0]]
+		else:
+			(dag[position_indices[i]] as DAGNode).next_position_node = dag[position_indices[i+1]]
+	
+	# Positions to Center
+	for i in range(len(position_indices)):
+		(dag[position_indices[i]] as DAGNode).next_center_node = dag[0]
+	
+	# Home Rows
+	for p in range(len(home_row_indices)):
+		var h_indices = home_row_indices[p]
+		for i in range(len(h_indices)):
+			(dag[h_indices[i]] as DAGNode).home_row_owner = p
+			if i == len(h_indices) - 1:
+				# Last home row node has nowhere to go, so use the slot to set the entering edge
+				(dag[track_indices[p][-6]] as DAGNode).next_home_row_node = dag[h_indices[0]]
+			else:
+				(dag[h_indices[i]] as DAGNode).next_home_row_node = dag[h_indices[i+1]]
 
 func set_viewer(v:Viewer):
 	self.viewer = v
@@ -95,48 +134,54 @@ func valid_movements(player:int)->Array:
 	# Find all movements, regardless of contents
 	var possible_moves := []
 	
-	# Movement from center to track
-	if select_index == 0 and dice_value == 1:
-		possible_moves += position_indices
-	# Movement from home to track
-	elif marble_is_at_home(player) and dice_value in [1, 6]:
-		possible_moves.append(track_indices[player][0])
-	# Movement on track
-	elif select_index in track_indices[player]:
-		# Movement doesn't go off the end of track
-		if index_in_player_track(select_index) + dice_value < len(track_indices[player]):
-			# Movement along track
-			possible_moves.append(track_indices[player][index_in_player_track(select_index) + dice_value])
-			# Movement to center
-			# If moving dice_value results in an index one greater than position
-			if track_indices[player][index_in_player_track(select_index) + dice_value - 1] in position_indices:
-				possible_moves.append(0)
-			# Movement from position
-			if select_index in position_indices:
-				var positions_ordered_for_player := []
-				for x in track_indices[player]:
-					if x in position_indices:
-						positions_ordered_for_player.append(x)
-				
-				var positions_index := positions_ordered_for_player.find(select_index)
-				for x in range(len(positions_ordered_for_player) - positions_index - 1):
-					if x + 1 > dice_value:
-						continue
-					var i := positions_index + x + 1
-					var i2 := track_indices[player].find(positions_ordered_for_player[i]) as int
-					var possible_idx := track_indices[player][i2 + dice_value - (x + 1)] as int
-					possible_moves.append(possible_idx)
-		
-	
-	
-	# Filter out own-marble passing and own-marble landing
-	# TODO
+	possible_moves += _movements_recurser(dice_value, marbles[current_player][marble])
 	
 	ret += possible_moves
 	
 	return ret
 
+func _movements_recurser(dice_value_in:int, from_idx:int)->Array:
+	var ret := []
+	
+	if from_idx in home_indices[current_player] and dice_value_in in [1, 6]:
+		ret.append(track_indices[current_player][0])
+	
+	if dice_value_in == 1:
+		var node := (dag[from_idx] as DAGNode)
+		if node.next_main_track_node != null:
+			ret.append(node.next_main_track_node.idx)
+		if node.next_position_node != null:
+			ret.append(node.next_position_node.idx)
+		if node.next_center_node != null:
+			ret.append(node.next_center_node.idx)
+		if node.next_home_row_node != null and node.next_home_row_node.home_row_owner == current_player:
+			ret.append(node.next_home_row_node.idx)
+		if from_idx == 0:
+			for i in range(len(position_indices)):
+				ret.append(position_indices[i])
+	else:
+		assert(dice_value_in in [2, 3, 4, 5, 6])
+		pass
+	
+	return ret
+
 func idx_pressed(idx:int):
+	if true:
+		var node := (dag[idx] as DAGNode)
+		var next_nodes := []
+		var s := "%d -> " % node.idx
+		if node.next_main_track_node != null:
+			s += "T%d "% (node.next_main_track_node as DAGNode).idx
+		if node.next_position_node != null:
+			s += "P%d "% (node.next_position_node as DAGNode).idx
+		if node.next_center_node != null:
+			s += "C%d "% (node.next_center_node as DAGNode).idx
+		if node.next_home_row_node != null:
+			s += "H%d "% (node.next_home_row_node as DAGNode).idx
+		if node.home_row_owner != Logic.player.COUNT:
+			s += "owner: %d" % node.home_row_owner
+		print(s)
+	
 	match select_state:
 		select_state_type.NONE:
 			if player_can_select(current_player, idx):
@@ -147,3 +192,20 @@ func idx_pressed(idx:int):
 				set_player_marble_idx(current_player, selected_marble(), idx)
 			select_index = -1
 			select_state = select_state_type.NONE
+
+func generate_graph():
+	
+	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
