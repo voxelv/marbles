@@ -35,7 +35,8 @@ var viewer:Viewer
 var select_state:int = select_state_type.NONE
 var select_index := -1
 var current_player = player.A
-var dice_value := 6
+var dice_value := 1 setget _set_dice_value
+var valid_moves := []
 var pass_own_position_marbles := true
 var marbles := [
 	[-1, -1, -1, -1, -1],
@@ -46,6 +47,10 @@ var marbles := [
 
 func _ready():
 	call_deferred("setup_dag")
+
+func _set_dice_value(value:int):
+	dice_value = value
+	valid_moves = valid_movements(current_player)
 
 func setup_dag():
 	for i in range(len(viewer.board.all_positions)):
@@ -89,7 +94,7 @@ func player_can_select(player:int, idx:int)->bool:
 		select_state_type.NONE:
 			ret = (idx in marbles[player])
 		select_state_type.SLCT:
-			ret = (idx in valid_movements(player))
+			ret = (idx in valid_moves)
 	return ret
 
 func set_player_marble_idx(player:int, marble:int, idx:int):
@@ -135,16 +140,16 @@ func valid_movements(player:int)->Array:
 	# Find all movements, regardless of contents
 	var possible_moves := []
 	
-	possible_moves += _movements_recurser(dice_value, marbles[current_player][marble])
+	possible_moves += _movements_recurser(dice_value, marbles[current_player][marble], [marbles[current_player][marble]])
 	
 	ret += possible_moves
 	
 	return ret
 
-func _movements_recurser(dice_value_in:int, from_idx:int)->Array:
+func _movements_recurser(dice_value_in:int, from_idx:int, path_here:Array)->Array:
 	var ret := []
 	
-	if from_idx in home_indices[current_player] and dice_value_in in [1, 6]:
+	if from_idx in home_indices[current_player] and dice_value_in in [1, 6] and not track_indices[current_player][0] in marbles[current_player]:
 		ret.append(track_indices[current_player][0])
 	
 	if dice_value_in == 1:
@@ -166,6 +171,7 @@ func _movements_recurser(dice_value_in:int, from_idx:int)->Array:
 				ending_indices.append(position_indices[i])
 		for idx in ending_indices:
 			if not idx in marbles[current_player]:
+				print("%d: %s" % [idx, str(path_here)])
 				ret.append(idx)
 	else:
 		assert(dice_value_in in [2, 3, 4, 5, 6])
@@ -173,7 +179,7 @@ func _movements_recurser(dice_value_in:int, from_idx:int)->Array:
 		var recurse_indices := []
 		if node.next_main_track_node != null:
 			recurse_indices.append(node.next_main_track_node.idx)
-		if node.next_position_node != null:
+		if node.next_position_node != null and select_index in position_indices:
 			recurse_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
 			recurse_indices.append(node.next_center_node.idx)
@@ -181,8 +187,16 @@ func _movements_recurser(dice_value_in:int, from_idx:int)->Array:
 			recurse_indices.append(node.next_home_row_node.idx)
 		
 		for idx in recurse_indices:
-			if not idx in marbles[current_player] or (idx in position_indices and pass_own_position_marbles):
-				ret += _movements_recurser(dice_value_in - 1, idx)
+			if (not idx in path_here 
+				and (not idx in marbles[current_player] 
+					or (idx in position_indices 
+						and pass_own_position_marbles
+						)
+					)
+				):
+				var path = path_here.duplicate()
+				path.append(idx)
+				ret += _movements_recurser(dice_value_in - 1, idx, path)
 	
 	return ret
 
@@ -208,11 +222,13 @@ func idx_pressed(idx:int):
 			if player_can_select(current_player, idx):
 				select_index = idx
 				select_state = select_state_type.SLCT
+				valid_moves = valid_movements(current_player)
 		select_state_type.SLCT:
-			if idx in valid_movements(current_player):
+			if idx in valid_moves:
 				set_player_marble_idx(current_player, selected_marble(), idx)
 			select_index = -1
 			select_state = select_state_type.NONE
+			valid_moves.clear()
 
 func generate_graph():
 	

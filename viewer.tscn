@@ -4,7 +4,6 @@
 [ext_resource path="res://viewer.gd" type="Script" id=2]
 [ext_resource path="res://main_theme.tres" type="Theme" id=3]
 [ext_resource path="res://select_highlight.tscn" type="PackedScene" id=4]
-[ext_resource path="res://selector.tscn" type="PackedScene" id=5]
 [ext_resource path="res://dice_4.png" type="Texture" id=6]
 [ext_resource path="res://dice_6.png" type="Texture" id=7]
 [ext_resource path="res://dice_3.png" type="Texture" id=8]
@@ -24,6 +23,9 @@ ambient_light_energy = 0.75
 adjustment_enabled = true
 adjustment_contrast = 1.15
 adjustment_saturation = 0.62
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 1 )
 
 [node name="viewer" type="Node"]
 script = ExtResource( 2 )
@@ -123,11 +125,38 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="selector" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 5 )]
-scale = Vector2( 0.8, 0.8 )
+[node name="selector" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 4 )]
+modulate = Color( 0, 1, 1, 1 )
+scale = Vector2( 0.6, 0.6 )
 
 [node name="selector_highlight" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 4 )]
-visible = false
+self_modulate = Color( 0, 1, 0, 1 )
+scale = Vector2( 0.8, 0.8 )
+
+[node name="CenterContainer" type="CenterContainer" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/selector_highlight"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="idx_label" type="Label" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/selector_highlight/CenterContainer"]
+margin_left = 6.0
+margin_top = 13.0
+margin_right = 34.0
+margin_bottom = 27.0
+custom_styles/normal = SubResource( 3 )
+text = "TEST"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="valid_move_highlights" type="Node2D" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer"]
 

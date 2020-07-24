@@ -10,6 +10,7 @@ onready var world := find_node("world") as Spatial
 onready var selector := find_node("selector") as Node2D
 onready var selector_highlight := find_node("selector_highlight") as Node2D
 onready var pass_own_position_checkbox := find_node("pass_own_position_checkbox") as CheckBox
+onready var idx_label := find_node("idx_label") as Label
 
 func _ready():
 	# Temporary dice buttons
@@ -45,6 +46,7 @@ func _on_area_entered(idx:int):
 		selector_highlight.visible = true
 		var sel_pos := camera.unproject_position(board.all_positions[idx])
 		selector_highlight.position = sel_pos
+		idx_label.text = str(idx)
 
 func _on_area_exited(_idx:int):
 	selector_highlight.visible = false

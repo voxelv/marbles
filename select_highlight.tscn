@@ -5,6 +5,4 @@
 [node name="select_highlight" type="Node2D"]
 
 [node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 0, 1, 0, 0.784314 )
-scale = Vector2( 0.6, 0.6 )
 texture = ExtResource( 1 )
