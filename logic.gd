@@ -34,8 +34,7 @@ var position_indices := [26, 26+12, 26+24, 26+36]
 var viewer:Viewer
 var select_state:int = select_state_type.NONE
 var select_index := -1
-var current_player = player.A
-var dice_value := 1 setget _set_dice_value
+var dice_value := 1
 var valid_moves := []
 var pass_own_position_marbles := true
 var marbles := [
@@ -48,9 +47,9 @@ var marbles := [
 func _ready():
 	call_deferred("setup_dag")
 
-func _set_dice_value(value:int):
+func set_dice_value(player:int, value:int):
 	dice_value = value
-	valid_moves = calc_valid_movements(current_player, select_index)
+	valid_moves = calc_valid_movements(player, select_index)
 
 func setup_dag():
 	for i in range(len(viewer.board.all_positions)):
@@ -104,49 +103,30 @@ func set_player_marble_idx(player:int, marble:int, idx:int):
 	yield(get_tree(), "idle_frame")
 	viewer.board.set_board_state(marbles)
 
-func get_idx_info(idx:int)->Dictionary:
-	var ret := {}
-	var player := -1
-	var marble := -1
-	var found := false
-	
-	for p in player:
-		for m in range(NUM_MARBLES_PER_PLAYER):
-			if marbles[p][m] == idx:
-				found = true
-				player = p
-				marble = m
-	
-	if found:
-		ret['player'] = player
-		ret['marble'] = marble
-	
-	return ret
-
 func marble_is_at_home(player:int)->bool:
 	return (select_index in home_indices[player])
 
-func selected_marble()->int:
-	return marbles[current_player].find(select_index)
+func selected_marble(player:int)->int:
+	return marbles[player].find(select_index)
 
 func calc_valid_movements(player:int, from_idx:int)->Array:
 	var ret := []
 	
 	if from_idx in marbles[player]:
-		ret += _movements_recurser(dice_value, from_idx, from_idx, [from_idx])
+		ret += _movements_recurser(player, dice_value, from_idx, from_idx, [from_idx])
 	
 	return ret
 
-func _movements_recurser(dice_value_in:int, origin_idx:int, from_idx:int, path_here:Array)->Array:
+func _movements_recurser(player:int, dice_value_in:int, origin_idx:int, from_idx:int, path_here:Array)->Array:
 	var ret := []
 	
-	if from_idx in home_indices[current_player] and dice_value_in in [1, 6] and not track_indices[current_player][0] in marbles[current_player]:
-		ret.append(track_indices[current_player][0])
+	if from_idx in home_indices[player] and dice_value_in in [1, 6] and not track_indices[player][0] in marbles[player]:
+		ret.append(track_indices[player][0])
 	
 	if dice_value_in == 1:
 		var node := (dag[from_idx] as DAGNode)
 		var ending_indices := []
-		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[current_player][0]:
+		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[player][0]:
 			ending_indices.append(node.next_main_track_node.idx)
 		if node.next_position_node != null and origin_idx in position_indices:
 			ending_indices.append(node.next_position_node.idx)
@@ -155,31 +135,31 @@ func _movements_recurser(dice_value_in:int, origin_idx:int, from_idx:int, path_h
 				ending_indices.append(node.next_center_node.idx)
 			elif dice_value != 1 and not origin_idx in position_indices:
 				ending_indices.append(node.next_center_node.idx)
-		if node.next_home_row_node != null and node.next_home_row_node.home_row_owner == current_player:
+		if node.next_home_row_node != null and node.next_home_row_node.home_row_owner == player:
 			ending_indices.append(node.next_home_row_node.idx)
 		if from_idx == 0 and dice_value == 1:
 			for i in range(len(position_indices)):
 				ending_indices.append(position_indices[i])
 		for idx in ending_indices:
-			if not idx in marbles[current_player]:
+			if not idx in marbles[player]:
 #				print("%d: %s" % [idx, str(path_here)])
 				ret.append(idx)
 	else:
 		assert(dice_value_in in [2, 3, 4, 5, 6])
 		var node := (dag[from_idx] as DAGNode)
 		var recurse_indices := []
-		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[current_player][0]:
+		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[player][0]:
 			recurse_indices.append(node.next_main_track_node.idx)
 		if node.next_position_node != null and origin_idx in position_indices:
 			recurse_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
 			recurse_indices.append(node.next_center_node.idx)
-		if node.next_home_row_node != null and node.next_home_row_node.home_row_owner == current_player:
+		if node.next_home_row_node != null and node.next_home_row_node.home_row_owner == player:
 			recurse_indices.append(node.next_home_row_node.idx)
 		
 		for idx in recurse_indices:
 			if (not idx in path_here 
-				and (not idx in marbles[current_player] 
+				and (not idx in marbles[player] 
 					or (idx in position_indices 
 						and pass_own_position_marbles
 						)
@@ -187,11 +167,11 @@ func _movements_recurser(dice_value_in:int, origin_idx:int, from_idx:int, path_h
 				):
 				var path = path_here.duplicate()
 				path.append(idx)
-				ret += _movements_recurser(dice_value_in - 1, origin_idx, idx, path)
+				ret += _movements_recurser(player, dice_value_in - 1, origin_idx, idx, path)
 	
 	return ret
 
-func idx_pressed(idx:int):
+func idx_pressed(player:int, idx:int):
 	var node := (dag[idx] as DAGNode)
 	var s := "%d -> " % node.idx
 	if node.next_main_track_node != null:
@@ -213,20 +193,20 @@ func idx_pressed(idx:int):
 	else:
 		match select_state:
 			select_state_type.NONE:
-				if player_can_select(current_player, idx):
+				if player_can_select(player, idx):
 					select_index = idx
 					select_state = select_state_type.SLCT
-					valid_moves = calc_valid_movements(current_player, idx)
+					valid_moves = calc_valid_movements(player, idx)
 			select_state_type.SLCT:
 				if idx in valid_moves:
-					set_player_marble_idx(current_player, selected_marble(), idx)
+					set_player_marble_idx(player, selected_marble(player), idx)
 					select_index = -1
 					select_state = select_state_type.NONE
 					valid_moves.clear()
-				elif idx in marbles[current_player]:
+				elif idx in marbles[player]:
 					select_index = idx
 					select_state = select_state_type.SLCT
-					valid_moves = calc_valid_movements(current_player, idx)
+					valid_moves = calc_valid_movements(player, idx)
 				else:
 					select_index = -1
 					select_state = select_state_type.NONE

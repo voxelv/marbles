@@ -20,6 +20,7 @@ onready var roll_dice_button := find_node("roll_dice_button") as Button
 onready var dice_texturerect := find_node("dice_texturerect") as TextureRect
 
 func _ready():
+	randomize()
 	# Temporary dice buttons
 	for i in range(6):
 		var dice_val := i + 1
@@ -79,12 +80,12 @@ func update_valid_move_highlights(valid_moves:Array):
 			highlight.visible = false
 
 func _on_area_entered(idx:int):
-	if Logic.player_can_select(Logic.player.A, idx):
+	if Logic.player_can_select(Logic.player.B, idx):
 		selector_highlight.visible = true
-		var sel_pos := camera.unproject_position(board.all_positions[idx])
-		selector_highlight.position = sel_pos
+		selector_highlight.position = camera.unproject_position(board.all_positions[idx])
 		idx_label.text = str(idx)
-		update_valid_move_highlights(Logic.calc_valid_movements(Logic.player.A, idx))
+		if not idx in Logic.valid_moves:
+			update_valid_move_highlights(Logic.calc_valid_movements(Logic.player.B, idx))
 
 func _on_area_exited(_idx:int):
 	selector_highlight.visible = false
@@ -95,15 +96,16 @@ func _on_area_clicked(_camera, event, _click_position, _click_normal, _shape_idx
 		var e := (event as InputEventMouseButton)
 		if e.button_index == BUTTON_LEFT:
 			if e.pressed:
-				Logic.idx_pressed(idx)
+				Logic.idx_pressed(Logic.player.B, idx)
 				update_selector()
+#	_on_area_entered(idx)
 
 func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_idx):
 	if event is InputEventMouseButton:
 		var e := (event as InputEventMouseButton)
 		if e.button_index == BUTTON_LEFT:
 			if e.pressed:
-				Logic.idx_pressed(-1)
+				Logic.idx_pressed(Logic.player.B, -1)
 				update_selector()
 
 func _on_dice_button_pressed(dice_val:int):
