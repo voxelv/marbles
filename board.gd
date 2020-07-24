@@ -1,7 +1,8 @@
 extends Spatial
 
-onready var main_track_section := find_node("main_track_section")
-onready var marbles_container := find_node("marbles_container")
+onready var main_track_section := find_node("main_track_section") as Spatial
+onready var marbles_container := find_node("marbles_container") as Spatial
+onready var bounds := find_node("bounds") as Spatial
 
 var all_positions := []
 var all_areas := []
@@ -53,6 +54,10 @@ func connect_areas(signal_name:String, node:Node, function_name:String):
 		any_err = (err != OK)
 	if any_err:
 		print("Could not connect signal: %s to node: %s function: %s last err: %d" % [signal_name, node, function_name, err])
+
+func connect_bounds(signal_name:String, node:Node, function_name:String):
+	for c in bounds.get_children():
+		c.connect(signal_name, node, function_name)
 
 func _on_mouse_entered(idx:int)->void:
 	print("Entered %d" % idx)

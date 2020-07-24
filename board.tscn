@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://board.gd" type="Script" id=1]
 [ext_resource path="res://board_center.tscn" type="PackedScene" id=2]
@@ -33,6 +33,9 @@ albedo_color = Color( 1, 1, 0, 1 )
 
 [sub_resource type="QuadMesh" id=9]
 material = SubResource( 8 )
+
+[sub_resource type="BoxShape" id=10]
+extents = Vector3( 2, 17, 14 )
 
 [node name="board" type="Spatial"]
 script = ExtResource( 1 )
@@ -140,3 +143,59 @@ mesh = SubResource( 9 )
 material/0 = null
 
 [node name="marbles_container" type="Spatial" parent="."]
+
+[node name="bounds" type="Spatial" parent="."]
+
+[node name="Area" type="Area" parent="bounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="bounds/Area"]
+shape = SubResource( 10 )
+
+[node name="Area2" type="Area" parent="bounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="bounds/Area2"]
+shape = SubResource( 10 )
+
+[node name="Area3" type="Area" parent="bounds"]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 12 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="bounds/Area3"]
+shape = SubResource( 10 )
+
+[node name="Area4" type="Area" parent="bounds"]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, -12 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="bounds/Area4"]
+shape = SubResource( 10 )
+
+[node name="Area5" type="Area" parent="bounds"]
+transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, -16, 0 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="bounds/Area5"]
+shape = SubResource( 10 )
+
+[node name="Area6" type="Area" parent="bounds"]
+transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 16, 0 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="bounds/Area6"]
+shape = SubResource( 10 )

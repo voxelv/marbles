@@ -125,15 +125,19 @@ __meta__ = {
 "_editor_description_": ""
 }
 
+[node name="valid_move_highlights" type="Node2D" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer"]
+modulate = Color( 0, 0.835294, 1, 1 )
+
 [node name="selector" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 4 )]
-modulate = Color( 0, 1, 1, 1 )
+modulate = Color( 0, 0.843137, 0, 1 )
 scale = Vector2( 0.6, 0.6 )
 
 [node name="selector_highlight" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 4 )]
-self_modulate = Color( 0, 1, 0, 1 )
+self_modulate = Color( 0.219608, 1, 0, 1 )
 scale = Vector2( 0.8, 0.8 )
 
 [node name="CenterContainer" type="CenterContainer" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/selector_highlight"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -148,17 +152,15 @@ __meta__ = {
 }
 
 [node name="idx_label" type="Label" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/selector_highlight/CenterContainer"]
-margin_left = 6.0
+margin_left = 12.0
 margin_top = 13.0
-margin_right = 34.0
+margin_right = 28.0
 margin_bottom = 27.0
 custom_styles/normal = SubResource( 3 )
-text = "TEST"
+text = "00"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="valid_move_highlights" type="Node2D" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer"]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ui/CenterContainer/ScrollContainer/MarginContainer/HBoxContainer"]
 margin_left = 600.0
