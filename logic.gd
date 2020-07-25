@@ -106,8 +106,8 @@ func set_player_marble_idx(player:int, marble:int, idx:int):
 func marble_is_at_home(player:int)->bool:
 	return (select_index in home_indices[player])
 
-func selected_marble(player:int)->int:
-	return marbles[player].find(select_index)
+func selected_marble(player:int, idx:int)->int:
+	return marbles[player].find(idx)
 
 func calc_valid_movements(player:int, from_idx:int)->Array:
 	var ret := []
@@ -160,9 +160,9 @@ func _movements_recurser(player:int, dice_value_in:int, origin_idx:int, from_idx
 		for idx in recurse_indices:
 			if (not idx in path_here 
 				and (not idx in marbles[player] 
-					or (idx in position_indices 
-						and pass_own_position_marbles
-						)
+#					or (idx in position_indices 
+#						and pass_own_position_marbles
+#						)
 					)
 				):
 				var path = path_here.duplicate()
@@ -171,7 +171,17 @@ func _movements_recurser(player:int, dice_value_in:int, origin_idx:int, from_idx
 	
 	return ret
 
-func idx_pressed(player:int, idx:int):
+func deselect():
+	select_index = -1
+	select_state = select_state_type.NONE
+	valid_moves.clear()
+
+func select(player:int, idx:int):
+	select_index = idx
+	select_state = select_state_type.SLCT
+	valid_moves = calc_valid_movements(player, idx)
+
+func _debug_dag(idx:int):
 	var node := (dag[idx] as DAGNode)
 	var s := "%d -> " % node.idx
 	if node.next_main_track_node != null:
@@ -184,33 +194,24 @@ func idx_pressed(player:int, idx:int):
 		s += "H%d "% (node.next_home_row_node as DAGNode).idx
 	if node.home_row_owner != Logic.player.COUNT:
 		s += "owner: %d" % node.home_row_owner
-#	print(s)
-	
+	print(s)
+
+func idx_pressed(player:int, idx:int):
 	if idx == -1:
-		select_index = -1
-		select_state = select_state_type.NONE
-		valid_moves.clear()
+		deselect()
 	else:
 		match select_state:
 			select_state_type.NONE:
 				if player_can_select(player, idx):
-					select_index = idx
-					select_state = select_state_type.SLCT
-					valid_moves = calc_valid_movements(player, idx)
+					select(player, idx)
 			select_state_type.SLCT:
 				if idx in valid_moves:
-					set_player_marble_idx(player, selected_marble(player), idx)
-					select_index = -1
-					select_state = select_state_type.NONE
-					valid_moves.clear()
+					set_player_marble_idx(player, selected_marble(player, select_index), idx)
+					deselect()
 				elif idx in marbles[player]:
-					select_index = idx
-					select_state = select_state_type.SLCT
-					valid_moves = calc_valid_movements(player, idx)
+					select(player, idx)
 				else:
-					select_index = -1
-					select_state = select_state_type.NONE
-					valid_moves.clear()
+					deselect()
 
 
 

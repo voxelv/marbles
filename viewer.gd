@@ -101,7 +101,7 @@ func _on_area_clicked(_camera, event, _click_position, _click_normal, _shape_idx
 			if e.pressed:
 				Logic.idx_pressed(Logic.player.B, idx)
 				update_selector()
-#	_on_area_entered(idx)
+	_on_area_entered(idx)
 
 func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_idx):
 	if event is InputEventMouseButton:
@@ -112,7 +112,7 @@ func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_i
 				update_selector()
 
 func _on_dice_button_pressed(dice_val:int):
-	Logic.set_dice_value(dice_val)
+	Logic.set_dice_value(Logic.player.B, dice_val)
 	update_selector()
 
 func _on_roll_dice_button_pressed():
