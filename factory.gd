@@ -2,7 +2,7 @@ extends Node
 
 enum marble_color {BLACK, BLUE, CYAN, GREEN, MAGENTA, RED, WHITE, YELLOW}
 
-const marble_preload = preload("res://marble.tscn")
+const marble_preload = preload("res://board/marble.tscn")
 const materials = [
 	preload("res://marble_materials/black.tres"),
 	preload("res://marble_materials/blue.tres"),

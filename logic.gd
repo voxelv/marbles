@@ -31,6 +31,19 @@ var home_indices := [a_home_indices, b_home_indices, c_home_indices, d_home_indi
 
 var position_indices := [26, 26+12, 26+24, 26+36]
 
+var all_indices := (
+	[0] 
+	+ a_home_row_indices
+	+ b_home_row_indices
+	+ c_home_row_indices
+	+ d_home_row_indices
+	+ main_track_indices
+	+ a_home_indices 
+	+ b_home_indices 
+	+ c_home_indices 
+	+ d_home_indices
+	)
+
 var viewer:Viewer
 var select_state:int = select_state_type.NONE
 var select_index := -1
@@ -52,7 +65,7 @@ func set_dice_value(player:int, value:int):
 	valid_moves = calc_valid_movements(player, select_index)
 
 func setup_dag():
-	for i in range(len(viewer.board.all_positions)):
+	for i in range(len(all_indices)):
 		dag.append(DAGNode.new(i))
 	
 	# Main Track
