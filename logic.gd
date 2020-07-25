@@ -36,7 +36,7 @@ var select_state:int = select_state_type.NONE
 var select_index := -1
 var dice_value := 1
 var valid_moves := []
-var pass_own_position_marbles := true
+var pass_own_position_marbles := false
 var marbles := [
 	[-1, -1, -1, -1, -1],
 	[-1, -1, -1, -1, -1],

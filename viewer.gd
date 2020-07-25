@@ -1,10 +1,18 @@
 extends Node
 
-const Board := preload("res://board.gd")
+const Board := preload("res://board/board.gd")
 const Highlight := preload("res://select_highlight.tscn")
 const MAX_HIGHLIGHTS := 4
 
-const dice_images := []
+const dice_images := [
+	null,
+	preload("res://dice/dice_1.png"),
+	preload("res://dice/dice_2.png"),
+	preload("res://dice/dice_3.png"),
+	preload("res://dice/dice_4.png"),
+	preload("res://dice/dice_5.png"),
+	preload("res://dice/dice_6.png"),
+]
 
 onready var board_viewport := find_node("board_viewport") as Viewport
 onready var board := find_node("board") as Board
@@ -27,13 +35,8 @@ func _ready():
 		var b := find_node("dice_button%d" % dice_val) as Button
 		b.connect("pressed", self, "_on_dice_button_pressed", [dice_val])
 	
-	dice_images.append(null)
-	for i in range(6):
-		var new_tex := load("res://dice/dice_%d.png" % (i+1)) as StreamTexture
-		dice_images.append(new_tex)
-	
 	# Creat valid move highlights
-	for i in range(MAX_HIGHLIGHTS):
+	for _i in range(MAX_HIGHLIGHTS):
 		var new_h := Highlight.instance() as Node2D
 		new_h.visible = false
 		new_h.scale = Vector2(0.7, 0.7)
@@ -109,11 +112,11 @@ func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_i
 				update_selector()
 
 func _on_dice_button_pressed(dice_val:int):
-	Logic.dice_value = dice_val
+	Logic.set_dice_value(dice_val)
 	update_selector()
 
 func _on_roll_dice_button_pressed():
 	var new_val = range(6)[randi() % 6] + 1
-	Logic.dice_value = new_val
+	Logic.set_dice_value(Logic.player.B, new_val)
 	dice_texturerect.texture = dice_images[new_val]
 	update_selector()
