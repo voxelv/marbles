@@ -13,3 +13,4 @@ data_*/
 
 # Project ignores
 bin/**
+proto/**

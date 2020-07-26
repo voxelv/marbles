@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 Factory="*res://factory.gd"
 Logic="*res://logic.gd"
+Config="*res://config.gd"
 
 [rendering]
 

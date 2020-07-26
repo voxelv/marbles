@@ -20,12 +20,43 @@ func _closed(was_clean:bool=false):
 	print("Client %d closed, clean: " % client_peerid, was_clean)
 
 func _connected_to_server(proto:String):
-	pass
+	print("Connected.")
 
 func _on_data_from_server():
 	var pkt := _socket.get_peer(1).get_var() as Dictionary
+	_handle_pkt(pkt)
 
 func _process(_delta):
 	if _socket.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
 		_socket.poll()
+
+func _handle_pkt(pkt:Dictionary):
+	var type := pkt.get('type', -1) as int
+	if type == -1:
+		return
+	
+	match type:
+		# Command
+		0:
+			print("COMMAND RX")
+
+func _send_pkt(pkt:Dictionary)->void:
+	if Config.is_local:
+		Config.server._handle_packet(pkt)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
