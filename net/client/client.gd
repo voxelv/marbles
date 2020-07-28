@@ -1,4 +1,5 @@
 extends Node
+class_name Client
 
 const URL := "localhost"
 const PORT := 9080

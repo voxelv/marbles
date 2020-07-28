@@ -8,9 +8,26 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "Client",
+"language": "GDScript",
+"path": "res://net/client/client.gd"
+}, {
+"base": "Client",
+"class": "LocalClient",
+"language": "GDScript",
+"path": "res://net/client/local_client.gd"
+}, {
+"base": "Node",
+"class": "Server",
+"language": "GDScript",
+"path": "res://net/server/server.gd"
+} ]
 _global_script_class_icons={
-
+"Client": "",
+"LocalClient": "",
+"Server": ""
 }
 
 [application]

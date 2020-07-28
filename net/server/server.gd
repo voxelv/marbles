@@ -1,5 +1,5 @@
 extends Node
-
+class_name Server
 
 
 func _handle_pkt(pkt:Dictionary):
