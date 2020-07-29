@@ -120,3 +120,17 @@ func _on_roll_dice_button_pressed():
 	Logic.set_dice_value(Logic.player.B, new_val)
 	dice_texturerect.texture = dice_images[new_val]
 	update_selector()
+
+
+func _on_client_send_button_pressed() -> void:
+	Connection.client.send_command_print_text()
+
+
+func _on_server_send_button_pressed() -> void:
+	var test_board = [
+		[21, 22, 23, 24, 25],
+		[26, 27, 28, 29, 30],
+		[31, 32, 33, 34, 35],
+		[36, 37, 38, 39, 40],
+	]
+	Connection.server.send_board_state(test_board)

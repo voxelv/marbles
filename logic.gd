@@ -226,7 +226,9 @@ func idx_pressed(player:int, idx:int):
 				else:
 					deselect()
 
-
+func set_board_state(board_state:Array)->void:
+	marbles = board_state.duplicate(true)
+	viewer.board.set_board_state(marbles)
 
 
 

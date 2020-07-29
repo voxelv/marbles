@@ -1,9 +1,6 @@
 extends Node
 class_name Client
 
-const URL := "localhost"
-const PORT := 9080
-
 var client_peerid := -1
 
 var _socket := WebSocketClient.new()
@@ -13,9 +10,11 @@ func _ready():
 	_socket.connect("connection_error", self, "_closed")
 	_socket.connect("connection_established", self, "_connected_to_server")
 	_socket.connect("data_received", self, "_on_data_from_server")
-	var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [URL, PORT])
-	if err != OK:
-		print("Could not connect...")
+	
+	if not Config.is_local:
+		var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
+		if err != OK:
+			print("Could not connect...")
 
 func _closed(was_clean:bool=false):
 	print("Client %d closed, clean: " % client_peerid, was_clean)
@@ -32,20 +31,30 @@ func _process(_delta):
 		_socket.poll()
 
 func _handle_pkt(pkt:Dictionary):
-	var type := pkt.get('type', -1) as int
-	if type == -1:
+	var type := pkt.get('type', PKT.type.NONE) as int
+	if type == PKT.type.NONE:
 		return
 	
 	match type:
 		# Command
-		0:
-			print("COMMAND RX")
+		PKT.type.CMD:
+			var cmd = pkt.get('cmd', PKT.cmd.NONE)
+			if cmd == PKT.cmd.NONE:
+				return
+			match cmd:
+				PKT.cmd.PRINT_TEXT:
+					print("CLIENT: PRINT_TEXT COMMAND RX")
+		PKT.type.BOARD:
+			Logic.set_board_state(pkt.get('board', []))
 
 func _send_pkt(pkt:Dictionary)->void:
 	if Config.is_local:
-		Config.server._handle_packet(pkt)
+		Connection.server._handle_pkt(pkt)
+	else:
+		_socket.put_var(pkt)
 
-
+func send_command_print_text()->void:
+	_send_pkt(PKT.fmt_cmd_print_text())
 
 
 

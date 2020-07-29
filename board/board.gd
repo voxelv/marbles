@@ -63,17 +63,14 @@ func _on_mouse_entered(idx:int)->void:
 	print("Entered %d" % idx)
 
 func setup_marbles():
-	for i in range(4):
+	for p in range(Logic.player.COUNT):
 		_marbles.append([]) # append an empty array
 		var color := [Factory.marble_color.RED, Factory.marble_color.BLUE, Factory.marble_color.GREEN, Factory.marble_color.YELLOW]
-		for m in range(len(Logic.home_indices[i])):
-			var idx := Logic.home_indices[i][m] as int
-			var p := all_positions[idx] as Vector3
-			var new_marble := Factory.marble(color[i]) as Spatial
-			new_marble.translate(p)
+		for m in range(len(Logic.home_indices[p])):
+			var new_marble := Factory.marble(color[p]) as Spatial
 			self.add_child(new_marble)
-			_marbles[i].append(new_marble)
-			Logic.set_player_marble_idx(i, m, idx)
+			new_marble.visible = false
+			_marbles[p].append(new_marble)
 
 func set_board_state(marbles_in):
 	assert(len(marbles_in) == Logic.player.COUNT)
@@ -82,6 +79,7 @@ func set_board_state(marbles_in):
 		assert(len(marbles_in[player]) == Logic.NUM_MARBLES_PER_PLAYER)
 		for marble in range(len(marbles_in[player])):
 			assert(marbles_in[player][marble] is int)
+			(_marbles[player][marble] as Spatial).visible = true
 			(_marbles[player][marble] as Spatial).translation = all_positions[marbles_in[player][marble]]
 
 
