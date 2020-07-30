@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "BoardState",
+"language": "GDScript",
+"path": "res://net/board_state.gd"
+}, {
+"base": "Node",
 "class": "Client",
 "language": "GDScript",
 "path": "res://net/client/client.gd"
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://net/server/server.gd"
 } ]
 _global_script_class_icons={
+"BoardState": "",
 "Client": "",
 "LocalClient": "",
 "Server": ""
