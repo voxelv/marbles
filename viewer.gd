@@ -86,22 +86,22 @@ func update_selector():
 			selector.position = sel_pos
 			update_valid_move_highlights(valid_moves)
 
-func update_valid_move_highlights(valid_moves:Array):
+func update_valid_move_highlights(valid_moves_in:Array):
 	for i in range(valid_move_highlights.get_child_count()):
 		var highlight := (valid_move_highlights.get_child(i) as Node2D)
-		if i < len(valid_moves):
+		if i < len(valid_moves_in):
 			highlight.visible = true
-			highlight.position = camera.unproject_position(board.all_positions[valid_moves[i]])
+			highlight.position = camera.unproject_position(board.all_positions[valid_moves_in[i]])
 		else:
 			highlight.visible = false
 
 func _on_area_entered(idx:int):
-	if can_select(player, idx):
+	if can_select(idx):
 		selector_highlight.visible = true
 		selector_highlight.position = camera.unproject_position(board.all_positions[idx])
 		idx_label.text = str(idx)
 		if not idx in valid_moves:
-			update_valid_move_highlights(Logic.calc_valid_movements(board_state, dice_value, Logic.player.B, idx))
+			update_valid_move_highlights(Logic.calc_valid_movements(board_state, dice_value, player, idx))
 
 func _on_area_exited(_idx:int):
 	selector_highlight.visible = false
@@ -112,7 +112,7 @@ func _on_area_clicked(_camera, event, _click_position, _click_normal, _shape_idx
 		var e := (event as InputEventMouseButton)
 		if e.button_index == BUTTON_LEFT:
 			if e.pressed:
-				idx_pressed(player, idx)
+				idx_pressed(idx)
 				update_selector()
 	_on_area_entered(idx)
 
@@ -121,7 +121,7 @@ func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_i
 		var e := (event as InputEventMouseButton)
 		if e.button_index == BUTTON_LEFT:
 			if e.pressed:
-				idx_pressed(player, -1)
+				idx_pressed(-1)
 				update_selector()
 
 func _on_dice_button_pressed(dice_value_in:int):
@@ -157,12 +157,12 @@ func deselect():
 	select_state = select_state_type.NONE
 	valid_moves.clear()
 
-func select(player:int, idx:int):
+func select(idx:int):
 	select_index = idx
 	select_state = select_state_type.SLCT
 	valid_moves = Logic.calc_valid_movements(board_state, dice_value, player, idx)
 
-func can_select(player:int, idx:int)->bool:
+func can_select(idx:int)->bool:
 	var ret := false
 	match select_state:
 		select_state_type.NONE:
@@ -172,20 +172,20 @@ func can_select(player:int, idx:int)->bool:
 	ret = ret or (idx in board_state.marbles[player])
 	return ret
 
-func idx_pressed(player:int, idx:int):
+func idx_pressed(idx:int):
 	if idx == -1:
 		deselect()
 	else:
 		match select_state:
 			select_state_type.NONE:
-				if can_select(player, idx):
-					select(player, idx)
+				if can_select(idx):
+					select(idx)
 			select_state_type.SLCT:
 				if idx in valid_moves:
 					board_state.set_marble(player, board_state.marbles[player].find(select_index), idx)
 					board.set_board_state(board_state)
 					deselect()
 				elif idx in board_state.marbles[player]:
-					select(player, idx)
+					select(idx)
 				else:
 					deselect()
