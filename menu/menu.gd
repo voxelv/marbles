@@ -1,6 +1,6 @@
 extends Node
 
-var viewer_scene:PackedScene
+var viewer:Node = null
 
 func _ready() -> void:
 	var cli_args = OS.get_cmdline_args()
@@ -15,10 +15,14 @@ func _on_local_game_button_pressed():
 	
 	Connection.setup()
 	
-	if viewer_scene != null:
-		get_tree().change_scene_to(viewer_scene)
+	if viewer != null:
+		var root = get_tree().get_root()
+		for c in root.get_children():
+			root.remove_child(c)
+		root.add_child(viewer)
+		Connection.local_viewer = viewer
 
 func _load_viewer():
-	viewer_scene = load("res://viewer.tscn")
+	viewer = load("res://viewer.tscn").instance()
 
 

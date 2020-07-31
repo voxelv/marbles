@@ -1,9 +1,15 @@
 extends Node
+class_name Viewer
 
+# Enumerations
+enum select_state_type{NONE, SLCT}
+
+# Types
 const Board := preload("res://board/board.gd")
 const Highlight := preload("res://select_highlight.tscn")
 const MAX_HIGHLIGHTS := 4
 
+# Constants
 const dice_images := [
 	null,
 	preload("res://dice/dice_1.png"),
@@ -14,6 +20,7 @@ const dice_images := [
 	preload("res://dice/dice_6.png"),
 ]
 
+# Nodes
 onready var board_viewport := find_node("board_viewport") as Viewport
 onready var board := find_node("board") as Board
 onready var camera := find_node("camera") as Camera
@@ -26,6 +33,14 @@ onready var idx_label := find_node("idx_label") as Label
 onready var valid_move_highlights := find_node("valid_move_highlights") as Node2D
 onready var roll_dice_button := find_node("roll_dice_button") as Button
 onready var dice_texturerect := find_node("dice_texturerect") as TextureRect
+
+# Members
+var select_state:int = select_state_type.NONE
+var select_index := -1
+var valid_moves := []
+var board_state := BoardState.new()
+var dice_value := 1
+var player = Logic.player.B
 
 func _ready():
 	randomize()
@@ -47,8 +62,6 @@ func _ready():
 	roll_dice_button.connect("pressed", self, "_on_roll_dice_button_pressed")
 	pass_own_position_checkbox.connect("toggled", self, "_on_pass_own_position_marbles_toggled")
 	
-	Logic.set_viewer(self)
-	
 	# Connect board controls
 	board.connect_areas("input_event", self, "_on_area_clicked")
 	board.connect_areas("mouse_entered", self, "_on_area_entered")
@@ -61,17 +74,17 @@ func _on_pass_own_position_marbles_toggled(pressed:bool):
 	Logic.pass_own_position_marbles = pressed
 
 func update_selector():
-	match Logic.select_state:
-		Logic.select_state_type.NONE:
+	match select_state:
+		select_state_type.NONE:
 			selector.visible = false
 			for c in valid_move_highlights.get_children():
 				(c as Node2D).visible = false
 		
-		Logic.select_state_type.SLCT:
+		select_state_type.SLCT:
 			selector.visible = true
-			var sel_pos := camera.unproject_position(board.all_positions[Logic.select_index])
+			var sel_pos := camera.unproject_position(board.all_positions[select_index])
 			selector.position = sel_pos
-			update_valid_move_highlights(Logic.valid_moves)
+			update_valid_move_highlights(valid_moves)
 
 func update_valid_move_highlights(valid_moves:Array):
 	for i in range(valid_move_highlights.get_child_count()):
@@ -83,12 +96,12 @@ func update_valid_move_highlights(valid_moves:Array):
 			highlight.visible = false
 
 func _on_area_entered(idx:int):
-	if Logic.player_can_select(Logic.player.B, idx):
+	if can_select(player, idx):
 		selector_highlight.visible = true
 		selector_highlight.position = camera.unproject_position(board.all_positions[idx])
 		idx_label.text = str(idx)
-		if not idx in Logic.valid_moves:
-			update_valid_move_highlights(Logic.calc_valid_movements(Logic.player.B, idx))
+		if not idx in valid_moves:
+			update_valid_move_highlights(Logic.calc_valid_movements(board_state, dice_value, Logic.player.B, idx))
 
 func _on_area_exited(_idx:int):
 	selector_highlight.visible = false
@@ -99,7 +112,7 @@ func _on_area_clicked(_camera, event, _click_position, _click_normal, _shape_idx
 		var e := (event as InputEventMouseButton)
 		if e.button_index == BUTTON_LEFT:
 			if e.pressed:
-				Logic.idx_pressed(Logic.player.B, idx)
+				idx_pressed(player, idx)
 				update_selector()
 	_on_area_entered(idx)
 
@@ -108,23 +121,21 @@ func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_i
 		var e := (event as InputEventMouseButton)
 		if e.button_index == BUTTON_LEFT:
 			if e.pressed:
-				Logic.idx_pressed(Logic.player.B, -1)
+				idx_pressed(player, -1)
 				update_selector()
 
-func _on_dice_button_pressed(dice_val:int):
-	Logic.set_dice_value(Logic.player.B, dice_val)
+func _on_dice_button_pressed(dice_value_in:int):
+	dice_value = dice_value_in
 	update_selector()
 
 func _on_roll_dice_button_pressed():
 	var new_val = range(6)[randi() % 6] + 1
-	Logic.set_dice_value(Logic.player.B, new_val)
+	dice_value = new_val
 	dice_texturerect.texture = dice_images[new_val]
 	update_selector()
 
-
 func _on_client_send_button_pressed() -> void:
 	Connection.client.send_command_print_text()
-
 
 func _on_server_send_button_pressed() -> void:
 	var test_board = [
@@ -134,3 +145,47 @@ func _on_server_send_button_pressed() -> void:
 		[36, 37, 38, 39, 40],
 	]
 	Connection.server.send_board_state(test_board)
+
+
+# Control Interaction
+func set_board_state(board_state_in:BoardState):
+	board_state.set_from(board_state_in)
+	board.set_board_state(board_state)
+
+func deselect():
+	select_index = -1
+	select_state = select_state_type.NONE
+	valid_moves.clear()
+
+func select(player:int, idx:int):
+	select_index = idx
+	select_state = select_state_type.SLCT
+	valid_moves = Logic.calc_valid_movements(board_state, dice_value, player, idx)
+
+func can_select(player:int, idx:int)->bool:
+	var ret := false
+	match select_state:
+		select_state_type.NONE:
+			ret = (idx in board_state.marbles[player])
+		select_state_type.SLCT:
+			ret = (idx in valid_moves)
+	ret = ret or (idx in board_state.marbles[player])
+	return ret
+
+func idx_pressed(player:int, idx:int):
+	if idx == -1:
+		deselect()
+	else:
+		match select_state:
+			select_state_type.NONE:
+				if can_select(player, idx):
+					select(player, idx)
+			select_state_type.SLCT:
+				if idx in valid_moves:
+					board_state.set_marble(player, board_state.marbles[player].find(select_index), idx)
+					board.set_board_state(board_state)
+					deselect()
+				elif idx in board_state.marbles[player]:
+					select(player, idx)
+				else:
+					deselect()

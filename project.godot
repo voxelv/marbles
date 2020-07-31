@@ -28,12 +28,18 @@ _global_script_classes=[ {
 "class": "Server",
 "language": "GDScript",
 "path": "res://net/server/server.gd"
+}, {
+"base": "Node",
+"class": "Viewer",
+"language": "GDScript",
+"path": "res://viewer.gd"
 } ]
 _global_script_class_icons={
 "BoardState": "",
 "Client": "",
 "LocalClient": "",
-"Server": ""
+"Server": "",
+"Viewer": ""
 }
 
 [application]

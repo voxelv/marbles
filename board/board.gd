@@ -72,7 +72,8 @@ func setup_marbles():
 			new_marble.visible = false
 			_marbles[p].append(new_marble)
 
-func set_board_state(marbles_in):
+func set_board_state(board_state:BoardState):
+	var marbles_in = board_state.marbles
 	assert(len(marbles_in) == Logic.player.COUNT)
 	for player in range(len(marbles_in)):
 		assert(marbles_in[player] is Array)
@@ -81,7 +82,6 @@ func set_board_state(marbles_in):
 			assert(marbles_in[player][marble] is int)
 			(_marbles[player][marble] as Spatial).visible = true
 			(_marbles[player][marble] as Spatial).translation = all_positions[marbles_in[player][marble]]
-
 
 
 

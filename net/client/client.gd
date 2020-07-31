@@ -45,7 +45,9 @@ func _handle_pkt(pkt:Dictionary):
 				PKT.cmd.PRINT_TEXT:
 					print("CLIENT: PRINT_TEXT COMMAND RX")
 		PKT.type.BOARD:
-			Logic.set_board_state(pkt.get('board', []))
+			var board_state := BoardState.new()
+			board_state.set_all(pkt.get('board', []))
+			Connection.local_viewer.set_board_state(board_state)
 
 func _send_pkt(pkt:Dictionary)->void:
 	if Config.is_local:

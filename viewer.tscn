@@ -43,9 +43,8 @@ __meta__ = {
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="ui"]
-margin_left = 62.0
-margin_right = 962.0
-margin_bottom = 600.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 rect_min_size = Vector2( 900, 600 )
 mouse_filter = 2
 custom_constants/margin_right = 0
@@ -56,18 +55,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer"]
-margin_right = 900.0
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 600.0
+mouse_filter = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer"]
+margin_right = 1024.0
 margin_bottom = 600.0
 mouse_filter = 2
 custom_constants/separation = 0
+alignment = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="ui/MarginContainer/HBoxContainer"]
-margin_right = 600.0
+[node name="CenterContainer" type="CenterContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 62.0
+margin_right = 662.0
 margin_bottom = 600.0
 mouse_filter = 2
 
-[node name="ViewportContainer" type="ViewportContainer" parent="ui/MarginContainer/HBoxContainer/CenterContainer"]
+[node name="ViewportContainer" type="ViewportContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer"]
 margin_right = 600.0
 margin_bottom = 600.0
 rect_min_size = Vector2( 600, 600 )
@@ -78,7 +85,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="board_viewport" type="Viewport" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer"]
+[node name="board_viewport" type="Viewport" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer"]
 size = Vector2( 600, 600 )
 transparent_bg = true
 handle_input_locally = false
@@ -86,13 +93,13 @@ render_target_clear_mode = 1
 render_target_update_mode = 3
 physics_object_picking = true
 
-[node name="world" type="Spatial" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport"]
+[node name="world" type="Spatial" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport"]
 
-[node name="board" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport/world" instance=ExtResource( 1 )]
+[node name="board" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport/world" instance=ExtResource( 1 )]
 
-[node name="gimbal" type="Spatial" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport/world"]
+[node name="gimbal" type="Spatial" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport/world"]
 
-[node name="camera" type="Camera" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport/world/gimbal"]
+[node name="camera" type="Camera" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport/world/gimbal"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13, 0 )
 environment = SubResource( 2 )
 current = true
@@ -101,7 +108,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="DirectionalLight" type="DirectionalLight" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport/world"]
+[node name="DirectionalLight" type="DirectionalLight" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer/board_viewport/world"]
 transform = Transform( -0.782325, -0.331977, 0.527028, 0, 0.846128, 0.53298, -0.62287, 0.416963, -0.661947, 14.7644, 5.73646, -13.2983 )
 light_color = Color( 1, 0.980392, 0.780392, 1 )
 light_bake_mode = 0
@@ -110,19 +117,19 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="valid_move_highlights" type="Node2D" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer"]
+[node name="valid_move_highlights" type="Node2D" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer"]
 modulate = Color( 0, 0.835294, 1, 1 )
 
-[node name="selector" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 4 )]
+[node name="selector" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 4 )]
 modulate = Color( 0, 0.843137, 0, 1 )
 scale = Vector2( 0.6, 0.6 )
 
-[node name="selector_highlight" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 4 )]
+[node name="selector_highlight" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer" instance=ExtResource( 4 )]
 visible = false
 self_modulate = Color( 0.219608, 1, 0, 1 )
 scale = Vector2( 0.8, 0.8 )
 
-[node name="CenterContainer" type="CenterContainer" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/selector_highlight"]
+[node name="CenterContainer" type="CenterContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer/selector_highlight"]
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -137,7 +144,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="idx_label" type="Label" parent="ui/MarginContainer/HBoxContainer/CenterContainer/ViewportContainer/selector_highlight/CenterContainer"]
+[node name="idx_label" type="Label" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/CenterContainer/ViewportContainer/selector_highlight/CenterContainer"]
 margin_left = 12.0
 margin_top = 13.0
 margin_right = 28.0
@@ -148,20 +155,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/HBoxContainer"]
-margin_left = 600.0
-margin_right = 900.0
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 662.0
+margin_right = 962.0
 margin_bottom = 600.0
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="ui/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_right = 300.0
 margin_bottom = 600.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 4 )
 
-[node name="MarginContainer" type="MarginContainer" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer"]
 margin_right = 300.0
 margin_bottom = 600.0
 custom_constants/margin_right = 4
@@ -172,7 +179,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 296.0
@@ -182,43 +189,42 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="a_panel" type="Panel" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
+[node name="a_panel" type="Panel" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 292.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
 
-[node name="b_panel" type="Panel" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
+[node name="b_panel" type="Panel" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 54.0
 margin_right = 292.0
-margin_bottom = 50.0
+margin_bottom = 104.0
 rect_min_size = Vector2( 0, 50 )
 
-[node name="c_panel" type="Panel" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
+[node name="c_panel" type="Panel" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 108.0
 margin_right = 292.0
-margin_bottom = 50.0
+margin_bottom = 158.0
 rect_min_size = Vector2( 0, 50 )
 
-[node name="d_panel" type="Panel" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
+[node name="d_panel" type="Panel" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 162.0
 margin_right = 292.0
-margin_bottom = 50.0
+margin_bottom = 212.0
 rect_min_size = Vector2( 0, 50 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 216.0
 margin_right = 292.0
 margin_bottom = 564.0
 size_flags_vertical = 3
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
-margin_top = 222.0
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+margin_top = 114.0
 margin_right = 292.0
-margin_bottom = 286.0
+margin_bottom = 178.0
 
-[node name="dice_texturerect" type="TextureRect" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="dice_texturerect" type="TextureRect" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_right = 292.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
@@ -226,32 +232,32 @@ size_flags_vertical = 3
 texture = ExtResource( 9 )
 stretch_mode = 6
 
-[node name="roll_dice_button" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
-margin_top = 291.0
+[node name="roll_dice_button" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+margin_top = 183.0
 margin_right = 292.0
-margin_bottom = 341.0
+margin_bottom = 233.0
 rect_min_size = Vector2( 0, 50 )
 text = "ROLL"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
-margin_top = 562.0
+margin_top = 534.0
 margin_right = 292.0
-margin_bottom = 592.0
+margin_bottom = 564.0
 
-[node name="pass_own_position_checkbox" type="CheckBox" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="pass_own_position_checkbox" type="CheckBox" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 206.0
 margin_bottom = 30.0
 text = "Pass own position marbles"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
-margin_top = 552.0
+margin_top = 524.0
 margin_right = 292.0
-margin_bottom = 592.0
+margin_bottom = 564.0
 alignment = 1
 
-[node name="dice_button1" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="dice_button1" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 13.0
 margin_right = 53.0
 margin_bottom = 40.0
@@ -259,7 +265,7 @@ rect_min_size = Vector2( 40, 40 )
 icon = ExtResource( 9 )
 expand_icon = true
 
-[node name="dice_button2" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="dice_button2" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 58.0
 margin_right = 98.0
 margin_bottom = 40.0
@@ -267,7 +273,7 @@ rect_min_size = Vector2( 40, 40 )
 icon = ExtResource( 10 )
 expand_icon = true
 
-[node name="dice_button3" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="dice_button3" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 103.0
 margin_right = 143.0
 margin_bottom = 40.0
@@ -275,7 +281,7 @@ rect_min_size = Vector2( 40, 40 )
 icon = ExtResource( 8 )
 expand_icon = true
 
-[node name="dice_button4" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="dice_button4" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 148.0
 margin_right = 188.0
 margin_bottom = 40.0
@@ -283,7 +289,7 @@ rect_min_size = Vector2( 40, 40 )
 icon = ExtResource( 6 )
 expand_icon = true
 
-[node name="dice_button5" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="dice_button5" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 193.0
 margin_right = 233.0
 margin_bottom = 40.0
@@ -291,7 +297,7 @@ rect_min_size = Vector2( 40, 40 )
 icon = ExtResource( 11 )
 expand_icon = true
 
-[node name="dice_button6" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="dice_button6" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 238.0
 margin_right = 278.0
 margin_bottom = 40.0
@@ -299,19 +305,20 @@ rect_min_size = Vector2( 40, 40 )
 icon = ExtResource( 7 )
 expand_icon = true
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 568.0
 margin_right = 292.0
-margin_bottom = 24.0
+margin_bottom = 592.0
 
-[node name="client_send_button" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="client_send_button" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
 margin_right = 87.0
 margin_bottom = 24.0
 text = "Client Send"
 
-[node name="server_send_button" type="Button" parent="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="server_send_button" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
 margin_left = 92.0
 margin_right = 182.0
 margin_bottom = 24.0
 text = "Server Send"
-[connection signal="pressed" from="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/client_send_button" to="." method="_on_client_send_button_pressed"]
-[connection signal="pressed" from="ui/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/server_send_button" to="." method="_on_server_send_button_pressed"]
+[connection signal="pressed" from="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/client_send_button" to="." method="_on_client_send_button_pressed"]
+[connection signal="pressed" from="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/server_send_button" to="." method="_on_server_send_button_pressed"]

@@ -3,6 +3,8 @@ extends Node
 var client:Client = null
 var server:Server = null
 
+var local_viewer:Viewer
+
 
 func setup():
 	if Config.is_local:

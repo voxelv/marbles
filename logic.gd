@@ -1,9 +1,7 @@
 extends Node
 
 enum player{A, B, C, D, COUNT}
-enum select_state_type{NONE, SLCT}
 
-const Viewer := preload("res://viewer.gd")
 const DAGNode := preload("res://dag/dag_node.gd")
 const NUM_MARBLES_PER_PLAYER := 5
 
@@ -44,25 +42,8 @@ var all_indices := (
 	+ d_home_indices
 	)
 
-var viewer:Viewer
-var select_state:int = select_state_type.NONE
-var select_index := -1
-var dice_value := 1
-var valid_moves := []
-var pass_own_position_marbles := false
-var marbles := [
-	[-1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1],
-	[-1, -1, -1, -1, -1],
-	]
-
 func _ready():
 	call_deferred("setup_dag")
-
-func set_dice_value(player:int, value:int):
-	dice_value = value
-	valid_moves = calc_valid_movements(player, select_index)
 
 func setup_dag():
 	for i in range(len(all_indices)):
@@ -97,46 +78,24 @@ func setup_dag():
 			else:
 				(dag[h_indices[i]] as DAGNode).next_home_row_node = dag[h_indices[i+1]]
 
-func set_viewer(v:Viewer):
-	self.viewer = v
+func marble_is_at_home(board_state:BoardState, player:int, marble:int)->bool:
+	return (board_state.get_marble(player, marble) in home_indices[player])
 
-func player_can_select(player:int, idx:int)->bool:
-	var ret := false
-	match select_state:
-		select_state_type.NONE:
-			ret = (idx in marbles[player])
-		select_state_type.SLCT:
-			ret = (idx in valid_moves)
-	ret = ret or (idx in marbles[player])
-	return ret
-
-func set_player_marble_idx(player:int, marble:int, idx:int):
-	marbles[player][marble] = idx
-	
-	yield(get_tree(), "idle_frame")
-	viewer.board.set_board_state(marbles)
-
-func marble_is_at_home(player:int)->bool:
-	return (select_index in home_indices[player])
-
-func selected_marble(player:int, idx:int)->int:
-	return marbles[player].find(idx)
-
-func calc_valid_movements(player:int, from_idx:int)->Array:
+func calc_valid_movements(board_state:BoardState, dice_value:int, player:int, from_idx:int)->Array:
 	var ret := []
 	
-	if from_idx in marbles[player]:
-		ret += _movements_recurser(player, dice_value, from_idx, from_idx, [from_idx])
+	if from_idx in board_state.marbles[player]:
+		ret += _movements_recurser(board_state, dice_value, player, dice_value, from_idx, from_idx, [from_idx])
 	
 	return ret
 
-func _movements_recurser(player:int, dice_value_in:int, origin_idx:int, from_idx:int, path_here:Array)->Array:
+func _movements_recurser(board_state:BoardState, dice_value:int, player:int, increments_left:int, origin_idx:int, from_idx:int, path_here:Array)->Array:
 	var ret := []
 	
-	if from_idx in home_indices[player] and dice_value_in in [1, 6] and not track_indices[player][0] in marbles[player]:
+	if from_idx in home_indices[player] and increments_left in [1, 6] and not track_indices[player][0] in board_state.marbles[player]:
 		ret.append(track_indices[player][0])
 	
-	if dice_value_in == 1:
+	if increments_left == 1:
 		var node := (dag[from_idx] as DAGNode)
 		var ending_indices := []
 		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[player][0]:
@@ -154,11 +113,11 @@ func _movements_recurser(player:int, dice_value_in:int, origin_idx:int, from_idx
 			for i in range(len(position_indices)):
 				ending_indices.append(position_indices[i])
 		for idx in ending_indices:
-			if not idx in marbles[player]:
+			if not idx in board_state.marbles[player]:
 #				print("%d: %s" % [idx, str(path_here)])
 				ret.append(idx)
 	else:
-		assert(dice_value_in in [2, 3, 4, 5, 6])
+		assert(increments_left in [2, 3, 4, 5, 6])
 		var node := (dag[from_idx] as DAGNode)
 		var recurse_indices := []
 		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[player][0]:
@@ -172,27 +131,12 @@ func _movements_recurser(player:int, dice_value_in:int, origin_idx:int, from_idx
 		
 		for idx in recurse_indices:
 			if (not idx in path_here 
-				and (not idx in marbles[player] 
-#					or (idx in position_indices 
-#						and pass_own_position_marbles
-#						)
-					)
-				):
+				and (not idx in board_state.marbles[player])):
 				var path = path_here.duplicate()
 				path.append(idx)
-				ret += _movements_recurser(player, dice_value_in - 1, origin_idx, idx, path)
+				ret += _movements_recurser(board_state, dice_value, player, increments_left - 1, origin_idx, idx, path)
 	
 	return ret
-
-func deselect():
-	select_index = -1
-	select_state = select_state_type.NONE
-	valid_moves.clear()
-
-func select(player:int, idx:int):
-	select_index = idx
-	select_state = select_state_type.SLCT
-	valid_moves = calc_valid_movements(player, idx)
 
 func _debug_dag(idx:int):
 	var node := (dag[idx] as DAGNode)
@@ -209,26 +153,6 @@ func _debug_dag(idx:int):
 		s += "owner: %d" % node.home_row_owner
 	print(s)
 
-func idx_pressed(player:int, idx:int):
-	if idx == -1:
-		deselect()
-	else:
-		match select_state:
-			select_state_type.NONE:
-				if player_can_select(player, idx):
-					select(player, idx)
-			select_state_type.SLCT:
-				if idx in valid_moves:
-					set_player_marble_idx(player, selected_marble(player, select_index), idx)
-					deselect()
-				elif idx in marbles[player]:
-					select(player, idx)
-				else:
-					deselect()
-
-func set_board_state(board_state:Array)->void:
-	marbles = board_state.duplicate(true)
-	viewer.board.set_board_state(marbles)
 
 
 
