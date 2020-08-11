@@ -32,6 +32,7 @@ onready var pass_own_position_checkbox := find_node("pass_own_position_checkbox"
 onready var idx_label := find_node("idx_label") as Label
 onready var valid_move_highlights := find_node("valid_move_highlights") as Node2D
 onready var roll_dice_button := find_node("roll_dice_button") as Button
+onready var pass_button := find_node("pass_button") as Button
 onready var dice_texturerect := find_node("dice_texturerect") as TextureRect
 
 # Members
@@ -40,7 +41,8 @@ var select_index := -1
 var valid_moves := []
 var board_state := BoardState.new()
 var dice_value := 1
-var player = Logic.player.B
+var player := Logic.player.B as int
+var player_has_rolled := false
 
 func _ready():
 	randomize()
@@ -60,6 +62,7 @@ func _ready():
 	
 	# Connect Controls
 	roll_dice_button.connect("pressed", self, "_on_roll_dice_button_pressed")
+	pass_button.connect("pressed", self, "_on_pass_button_pressed")
 	pass_own_position_checkbox.connect("toggled", self, "_on_pass_own_position_marbles_toggled")
 	
 	# Connect board controls
@@ -129,10 +132,18 @@ func _on_dice_button_pressed(dice_value_in:int):
 	update_selector()
 
 func _on_roll_dice_button_pressed():
-	var new_val = range(6)[randi() % 6] + 1
-	dice_value = new_val
-	dice_texturerect.texture = dice_images[new_val]
-	update_selector()
+	if player_has_rolled:
+		pass
+	else:
+		var new_val = range(6)[randi() % 6] + 1
+		dice_value = new_val
+		dice_texturerect.texture = dice_images[new_val]
+		player_has_rolled = true
+		update_selector()
+
+func _on_pass_button_pressed()->void:
+	deselect()
+	finish_turn()
 
 func _on_client_send_button_pressed() -> void:
 	Connection.client.send_command_print_text()
@@ -156,20 +167,21 @@ func deselect():
 	select_index = -1
 	select_state = select_state_type.NONE
 	valid_moves.clear()
+	update_selector()
 
 func select(idx:int):
 	select_index = idx
 	select_state = select_state_type.SLCT
 	valid_moves = Logic.calc_valid_movements(board_state, dice_value, player, idx)
+	update_selector()
 
 func can_select(idx:int)->bool:
-	var ret := false
+	var ret := (idx in board_state.marbles[player]) as bool
 	match select_state:
 		select_state_type.NONE:
-			ret = (idx in board_state.marbles[player])
+			ret = ret and player_has_rolled
 		select_state_type.SLCT:
-			ret = (idx in valid_moves)
-	ret = ret or (idx in board_state.marbles[player])
+			ret = ret or (idx in valid_moves)
 	return ret
 
 func idx_pressed(idx:int):
@@ -185,7 +197,35 @@ func idx_pressed(idx:int):
 					board_state.set_marble(player, board_state.marbles[player].find(select_index), idx)
 					board.set_board_state(board_state)
 					deselect()
+					finish_turn()
 				elif idx in board_state.marbles[player]:
 					select(idx)
 				else:
 					deselect()
+
+func finish_turn()->void:
+	if dice_value == 6:
+		pass
+	else:
+		player += 1
+		if player >= Logic.player.COUNT:
+			player = 0
+	player_has_rolled = false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

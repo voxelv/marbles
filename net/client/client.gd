@@ -1,9 +1,8 @@
 extends Node
 class_name Client
 
-var client_peerid := -1
-
 var _socket := WebSocketClient.new()
+var info := ClientInfo.new()
 
 func _ready():
 	_socket.connect("connection_closed", self, "_closed")
@@ -17,9 +16,10 @@ func _ready():
 			print("Could not connect...")
 
 func _closed(was_clean:bool=false):
-	print("Client %d closed, clean: " % client_peerid, was_clean)
+	print("Client %d closed, clean: " % info.peer_id, was_clean)
 
 func _connected_to_server(proto:String):
+	info.peer_id = _socket.id
 	print("Connected.")
 
 func _on_data_from_server():
@@ -45,8 +45,7 @@ func _handle_pkt(pkt:Dictionary):
 				PKT.cmd.PRINT_TEXT:
 					print("CLIENT: PRINT_TEXT COMMAND RX")
 		PKT.type.BOARD:
-			var board_state := BoardState.new()
-			board_state.set_all(pkt.get('board', []))
+			var board_state := BoardState.new(pkt.get('board', []) as Array)
 			Connection.local_viewer.set_board_state(board_state)
 
 func _send_pkt(pkt:Dictionary)->void:

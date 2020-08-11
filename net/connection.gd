@@ -3,7 +3,7 @@ extends Node
 var client:Client = null
 var server:Server = null
 
-var local_viewer:Viewer
+var local_viewer:Viewer = null
 
 
 func setup():

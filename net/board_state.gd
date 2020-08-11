@@ -3,12 +3,15 @@ class_name BoardState
 
 var marbles:Array
 
-func _init()->void:
+func _init(array:Array=[])->void:
 	marbles = []
 	for p in range(Logic.player.COUNT):
 		marbles.append([])
 		for m in range(Logic.NUM_MARBLES_PER_PLAYER):
 			marbles[p].append(-1)
+	
+	if not array.empty():
+		set_all(array)
 
 func set_from(board_state:BoardState)->void:
 	set_all(board_state.marbles)

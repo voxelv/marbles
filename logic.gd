@@ -43,9 +43,9 @@ var all_indices := (
 	)
 
 func _ready():
-	call_deferred("setup_dag")
+	call_deferred("_setup_dag")
 
-func setup_dag():
+func _setup_dag():
 	for i in range(len(all_indices)):
 		dag.append(DAGNode.new(i))
 	
@@ -77,9 +77,6 @@ func setup_dag():
 				(dag[track_indices[p][-6]] as DAGNode).next_home_row_node = dag[h_indices[0]]
 			else:
 				(dag[h_indices[i]] as DAGNode).next_home_row_node = dag[h_indices[i+1]]
-
-func marble_is_at_home(board_state:BoardState, player:int, marble:int)->bool:
-	return (board_state.get_marble(player, marble) in home_indices[player])
 
 func calc_valid_movements(board_state:BoardState, dice_value:int, player:int, from_idx:int)->Array:
 	var ret := []
