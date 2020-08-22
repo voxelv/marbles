@@ -6,6 +6,7 @@ var _socket := WebSocketServer.new()
 var game_phase := Logic.game_phase.INIT as int
 var player_turn := Logic.player.A as int
 var board_state := BoardState.new(Logic.home_indices)
+var dice_value := 1
 var clients := {}
 
 func _ready() -> void:
@@ -120,7 +121,20 @@ func _handle_pkt(id:int, pkt:Dictionary):
 			# Do the calculations
 			# If move is valid, move the marble and broadcast the new board
 				# Move is valid if in calculated valid moves, and player's turn
-			var player_marble
+			if not player == player_turn:
+				return
+			var valid_moves := Logic.calc_valid_movements(board_state, dice_value, player, from_idx)
+			if not to_idx in valid_moves:
+				return
+			
+			# Move the marble
+			board_state.set_marble(player, board_state.get_marble_idx(player, from_idx), to_idx)
+			increment_player_turn()
+			send_player_turn_update(player_turn)
+			send_board_state(board_state)
+			
+			if Config.is_local:
+				clients[id].player = player_turn
 
 func _send_pkt(pkt:Dictionary, broadcast:bool=true, player:int=Logic.player.COUNT)->void:
 	if Config.is_local:
@@ -143,6 +157,11 @@ func get_id_from_player(player:int)->int:
 			break
 	return ret_id
 
+func increment_player_turn():
+	player_turn += 1
+	if player_turn >= Logic.player.COUNT:
+		player_turn = 0
+
 func send_command_print_text()->void:
 	_send_pkt(PKT.fmt_cmd_print_text())
 
@@ -156,6 +175,7 @@ func send_player_turn_update(player:int)->void:
 	_send_pkt(PKT.fmt_player_turn_update(player))
 
 func send_player_roll_result(roll_result:int)->void:
+	dice_value = roll_result
 	_send_pkt(PKT.fmt_player_roll_result(roll_result))
 
 func send_set_clientinfo(info:ClientInfo)->void:

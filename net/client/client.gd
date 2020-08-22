@@ -3,6 +3,7 @@ class_name Client
 
 var _socket := WebSocketClient.new()
 var info := ClientInfo.new()
+var player_turn := Logic.player.COUNT as int
 
 func _ready():
 	_socket.connect("connection_closed", self, "_closed")
@@ -44,6 +45,16 @@ func _handle_pkt(pkt:Dictionary):
 			match cmd:
 				PKT.cmd.PRINT_TEXT:
 					print("CLIENT: PRINT_TEXT COMMAND RX")
+		
+		PKT.type.PLAYER_TURN_UPDATE:
+			var player = pkt.get('player', Logic.player.COUNT)
+			if not (player >= 0 and player < Logic.player.COUNT):
+				return
+			player_turn = player
+			if Config.is_local:
+				info.player = player
+			Connection.local_viewer.update_selector()
+		
 		PKT.type.BOARD:
 			var board_state := BoardState.new(pkt.get('board', []) as Array)
 			Connection.local_viewer.set_board_state(board_state)

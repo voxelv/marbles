@@ -5,7 +5,6 @@ var server:Server = null
 
 var local_viewer:Viewer = null
 
-
 func setup()->Array:
 	var peers := []
 	if Config.is_local:
@@ -25,3 +24,6 @@ func setup()->Array:
 
 func get_player()->int:
 	return client.info.player
+
+func get_player_turn()->int:
+	return client.player_turn
