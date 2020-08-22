@@ -41,7 +41,6 @@ var select_index := -1
 var valid_moves := []
 var board_state := BoardState.new()
 var dice_value := 1
-var player := Logic.player.B as int
 var player_has_rolled := false
 
 func _ready():
@@ -80,6 +79,7 @@ func update_selector():
 	match select_state:
 		select_state_type.NONE:
 			selector.visible = false
+			selector_highlight.visible = false
 			for c in valid_move_highlights.get_children():
 				(c as Node2D).visible = false
 		
@@ -104,7 +104,7 @@ func _on_area_entered(idx:int):
 		selector_highlight.position = camera.unproject_position(board.all_positions[idx])
 		idx_label.text = str(idx)
 		if not idx in valid_moves:
-			update_valid_move_highlights(Logic.calc_valid_movements(board_state, dice_value, player, idx))
+			update_valid_move_highlights(Logic.calc_valid_movements(board_state, dice_value, Connection.get_player(), idx))
 
 func _on_area_exited(_idx:int):
 	selector_highlight.visible = false
@@ -128,18 +128,23 @@ func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_i
 				update_selector()
 
 func _on_dice_button_pressed(dice_value_in:int):
-	dice_value = dice_value_in
+	Connection.server.send_player_roll_result(dice_value_in)
+	if select_state == select_state_type.SLCT:
+		select(select_index)
+	else:
+		deselect()
+
+func set_roll_result(result:int)->void:
+	assert(result > 0 and result <= 6)
+	roll_dice_button.set_disabled(true)
+	roll_dice_button.release_focus()
+	dice_value = result
+	dice_texturerect.texture = dice_images[result]
+	player_has_rolled = true
 	update_selector()
 
 func _on_roll_dice_button_pressed():
-	if player_has_rolled:
-		pass
-	else:
-		var new_val = range(6)[randi() % 6] + 1
-		dice_value = new_val
-		dice_texturerect.texture = dice_images[new_val]
-		player_has_rolled = true
-		update_selector()
+	Connection.client.send_player_roll_request()
 
 func _on_pass_button_pressed()->void:
 	deselect()
@@ -147,16 +152,6 @@ func _on_pass_button_pressed()->void:
 
 func _on_client_send_button_pressed() -> void:
 	Connection.client.send_command_print_text()
-
-func _on_server_send_button_pressed() -> void:
-	var test_board = [
-		[21, 22, 23, 24, 25],
-		[26, 27, 28, 29, 30],
-		[31, 32, 33, 34, 35],
-		[36, 37, 38, 39, 40],
-	]
-	Connection.server.send_board_state(test_board)
-
 
 # Control Interaction
 func set_board_state(board_state_in:BoardState):
@@ -172,11 +167,11 @@ func deselect():
 func select(idx:int):
 	select_index = idx
 	select_state = select_state_type.SLCT
-	valid_moves = Logic.calc_valid_movements(board_state, dice_value, player, idx)
+	valid_moves = Logic.calc_valid_movements(board_state, dice_value, Connection.get_player(), idx)
 	update_selector()
 
 func can_select(idx:int)->bool:
-	var ret := (idx in board_state.marbles[player]) as bool
+	var ret := (idx in board_state.marbles[Connection.get_player()]) as bool
 	match select_state:
 		select_state_type.NONE:
 			ret = ret and player_has_rolled
@@ -193,24 +188,28 @@ func idx_pressed(idx:int):
 				if can_select(idx):
 					select(idx)
 			select_state_type.SLCT:
-				if idx in valid_moves:
-					board_state.set_marble(player, board_state.marbles[player].find(select_index), idx)
-					board.set_board_state(board_state)
+				if idx == select_index:
 					deselect()
-					finish_turn()
-				elif idx in board_state.marbles[player]:
+				elif idx in valid_moves:
+					Connection.client.send_player_move_request(select_index, idx)
+					deselect()
+#					board_state.set_marble(Connection.get_player(), board_state.marbles[Connection.get_player()].find(select_index), idx)
+#					board.set_board_state(board_state)
+#					finish_turn()
+				elif idx in board_state.marbles[Connection.get_player()]:
 					select(idx)
 				else:
 					deselect()
 
 func finish_turn()->void:
-	if dice_value == 6:
-		pass
-	else:
-		player += 1
-		if player >= Logic.player.COUNT:
-			player = 0
-	player_has_rolled = false
+#	if dice_value == 6:
+#		pass
+#	else:
+#		player += 1
+#		if player >= Logic.player.COUNT:
+#			player = 0
+#	player_has_rolled = false
+	pass
 
 
 

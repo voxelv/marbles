@@ -1,5 +1,6 @@
 extends Node
 
+enum game_phase {INIT, STARTED}
 enum player{A, B, C, D, COUNT}
 
 const DAGNode := preload("res://dag/dag_node.gd")

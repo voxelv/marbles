@@ -6,15 +6,22 @@ var server:Server = null
 var local_viewer:Viewer = null
 
 
-func setup():
+func setup()->Array:
+	var peers := []
 	if Config.is_local:
-		server = Server.new()
 		client = LocalClient.new()
-		add_child(server)
-		add_child(client)
+		server = Server.new()
+		peers.append(client)
+		peers.append(server)
 	elif Config.is_server:
 		server = Server.new()
-		add_child(server)
+		peers.append(server)
 	else:
 		client = Client.new()
-		add_child(client)
+		peers.append(client)
+	
+	print("Connection setup finished...")
+	return(peers)
+
+func get_player()->int:
+	return client.info.player

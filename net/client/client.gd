@@ -47,19 +47,29 @@ func _handle_pkt(pkt:Dictionary):
 		PKT.type.BOARD:
 			var board_state := BoardState.new(pkt.get('board', []) as Array)
 			Connection.local_viewer.set_board_state(board_state)
+		
+		PKT.type.PLAYER_ROLL_RESULT:
+			Connection.local_viewer.set_roll_result(pkt.get('result', 1))
+		
+		PKT.type.SET_CLIENTINFO:
+			info.peer_id = pkt.get('peer_id', -1)
+			info.player = pkt.get('player', Logic.player.COUNT)
+			info.display_name = pkt.get('display_name', "")
 
 func _send_pkt(pkt:Dictionary)->void:
 	if Config.is_local:
-		Connection.server._handle_pkt(pkt)
+		Connection.server._handle_pkt(info.peer_id, pkt)
 	else:
 		_socket.put_var(pkt)
 
 func send_command_print_text()->void:
 	_send_pkt(PKT.fmt_cmd_print_text())
 
+func send_player_roll_request()->void:
+	_send_pkt(PKT.fmt_player_roll_request())
 
-
-
+func send_player_move_request(from_idx:int, to_idx:int)->void:
+	_send_pkt(PKT.fmt_player_move_request(from_idx, to_idx))
 
 
 

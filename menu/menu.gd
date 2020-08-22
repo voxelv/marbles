@@ -13,7 +13,7 @@ func _on_local_game_button_pressed():
 	Config.is_local = true
 	Config.is_server = false
 	
-	Connection.setup()
+	var peers = Connection.setup()
 	
 	if viewer != null:
 		var root = get_tree().get_root()
@@ -21,6 +21,9 @@ func _on_local_game_button_pressed():
 			root.remove_child(c)
 		root.add_child(viewer)
 		Connection.local_viewer = viewer
+		for p in peers:
+			viewer.add_child(p)
+		Connection.server._client_connected(Connection.client.info.peer_id, null)
 
 func _load_viewer():
 	viewer = load("res://viewer.tscn").instance()
