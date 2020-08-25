@@ -65,7 +65,7 @@ func _on_mouse_entered(idx:int)->void:
 func setup_marbles():
 	for p in range(Logic.player.COUNT):
 		_marbles.append([]) # append an empty array
-		var color := [Factory.marble_color.RED, Factory.marble_color.BLUE, Factory.marble_color.GREEN, Factory.marble_color.YELLOW]
+		var color := [Factory.marble_color.A, Factory.marble_color.B, Factory.marble_color.C, Factory.marble_color.D]
 		for _m in range(len(Logic.home_indices[p])):
 			var new_marble := Factory.marble(color[p]) as Spatial
 			self.add_child(new_marble)
