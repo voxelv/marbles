@@ -24,6 +24,3 @@ func setup()->Array:
 
 func get_player()->int:
 	return client.info.player
-
-func get_player_turn()->int:
-	return client.player_turn

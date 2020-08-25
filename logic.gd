@@ -1,6 +1,6 @@
 extends Node
 
-enum game_phase {INIT, STARTED}
+enum game_phase {INIT, STARTED, COUNT}
 enum player{A, B, C, D, COUNT}
 
 const DAGNode := preload("res://dag/dag_node.gd")
@@ -46,6 +46,20 @@ var all_indices := (
 func _ready():
 	call_deferred("_setup_dag")
 
+func valid_player(player:int)->bool:
+	return(player >= 0 and player < Logic.player.COUNT)
+
+func get_first_empty_home_idx(board_state:BoardState, player:int)->int:
+	assert(valid_player(player))
+	var ret := -1
+	
+	for home_pos in home_indices[player]:
+		if not home_pos in board_state.marbles[player]:
+			ret = home_pos
+			break
+	
+	return ret
+
 func _setup_dag():
 	for i in range(len(all_indices)):
 		dag.append(DAGNode.new(i))
@@ -81,6 +95,10 @@ func _setup_dag():
 
 func calc_valid_movements(board_state:BoardState, dice_value:int, player:int, from_idx:int)->Array:
 	var ret := []
+	
+	# Early exit on 0
+	if dice_value == 0:
+		return ret
 	
 	if from_idx in board_state.marbles[player]:
 		ret += _movements_recurser(board_state, dice_value, player, dice_value, from_idx, from_idx, [from_idx])

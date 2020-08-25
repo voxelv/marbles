@@ -36,4 +36,3 @@ func get_marble(player:int, marble:int)->int:
 
 func get_marble_idx(player:int, idx:int)->int:
 	return((marbles[player] as Array).find(idx))
-

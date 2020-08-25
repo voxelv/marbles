@@ -240,6 +240,7 @@ margin_top = 166.0
 margin_right = 292.0
 margin_bottom = 216.0
 rect_min_size = Vector2( 0, 50 )
+focus_mode = 0
 text = "ROLL"
 
 [node name="pass_button" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
@@ -247,6 +248,7 @@ margin_top = 221.0
 margin_right = 292.0
 margin_bottom = 271.0
 rect_min_size = Vector2( 0, 50 )
+focus_mode = 0
 text = "PASS"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]

@@ -3,10 +3,7 @@ class_name Server
 
 var _socket := WebSocketServer.new()
 
-var game_phase := Logic.game_phase.INIT as int
-var player_turn := Logic.player.A as int
-var board_state := BoardState.new(Logic.home_indices)
-var dice_value := 1
+var state := GameState.new()
 var clients := {}
 
 func _ready() -> void:
@@ -22,9 +19,11 @@ func _ready() -> void:
 		var err = (_socket as WebSocketServer).listen(Config.PORT)
 		if err != OK:
 			print("Server could not listen...")
+	
+	state.game_phase = Logic.game_phase.INIT
 
 func _process(delta:float) -> void:
-	match game_phase:
+	match state.game_phase:
 		Logic.game_phase.INIT:
 			if Config.is_local:
 				# Start the game immediately
@@ -45,8 +44,10 @@ func _process(delta:float) -> void:
 				_socket.poll()
 
 func start_game()->void:
-	game_phase = Logic.game_phase.STARTED
-	send_board_state(board_state)
+	state.game_phase = Logic.game_phase.STARTED
+	state.player_turn = Logic.player.A
+	state.board.set_all(Logic.home_indices)
+	send_game_state(state)
 
 func _get_connected_player_list()->Array:
 	var connected_players := []
@@ -61,7 +62,7 @@ func _client_connected(id, proto):
 	var new_clientinfo = ClientInfo.new(id)
 	
 	# Determine current players
-	var current_players = []
+	var current_players = _get_connected_player_list()
 	
 	# Choose an unused player slot, if they're all used, send COUNT to signify no player assigned
 	var player = Logic.player.COUNT
@@ -104,10 +105,22 @@ func _handle_pkt(id:int, pkt:Dictionary):
 		
 		PKT.type.PLAYER_ROLL_REQUEST:
 			var player = clients[id].player
-			if player >= 0 and player < Logic.player.COUNT:
-				# TODO: And check that it's player's turn
-				var roll_result := (range(6)[randi() % 6] + 1) as int
-				send_player_roll_result(roll_result)
+			if Logic.valid_player(player):
+				var roll_result := 0
+				if state.player_has_rolled:
+					roll_result = state.dice_value
+				else:
+					# TODO: And check that it's player's turn
+					roll_result = (range(6)[randi() % 6] + 1) as int
+				
+				state.dice_value = roll_result
+				state.player_has_rolled = true
+				send_game_state(state)
+				
+		PKT.type.PLAYER_PASS_REQUEST:
+			state.dice_value = 0
+			increment_player_turn()
+			send_game_state(state)
 		
 		PKT.type.PLAYER_MOVE_REQUEST:
 			var player = clients[id].player
@@ -120,21 +133,41 @@ func _handle_pkt(id:int, pkt:Dictionary):
 			
 			# Do the calculations
 			# If move is valid, move the marble and broadcast the new board
-				# Move is valid if in calculated valid moves, and player's turn
-			if not player == player_turn:
+				# Move is valid if in calculated valid moves, and player's turn, and from player's marble
+			if not state.player_has_rolled:
 				return
-			var valid_moves := Logic.calc_valid_movements(board_state, dice_value, player, from_idx)
+			if not player == state.player_turn:
+				return
+			if not from_idx in state.board.marbles[player]:
+				return
+			var valid_moves := Logic.calc_valid_movements(state.board, state.dice_value, player, from_idx)
 			if not to_idx in valid_moves:
 				return
 			
 			# Move the marble
-			board_state.set_marble(player, board_state.get_marble_idx(player, from_idx), to_idx)
+			state.board.set_marble(player, state.board.get_marble_idx(player, from_idx), to_idx)
+			
+			# If to_idx has another player's marble, send it home
+			var other_player_marble_idx := -1
+			var other_player := Logic.player.COUNT as int
+			for p in range(Logic.player.COUNT):
+				if p == player:
+					continue
+				if to_idx in state.board.marbles[p]:
+					other_player = p
+					other_player_marble_idx = state.board.get_marble_idx(p, to_idx)
+			if Logic.valid_player(other_player) and other_player_marble_idx >= 0:
+				# Move other player's marble home
+				state.board.set_marble(other_player, other_player_marble_idx, Logic.get_first_empty_home_idx(state.board, other_player))
+			
+			# Handle end of roll
 			increment_player_turn()
-			send_player_turn_update(player_turn)
-			send_board_state(board_state)
+			if not state.dice_value == 6:
+				state.dice_value = 0
+			send_game_state(state)
 			
 			if Config.is_local:
-				clients[id].player = player_turn
+				clients[id].player = state.player_turn
 
 func _send_pkt(pkt:Dictionary, broadcast:bool=true, player:int=Logic.player.COUNT)->void:
 	if Config.is_local:
@@ -144,7 +177,7 @@ func _send_pkt(pkt:Dictionary, broadcast:bool=true, player:int=Logic.player.COUN
 			for id in clients.keys():
 				_socket.get_peer(id).put_var(pkt)
 		else:
-			assert(player >= 0 and player < Logic.player.COUNT)
+			assert(Logic.valid_player(player))
 			var id = get_id_from_player(player)
 			if id != -1:
 				_socket.get_peer(id).put_var(pkt)
@@ -158,30 +191,29 @@ func get_id_from_player(player:int)->int:
 	return ret_id
 
 func increment_player_turn():
-	player_turn += 1
-	if player_turn >= Logic.player.COUNT:
-		player_turn = 0
+	state.player_has_rolled = false
+	if not state.dice_value == 6:
+		var prev_player_turn = state.player_turn
+		state.player_turn += 1
+		if state.player_turn >= Logic.player.COUNT:
+			state.player_turn = 0
+		if Config.is_local:
+			clients[get_id_from_player(prev_player_turn)].player = state.player_turn
 
 func send_command_print_text()->void:
 	_send_pkt(PKT.fmt_cmd_print_text())
 
-func send_board_state(board_state_in:BoardState):
-	_send_pkt(PKT.fmt_board(board_state_in))
-
-func send_board_state_direct(board_state_in:BoardState, player:int)->void:
-	_send_pkt(PKT.fmt_board(board_state), false, player)
-
-func send_player_turn_update(player:int)->void:
-	_send_pkt(PKT.fmt_player_turn_update(player))
-
-func send_player_roll_result(roll_result:int)->void:
-	dice_value = roll_result
-	_send_pkt(PKT.fmt_player_roll_result(roll_result))
-
 func send_set_clientinfo(info:ClientInfo)->void:
 	_send_pkt(PKT.fmt_set_clientinfo(info), false, info.player)
 
+func send_player_roll_result(result:int)->void:
+	state.dice_value = result
+	send_game_state(state)
 
+func send_game_state(game_state:GameState)->void:
+	if Config.is_local:
+		state.dice_value = game_state.dice_value
+	_send_pkt(PKT.fmt_game_state(game_state))
 
 
 

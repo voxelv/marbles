@@ -3,7 +3,6 @@ class_name Client
 
 var _socket := WebSocketClient.new()
 var info := ClientInfo.new()
-var player_turn := Logic.player.COUNT as int
 
 func _ready():
 	_socket.connect("connection_closed", self, "_closed")
@@ -46,21 +45,12 @@ func _handle_pkt(pkt:Dictionary):
 				PKT.cmd.PRINT_TEXT:
 					print("CLIENT: PRINT_TEXT COMMAND RX")
 		
-		PKT.type.PLAYER_TURN_UPDATE:
-			var player = pkt.get('player', Logic.player.COUNT)
-			if not (player >= 0 and player < Logic.player.COUNT):
-				return
-			player_turn = player
+		PKT.type.GAME_STATE:
+			var state := GameState.new()
+			state.defmt(pkt)
 			if Config.is_local:
-				info.player = player
-			Connection.local_viewer.update_selector()
-		
-		PKT.type.BOARD:
-			var board_state := BoardState.new(pkt.get('board', []) as Array)
-			Connection.local_viewer.set_board_state(board_state)
-		
-		PKT.type.PLAYER_ROLL_RESULT:
-			Connection.local_viewer.set_roll_result(pkt.get('result', 1))
+				info.player = state.player_turn
+			Connection.local_viewer.update_ui(state)
 		
 		PKT.type.SET_CLIENTINFO:
 			info.peer_id = pkt.get('peer_id', -1)
@@ -78,6 +68,9 @@ func send_command_print_text()->void:
 
 func send_player_roll_request()->void:
 	_send_pkt(PKT.fmt_player_roll_request())
+
+func send_player_pass_request()->void:
+	_send_pkt(PKT.fmt_player_pass_request())
 
 func send_player_move_request(from_idx:int, to_idx:int)->void:
 	_send_pkt(PKT.fmt_player_move_request(from_idx, to_idx))
