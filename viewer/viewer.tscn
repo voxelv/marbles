@@ -307,9 +307,9 @@ text = "Pass own position marbles"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
-margin_top = 524.0
+margin_top = 552.0
 margin_right = 292.0
-margin_bottom = 564.0
+margin_bottom = 592.0
 alignment = 1
 
 [node name="dice_button1" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]

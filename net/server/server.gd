@@ -118,8 +118,8 @@ func _handle_pkt(id:int, pkt:Dictionary):
 				send_game_state(state)
 				
 		PKT.type.PLAYER_PASS_REQUEST:
-			state.dice_value = 0
 			increment_player_turn()
+			state.dice_value = 0
 			send_game_state(state)
 		
 		PKT.type.PLAYER_MOVE_REQUEST:
