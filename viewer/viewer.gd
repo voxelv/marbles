@@ -11,13 +11,13 @@ const MAX_HIGHLIGHTS := 5
 
 # Constants
 const dice_images := [
-	preload("res://viewer/dice/dice_0.png"),
-	preload("res://viewer/dice/dice_1.png"),
-	preload("res://viewer/dice/dice_2.png"),
-	preload("res://viewer/dice/dice_3.png"),
-	preload("res://viewer/dice/dice_4.png"),
-	preload("res://viewer/dice/dice_5.png"),
-	preload("res://viewer/dice/dice_6.png"),
+	preload("res://viewer/dice/dice_0.svg"),
+	preload("res://viewer/dice/dice_1.svg"),
+	preload("res://viewer/dice/dice_2.svg"),
+	preload("res://viewer/dice/dice_3.svg"),
+	preload("res://viewer/dice/dice_4.svg"),
+	preload("res://viewer/dice/dice_5.svg"),
+	preload("res://viewer/dice/dice_6.svg"),
 ]
 
 # Nodes

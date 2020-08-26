@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://board/board.tscn" type="PackedScene" id=1]
 [ext_resource path="res://viewer/viewer.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://viewer/dice/dice_1.png" type="Texture" id=9]
 [ext_resource path="res://viewer/dice/dice_2.png" type="Texture" id=10]
 [ext_resource path="res://viewer/dice/dice_5.png" type="Texture" id=11]
+[ext_resource path="res://viewer/dice/dice.svg" type="Texture" id=12]
 
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0.862745, 0.952941, 1, 1 )
@@ -232,7 +233,7 @@ margin_bottom = 175.0
 rect_min_size = Vector2( 0, 175 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 9 )
+texture = ExtResource( 12 )
 expand = true
 stretch_mode = 6
 

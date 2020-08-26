@@ -53,7 +53,7 @@ func _get_connected_player_list()->Array:
 	var connected_players := []
 	for peer_id in clients.keys():
 		var peer_player = clients[peer_id].player
-		if peer_player >= 0 and peer_player < Logic.player.COUNT and not peer_player in connected_players:
+		if Logic.valid_player(peer_player) and not peer_player in connected_players:
 			connected_players.append(peer_player)
 	return(connected_players)
 
