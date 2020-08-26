@@ -120,7 +120,14 @@ func _handle_pkt(id:int, pkt:Dictionary):
 				state.dice_value = roll_result
 				state.player_has_rolled = true
 				send_game_state(state)
-				
+			
+		PKT.type.PLAYER_SET_COLOR_REQUEST:
+			var player = pkt.get('player', Logic.player.COUNT)
+			if not Logic.valid_player(player):
+				return
+			state.custom_clients[player].color = pkt.get('color', Color.white)
+			send_game_state(state)
+			
 		PKT.type.PLAYER_PASS_REQUEST:
 			increment_player_turn()
 			state.dice_value = 0

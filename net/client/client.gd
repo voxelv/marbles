@@ -74,7 +74,8 @@ func send_player_pass_request()->void:
 func send_player_move_request(from_idx:int, to_idx:int)->void:
 	_send_pkt(PKT.fmt_player_move_request(from_idx, to_idx))
 
-
+func send_player_set_color_request(player:int, color:Color):
+	_send_pkt(PKT.fmt_player_set_color_request(player, color))
 
 
 

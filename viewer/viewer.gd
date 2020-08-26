@@ -69,6 +69,11 @@ func _ready():
 	board.connect_areas("mouse_exited", self, "_on_area_exited")
 	board.connect_bounds("input_event", self, "_on_bounds_clicked")
 	
+	# Connect color changing controls
+	for i in range(player_status_list.get_child_count()):
+		var player_status = player_status_list.get_child(i)
+		player_status.connect("color_set", self, "_on_player_status_color_set", [i])
+	
 	update_selectors()
 
 func _on_pass_own_position_marbles_toggled(pressed:bool):
@@ -89,10 +94,18 @@ func update_ui(game_state:GameState):
 		roll_dice_button.disabled = true
 		pass_button.disabled = true
 	
+	# Update colors
 	var colors := []
 	for i in range(Logic.player.COUNT):
-		colors.append((game_state.custom_clients[i] as CustomClientInfo).color)
+		var color := (game_state.custom_clients[i] as CustomClientInfo).color as Color
+		colors.append(color)
+		((player_status_list.get_child(i) as PlayerStatus).color_picker as ColorPickerButton).color = color
 	board.set_player_colors(colors)
+	
+	# Update turn
+	for i in range(player_status_list.get_child_count()):
+		var player_status := player_status_list.get_child(i) as PlayerStatus
+		player_status.set_active(i == state.player_turn)
 	
 	set_board_state(game_state.board)
 	update_selectors()
@@ -166,6 +179,9 @@ func _on_pass_button_pressed()->void:
 
 func _on_client_send_button_pressed() -> void:
 	Connection.client.send_command_print_text()
+
+func _on_player_status_color_set(color, player):
+	Connection.client.send_player_set_color_request(player, color)
 
 # Control Interaction
 func set_board_state(board_state_in:BoardState):

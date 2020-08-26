@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://viewer/player_status/status_dot.svg" type="Texture" id=2]
@@ -7,6 +7,13 @@
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 1, 1, 1, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 0.501961, 1, 1 )
@@ -48,13 +55,14 @@ texture = ExtResource( 4 )
 expand = true
 stretch_mode = 6
 
-[node name="color" type="ColorPickerButton" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="color_picker" type="ColorPickerButton" parent="HBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 21.0
 margin_right = 42.0
 margin_bottom = 53.0
 focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_styles/hover = SubResource( 3 )
 custom_styles/normal = SubResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
