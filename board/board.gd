@@ -5,9 +5,11 @@ enum marble_color {A, B, C, D, COUNT}
 onready var main_track_section := find_node("main_track_section") as Spatial
 onready var marbles_container := find_node("marbles_container") as Spatial
 onready var bounds := find_node("bounds") as Spatial
+onready var player_markers := find_node("player_markers") as Spatial
 
 var all_positions := []
 var all_areas := []
+var player_marker_materials := []
 
 const marble_preload = preload("res://board/marble.tscn")
 const materials = [
@@ -31,6 +33,10 @@ func _ready() -> void:
 	_clickables_recurse(self)
 	all_areas = _tmp_array.duplicate(true)
 	_tmp_array.clear()
+	
+	for i in range(len(player_markers.get_children())):
+		var mat := (player_markers.get_child(i) as MeshInstance).get_surface_material(0)
+		player_marker_materials.append(mat)
 	
 	setup_marbles()
 
@@ -101,7 +107,10 @@ func set_board_state(board_state:BoardState):
 			(_marbles[player][marble] as Spatial).visible = true
 			(_marbles[player][marble] as Spatial).translation = all_positions[marbles_in[player][marble]]
 
-
+func set_player_colors(colors:Array):
+	assert(len(colors) == Logic.player.COUNT)
+	for i in range(len(colors)):
+		(player_marker_materials[i] as SpatialMaterial).albedo_color = colors[i]
 
 
 

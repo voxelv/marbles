@@ -47,6 +47,10 @@ func start_game()->void:
 	state.game_phase = Logic.game_phase.STARTED
 	state.player_turn = Logic.player.A
 	state.board.set_all(Logic.home_indices)
+	
+	for player in state.custom_clients.keys():
+		state.custom_clients[player].color = Config.initial_colors[player]
+	
 	send_game_state(state)
 
 func _get_connected_player_list()->Array:

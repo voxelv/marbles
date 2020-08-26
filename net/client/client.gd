@@ -55,7 +55,6 @@ func _handle_pkt(pkt:Dictionary):
 		PKT.type.SET_CLIENTINFO:
 			info.peer_id = pkt.get('peer_id', -1)
 			info.player = pkt.get('player', Logic.player.COUNT)
-			info.display_name = pkt.get('display_name', "")
 
 func _send_pkt(pkt:Dictionary)->void:
 	if Config.is_local:

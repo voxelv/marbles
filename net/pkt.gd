@@ -8,7 +8,7 @@ func fmt_cmd_print_text()->Dictionary:
 	return {'type': type.CMD, 'cmd': cmd.PRINT_TEXT}
 
 func fmt_set_clientinfo(info:ClientInfo):
-	return {'type': type.SET_CLIENTINFO, 'player': info.player, 'peer_id': info.peer_id, 'display_name': info.display_name}
+	return {'type': type.SET_CLIENTINFO, 'player': info.player, 'peer_id': info.peer_id}
 
 func fmt_player_roll_request():
 	return {'type': type.PLAYER_ROLL_REQUEST}

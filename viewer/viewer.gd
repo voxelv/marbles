@@ -34,6 +34,7 @@ onready var valid_move_highlights := find_node("valid_move_highlights") as Node2
 onready var roll_dice_button := find_node("roll_dice_button") as Button
 onready var pass_button := find_node("pass_button") as Button
 onready var dice_texturerect := find_node("dice_texturerect") as TextureRect
+onready var player_status_list := find_node("player_status_list") as Container
 
 # Members
 var select_state:int = select_state_type.NONE
@@ -87,6 +88,11 @@ func update_ui(game_state:GameState):
 	else:
 		roll_dice_button.disabled = true
 		pass_button.disabled = true
+	
+	var colors := []
+	for i in range(Logic.player.COUNT):
+		colors.append((game_state.custom_clients[i] as CustomClientInfo).color)
+	board.set_player_colors(colors)
 	
 	set_board_state(game_state.board)
 	update_selectors()
