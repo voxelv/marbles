@@ -42,7 +42,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Viewer",
 "language": "GDScript",
-"path": "res://viewer.gd"
+"path": "res://viewer/viewer.gd"
 } ]
 _global_script_class_icons={
 "BoardState": "",

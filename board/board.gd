@@ -1,11 +1,21 @@
 extends Spatial
 
+enum marble_color {A, B, C, D, COUNT}
+
 onready var main_track_section := find_node("main_track_section") as Spatial
 onready var marbles_container := find_node("marbles_container") as Spatial
 onready var bounds := find_node("bounds") as Spatial
 
 var all_positions := []
 var all_areas := []
+
+const marble_preload = preload("res://board/marble.tscn")
+const materials = [
+	preload("res://board/player_materials/A.tres"),
+	preload("res://board/player_materials/B.tres"),
+	preload("res://board/player_materials/C.tres"),
+	preload("res://board/player_materials/D.tres")
+]
 
 # 4 arrays: player n's 5 marbles indexes for n = 0, 1, 2, 3
 # corresponding to player a, b, c, d
@@ -65,12 +75,20 @@ func _on_mouse_entered(idx:int)->void:
 func setup_marbles():
 	for p in range(Logic.player.COUNT):
 		_marbles.append([]) # append an empty array
-		var color := [Factory.marble_color.A, Factory.marble_color.B, Factory.marble_color.C, Factory.marble_color.D]
+		var color := [marble_color.A, marble_color.B, marble_color.C, marble_color.D]
 		for _m in range(len(Logic.home_indices[p])):
-			var new_marble := Factory.marble(color[p]) as Spatial
+			var new_marble := make_marble(color[p]) as Spatial
 			self.add_child(new_marble)
 			new_marble.visible = false
 			_marbles[p].append(new_marble)
+
+func make_marble(color:int)->Spatial:
+	assert(color >= 0 and color < marble_color.COUNT)
+	var new_marble = marble_preload.instance()
+	var mesh_instance = new_marble.find_node("MeshInstance")
+	mesh_instance.mesh = mesh_instance.mesh.duplicate()
+	mesh_instance.mesh.material = materials[color]
+	return new_marble
 
 func set_board_state(board_state:BoardState):
 	var marbles_in = board_state.marbles

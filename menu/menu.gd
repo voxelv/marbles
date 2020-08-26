@@ -9,7 +9,6 @@ func _ready() -> void:
 	var cli_args = OS.get_cmdline_args()
 	if "SERVER" in cli_args:
 		Config.is_server = true
-		local_game_button.focus_mode = Control.FOCUS_NONE
 		local_game_button.disabled = true
 	
 	call_deferred("_load_viewer")
@@ -34,7 +33,8 @@ func _on_serve_game_button_pressed() -> void:
 	pass # TODO
 
 func _load_viewer():
-	viewer = load("res://viewer.tscn").instance()
+	viewer = load("res://viewer/viewer.tscn").instance()
+	local_game_button.disabled = false
 
 
 
