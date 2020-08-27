@@ -24,3 +24,9 @@ func setup()->Array:
 
 func get_player()->int:
 	return client.info.player
+
+func can_control_player(player:int)->bool:
+	if Config.is_local:
+		return true
+	else:
+		return get_player() == player

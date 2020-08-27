@@ -25,6 +25,7 @@ func _ready() -> void:
 func _process(delta:float) -> void:
 	match state.game_phase:
 		Logic.game_phase.INIT:
+			_socket.poll()
 			if Config.is_local:
 				# Start the game immediately
 				start_game()
@@ -62,7 +63,7 @@ func _get_connected_player_list()->Array:
 	return(connected_players)
 
 func _client_connected(id, proto):
-	var s := "Client %d connected with protocol: %s" % [id, proto]
+	print("Client %d connected with protocol: %s" % [id, proto])
 	var new_clientinfo = ClientInfo.new(id)
 	
 	# Determine current players
@@ -77,7 +78,7 @@ func _client_connected(id, proto):
 	new_clientinfo.player = player
 	clients[id] = new_clientinfo
 	send_set_clientinfo(clients[id])
-	print(s)
+	send_game_state_direct(state, clients[id].player)
 	
 func _close_request(id, code, reason):
 	var s := "Client %d disconnecting with code: %d, reason: %s" % [id, code, reason]
@@ -108,6 +109,8 @@ func _handle_pkt(id:int, pkt:Dictionary):
 					print("SERVER: PRINT_TEXT COMMAND RX")
 		
 		PKT.type.PLAYER_ROLL_REQUEST:
+			if not state.game_phase == Logic.game_phase.STARTED:
+				return
 			var player = clients[id].player
 			if Logic.valid_player(player):
 				var roll_result := 0
@@ -226,7 +229,11 @@ func send_game_state(game_state:GameState)->void:
 		state.dice_value = game_state.dice_value
 	_send_pkt(PKT.fmt_game_state(game_state))
 
-
+func send_game_state_direct(game_state:GameState, player:int)->void:
+	if Config.is_local:
+		state.dice_value = game_state.dice_value
+	_send_pkt(PKT.fmt_game_state(game_state), false, player)
+	
 
 
 

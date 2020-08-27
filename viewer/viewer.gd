@@ -99,14 +99,29 @@ func update_ui(game_state:GameState):
 	for i in range(Logic.player.COUNT):
 		var color := (game_state.custom_clients[i] as CustomClientInfo).color as Color
 		colors.append(color)
-		((player_status_list.get_child(i) as PlayerStatus).color_picker as ColorPickerButton).color = color
 	board.set_player_colors(colors)
 	
-	# Update turn
-	for i in range(player_status_list.get_child_count()):
-		var player_status := player_status_list.get_child(i) as PlayerStatus
-		player_status.set_active(i == state.player_turn)
-	
+	# Update player_status
+	for player in game_state.custom_clients.keys():
+		if not Logic.valid_player(player):
+			continue
+		
+		var cci = (game_state.custom_clients[player] as CustomClientInfo)
+		
+		# Update turn indicator
+		var player_status := player_status_list.get_child(player) as PlayerStatus
+		player_status.set_active(player == state.player_turn)
+		
+		# Update colors
+		var color_picker := player_status.color_picker as ColorPickerButton
+		color_picker.color = cci.color
+		color_picker.disabled = not Connection.can_control_player(player)
+		
+		# Update names
+		var player_name := player_status.player_name as ToolButton
+		player_name.disabled = not Connection.can_control_player(player)
+		player_name.text = cci.display_name
+		
 	set_board_state(game_state.board)
 	update_selectors()
 
@@ -117,8 +132,8 @@ func update_selectors():
 			selector_highlight.visible = false
 			for c in valid_move_highlights.get_children():
 				(c as Node2D).visible = false
-			if state.player_has_rolled:
-				update_valid_move_highlights(state.board.marbles[state.player_turn])
+			if state.player_has_rolled and Connection.get_player() == state.player_turn:
+				update_valid_move_highlights(state.board.marbles[Connection.get_player()])
 		
 		select_state_type.SLCT:
 			selector.visible = true
@@ -201,6 +216,9 @@ func select(idx:int):
 	update_selectors()
 
 func can_select(idx:int)->bool:
+	if not state.game_phase == Logic.game_phase.STARTED:
+		return false
+	
 	var ret := (idx in state.board.marbles[Connection.get_player()]) as bool
 	match select_state:
 		select_state_type.NONE:

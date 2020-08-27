@@ -5,6 +5,7 @@ signal color_set
 
 onready var arrow = find_node("arrow") as TextureRect
 onready var color_picker = find_node("color_picker") as ColorPickerButton
+onready var player_name = find_node("player_name") as ToolButton
 
 func _ready() -> void:
 	set_active(false)

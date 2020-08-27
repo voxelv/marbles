@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://viewer/player_status/status_dot.svg" type="Texture" id=2]
@@ -8,19 +8,35 @@
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 1 )
 expand_margin_left = 2.0
 expand_margin_right = 2.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 1, 0.501961, 1, 1 )
 
+[sub_resource type="StyleBoxFlat" id=21]
+content_margin_left = 7.5
+content_margin_right = 7.5
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 1, 1, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
 [node name="player_status" type="PanelContainer"]
-margin_right = 191.0
-margin_bottom = 53.0
+margin_right = 236.0
+margin_bottom = 48.0
 theme = ExtResource( 1 )
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 3 )
@@ -29,12 +45,13 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 191.0
-margin_bottom = 53.0
+margin_right = 236.0
+margin_bottom = 48.0
+custom_constants/separation = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
 margin_right = 42.0
-margin_bottom = 53.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 42, 42 )
 custom_constants/margin_right = 0
 custom_constants/margin_top = 0
@@ -43,12 +60,12 @@ custom_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer"]
 margin_right = 42.0
-margin_bottom = 53.0
+margin_bottom = 48.0
 custom_constants/separation = 0
 
 [node name="arrow" type="TextureRect" parent="HBoxContainer/MarginContainer/HBoxContainer"]
 margin_right = 21.0
-margin_bottom = 53.0
+margin_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 4 )
@@ -58,45 +75,52 @@ stretch_mode = 6
 [node name="color_picker" type="ColorPickerButton" parent="HBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 21.0
 margin_right = 42.0
-margin_bottom = 53.0
+margin_bottom = 48.0
 focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/hover = SubResource( 3 )
-custom_styles/normal = SubResource( 2 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/normal = SubResource( 3 )
+disabled = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 47.0
-margin_right = 191.0
-margin_bottom = 53.0
+margin_left = 42.0
+margin_right = 236.0
+margin_bottom = 48.0
 size_flags_horizontal = 3
+custom_constants/separation = 0
 
-[node name="player_name" type="Label" parent="HBoxContainer/VBoxContainer"]
-margin_right = 144.0
+[node name="player_name" type="ToolButton" parent="HBoxContainer/VBoxContainer"]
+margin_right = 194.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
+custom_styles/hover = SubResource( 21 )
+custom_colors/font_color_disabled = Color( 0.886275, 0.886275, 0.886275, 1 )
+disabled = true
 text = "LongTextPlayerName LastNameCanScrollOffThePage?"
+flat = false
 clip_text = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 29.0
-margin_right = 144.0
-margin_bottom = 53.0
+margin_top = 24.0
+margin_right = 194.0
+margin_bottom = 48.0
 
 [node name="player_status" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_right = 58.0
+margin_right = 94.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "Status"
 clip_text = true
 
 [node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 63.0
-margin_right = 121.0
+margin_left = 99.0
+margin_right = 194.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="status_dot" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
 margin_left = 126.0
 margin_right = 144.0
 margin_bottom = 24.0

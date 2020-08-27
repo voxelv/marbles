@@ -3,10 +3,11 @@ class_name Client
 
 var _socket := WebSocketClient.new()
 var info := ClientInfo.new()
+var con_timer:Timer
 
 func _ready():
 	_socket.connect("connection_closed", self, "_closed")
-	_socket.connect("connection_error", self, "_closed")
+	_socket.connect("connection_error", self, "_connection_error")
 	_socket.connect("connection_established", self, "_connected_to_server")
 	_socket.connect("data_received", self, "_on_data_from_server")
 	
@@ -14,21 +15,39 @@ func _ready():
 		var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
 		if err != OK:
 			print("Could not connect...")
+		con_timer = Timer.new()
+		con_timer.wait_time = 1
+		con_timer.connect("timeout", self, "_on_con_timer_timeout")
+		add_child(con_timer)
+		con_timer.start()
+
+func _on_con_timer_timeout()->void:
+	_attempt_connection()
+
+func _attempt_connection()->void:
+	print("Attempting connection...")
+	var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
+	if err != OK:
+		print("Could not connect...")
 
 func _closed(was_clean:bool=false):
-	print("Client %d closed, clean: " % info.peer_id, was_clean)
+	print("Connection closed (%d), clean: %s" % [info.peer_id, was_clean])
 
 func _connected_to_server(proto:String):
-	info.peer_id = _socket.id
+#	info.peer_id = _socket.id
+	con_timer.stop()
 	print("Connected.")
+
+func _connection_error():
+	print("Connection error...")
 
 func _on_data_from_server():
 	var pkt := _socket.get_peer(1).get_var() as Dictionary
 	_handle_pkt(pkt)
 
 func _process(_delta):
-	if _socket.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
-		_socket.poll()
+#	if _socket.get_connection_status() != NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
+	_socket.poll()
 
 func _handle_pkt(pkt:Dictionary):
 	var type := pkt.get('type', PKT.type.NONE) as int
@@ -55,12 +74,19 @@ func _handle_pkt(pkt:Dictionary):
 		PKT.type.SET_CLIENTINFO:
 			info.peer_id = pkt.get('peer_id', -1)
 			info.player = pkt.get('player', Logic.player.COUNT)
+			OS.set_window_title({
+				Logic.player.A: "[A]",
+				Logic.player.B: "[B]",
+				Logic.player.C: "[C]",
+				Logic.player.D: "[D]",
+				Logic.player.COUNT: "UNKNOWN",
+			}[info.player])
 
 func _send_pkt(pkt:Dictionary)->void:
 	if Config.is_local:
 		Connection.server._handle_pkt(info.peer_id, pkt)
 	else:
-		_socket.put_var(pkt)
+		_socket.get_peer(1).put_var(pkt)
 
 func send_command_print_text()->void:
 	_send_pkt(PKT.fmt_cmd_print_text())
