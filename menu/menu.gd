@@ -2,6 +2,8 @@ extends Node
 
 onready var local_game_button := find_node("local_game_button") as Button
 onready var text_output := find_node("text_output") as TextEdit
+onready var join_game_items := find_node("join_game_items") as Control
+onready var serve_game_button := find_node("serve_game_button") as Button
 
 var viewer:Node = null
 var _peers := []
@@ -42,6 +44,12 @@ func _on_join_game_button_pressed() -> void:
 	Config.is_local = false
 	Config.is_server = false
 	
+	_set_join_game(true)
+
+func _on_join_game_join_pressed() -> void:
+	Config.URL = (find_node("join_game_server") as LineEdit).text
+	Config.PORT = int((find_node("join_game_port") as LineEdit).text)
+	
 	var peers = Connection.setup()
 	
 	if viewer != null:
@@ -51,6 +59,9 @@ func _on_join_game_button_pressed() -> void:
 		for p in peers:
 			viewer.add_child(p)
 		queue_free()
+
+func _on_join_game_cancel_pressed():
+	_set_join_game(false)
 
 func _on_serve_game_button_pressed() -> void:
 	Config.is_local = false
@@ -66,5 +77,13 @@ func _on_serve_game_button_pressed() -> void:
 func _add_peers_to_root():
 	for p in _peers:
 		get_tree().get_root().add_child(p)
+
+func _set_join_game(join:bool)->void:
+	join_game_items.visible = join
+	local_game_button.disabled = join
+	serve_game_button.disabled = join
+	
+
+
 
 

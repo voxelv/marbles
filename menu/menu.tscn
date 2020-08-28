@@ -56,7 +56,6 @@ margin_right = 292.0
 margin_bottom = 270.0
 rect_min_size = Vector2( 0, 50 )
 focus_mode = 0
-disabled = true
 text = "LOCAL GAME"
 
 [node name="join_game_button" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
@@ -66,6 +65,54 @@ margin_bottom = 325.0
 rect_min_size = Vector2( 0, 50 )
 focus_mode = 0
 text = "JOIN GAME"
+
+[node name="join_game_items" type="VBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 301.0
+margin_right = 292.0
+margin_bottom = 354.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items"]
+margin_right = 292.0
+margin_bottom = 24.0
+
+[node name="join_game_server" type="LineEdit" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
+margin_right = 179.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
+margin_left = 184.0
+margin_right = 224.0
+margin_bottom = 24.0
+text = "Port:"
+
+[node name="join_game_port" type="LineEdit" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
+margin_left = 229.0
+margin_right = 292.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items"]
+margin_top = 29.0
+margin_right = 292.0
+margin_bottom = 53.0
+
+[node name="join_game_cancel" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2"]
+margin_right = 143.0
+margin_bottom = 24.0
+focus_mode = 0
+size_flags_horizontal = 3
+text = "Cancel"
+
+[node name="join_game_join" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2"]
+margin_left = 148.0
+margin_right = 292.0
+margin_bottom = 24.0
+focus_mode = 0
+size_flags_horizontal = 3
+text = "JOIN!"
 
 [node name="serve_game_button" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 margin_top = 330.0
@@ -78,4 +125,6 @@ text = "SERVE GAME"
 [node name="Timer" type="Timer" parent="."]
 [connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/local_game_button" to="." method="_on_local_game_button_pressed"]
 [connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_button" to="." method="_on_join_game_button_pressed"]
+[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2/join_game_cancel" to="." method="_on_join_game_cancel_pressed"]
+[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2/join_game_join" to="." method="_on_join_game_join_pressed"]
 [connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_button" to="." method="_on_serve_game_button_pressed"]
