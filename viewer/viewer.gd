@@ -73,6 +73,7 @@ func _ready():
 	for i in range(player_status_list.get_child_count()):
 		var player_status = player_status_list.get_child(i)
 		player_status.connect("color_set", self, "_on_player_status_color_set", [i])
+		player_status.connect("name_set", self, "_on_player_status_name_set", [i])
 	
 	update_selectors()
 
@@ -197,6 +198,9 @@ func _on_client_send_button_pressed() -> void:
 
 func _on_player_status_color_set(color, player):
 	Connection.client.send_player_set_color_request(player, color)
+
+func _on_player_status_name_set(new_name, player):
+	Connection.client.send_player_set_name_request(player, new_name)
 
 # Control Interaction
 func set_board_state(board_state_in:BoardState):

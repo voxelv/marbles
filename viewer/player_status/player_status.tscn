@@ -18,7 +18,7 @@ expand_margin_bottom = 2.0
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 1, 0.501961, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=21]
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 7.5
 content_margin_right = 7.5
 content_margin_top = 5.0
@@ -94,12 +94,13 @@ custom_constants/separation = 0
 margin_right = 194.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-custom_styles/hover = SubResource( 21 )
+custom_styles/hover = SubResource( 4 )
 custom_colors/font_color_disabled = Color( 0.886275, 0.886275, 0.886275, 1 )
 disabled = true
 text = "LongTextPlayerName LastNameCanScrollOffThePage?"
 flat = false
 clip_text = true
+align = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 margin_top = 24.0
@@ -128,3 +129,35 @@ rect_min_size = Vector2( 18, 18 )
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
+
+[node name="name_popup" type="Popup" parent="."]
+margin_right = 236.0
+margin_bottom = 48.0
+
+[node name="Panel" type="Panel" parent="name_popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="name_popup/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name_entry" type="LineEdit" parent="name_popup/Panel/VBoxContainer"]
+margin_top = 12.0
+margin_right = 236.0
+margin_bottom = 36.0
+text = "Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/player_name" to="." method="_on_player_name_pressed"]
+[connection signal="text_entered" from="name_popup/Panel/VBoxContainer/name_entry" to="." method="_on_LineEdit_text_entered"]

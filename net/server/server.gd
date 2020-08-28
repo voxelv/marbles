@@ -123,6 +123,13 @@ func _handle_pkt(id:int, pkt:Dictionary):
 				state.dice_value = roll_result
 				state.player_has_rolled = true
 				send_game_state(state)
+		
+		PKT.type.PLAYER_SET_NAME_REQUEST:
+			var player = pkt.get('player', Logic.player.COUNT)
+			if not Logic.valid_player(player):
+				return
+			state.custom_clients[player].display_name = pkt.get('name', "?")
+			send_game_state(state)
 			
 		PKT.type.PLAYER_SET_COLOR_REQUEST:
 			var player = pkt.get('player', Logic.player.COUNT)

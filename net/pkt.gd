@@ -1,6 +1,16 @@
 extends Node
 
-enum type {NONE, CMD, SET_CLIENTINFO, GAME_STATE, PLAYER_ROLL_REQUEST, PLAYER_PASS_REQUEST, PLAYER_MOVE_REQUEST, PLAYER_SET_COLOR_REQUEST}
+enum type {
+	NONE, 
+	CMD, 
+	SET_CLIENTINFO, 
+	GAME_STATE, 
+	PLAYER_ROLL_REQUEST, 
+	PLAYER_PASS_REQUEST, 
+	PLAYER_MOVE_REQUEST, 
+	PLAYER_SET_COLOR_REQUEST, 
+	PLAYER_SET_NAME_REQUEST,
+	}
 
 enum cmd {NONE, PRINT_TEXT}
 
@@ -21,6 +31,9 @@ func fmt_player_move_request(from_idx:int, to_idx:int):
 
 func fmt_player_set_color_request(player:int, color:Color):
 	return {'type': type.PLAYER_SET_COLOR_REQUEST, 'player':player, 'color': color}
+
+func fmt_player_set_name_request(player:int, new_name:String):
+	return {'type': type.PLAYER_SET_NAME_REQUEST, 'player': player, 'name': new_name}
 
 func fmt_game_state(state:GameState)->Dictionary:
 	var pkt = state.fmt()
