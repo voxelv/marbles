@@ -1,9 +1,12 @@
 extends Node
 
 onready var local_game_button := find_node("local_game_button") as Button
+onready var join_game_button := find_node("join_game_button") as Button
+onready var serve_game_button := find_node("serve_game_button") as Button
+
 onready var text_output := find_node("text_output") as TextEdit
 onready var join_game_items := find_node("join_game_items") as Control
-onready var serve_game_button := find_node("serve_game_button") as Button
+onready var serve_game_items := find_node("serve_game_items") as Control
 
 var viewer:Node = null
 var _peers := []
@@ -14,14 +17,12 @@ func _ready() -> void:
 		print("I am SERVER...")
 		Config.is_server = true
 		Config.is_local = false
-		local_game_button.disabled = true
 		_on_serve_game_button_pressed()
 	else:
 		call_deferred("_load_viewer")
 
 func _load_viewer():
 	viewer = load("res://viewer/viewer.tscn").instance()
-	local_game_button.disabled = false
 
 func _on_local_game_button_pressed():
 	Config.is_local = true
@@ -43,7 +44,6 @@ func _on_local_game_button_pressed():
 func _on_join_game_button_pressed() -> void:
 	Config.is_local = false
 	Config.is_server = false
-	
 	_set_join_game(true)
 
 func _on_join_game_join_pressed() -> void:
@@ -66,6 +66,11 @@ func _on_join_game_cancel_pressed():
 func _on_serve_game_button_pressed() -> void:
 	Config.is_local = false
 	Config.is_server = true
+	_set_serve_game(true)
+
+func _on_serve_game_serve_pressed()->void:
+	Config.PORT = int((find_node("serve_game_port") as LineEdit).text)
+	
 	OS.set_window_title("[SERVER]")
 	var serve_game_load = load("res://menu/serve_game/serve_game.tscn")
 	
@@ -73,6 +78,9 @@ func _on_serve_game_button_pressed() -> void:
 	call_deferred("_add_peers_to_root")
 	
 	get_tree().change_scene_to(serve_game_load)
+
+func _on_serve_game_cancel_pressed()->void:
+	_set_serve_game(false)
 
 func _add_peers_to_root():
 	for p in _peers:
@@ -82,8 +90,11 @@ func _set_join_game(join:bool)->void:
 	join_game_items.visible = join
 	local_game_button.disabled = join
 	serve_game_button.disabled = join
-	
 
+func _set_serve_game(serve:bool)->void:
+	serve_game_items.visible = serve
+	join_game_button.disabled = serve
+	local_game_button.disabled = serve
 
 
 
