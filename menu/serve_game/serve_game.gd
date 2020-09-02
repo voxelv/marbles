@@ -3,10 +3,12 @@ extends Node
 onready var status_label := find_node("status_label") as Label
 
 var statuses := []
+var colors := []
 
 func _ready() -> void:
 	for c in "abcd":
 		statuses.append(find_node("%s_status" % c) as Label)
+		colors.append(find_node("%s_color" % c) as ColorRect)
 
 func _process(delta: float) -> void:
 	status_label.text = {
@@ -22,8 +24,10 @@ func _process(delta: float) -> void:
 				found = true
 		if found:
 			statuses[i].text = "ONLINE"
+			(colors[i] as ColorRect).color = Color.green
 		else:
 			statuses[i].text = "OFFLINE"
+			(colors[i] as ColorRect).color = Color.red
 
 
 

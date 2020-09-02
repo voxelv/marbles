@@ -17,7 +17,7 @@ func _ready() -> void:
 		print("I am SERVER...")
 		Config.is_server = true
 		Config.is_local = false
-		_on_serve_game_button_pressed()
+		_serve_game()
 	else:
 		call_deferred("_load_viewer")
 
@@ -70,7 +70,9 @@ func _on_serve_game_button_pressed() -> void:
 
 func _on_serve_game_serve_pressed()->void:
 	Config.PORT = int((find_node("serve_game_port") as LineEdit).text)
-	
+	_serve_game()
+
+func _serve_game():
 	OS.set_window_title("[SERVER]")
 	var serve_game_load = load("res://menu/serve_game/serve_game.tscn")
 	
