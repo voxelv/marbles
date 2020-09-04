@@ -50,7 +50,7 @@ func start_game()->void:
 	state.board.set_all(Logic.home_indices)
 	
 	for player in state.custom_clients.keys():
-		state.custom_clients[player].color = Config.initial_colors[player]
+		state.custom_clients[player].color = Palette.avail_colors[Palette.initial_colors[player]]
 	
 	send_game_state(state)
 
@@ -82,13 +82,13 @@ func _client_connected(id, proto):
 	
 func _close_request(id, code, reason):
 	var s := "Client %d disconnecting with code: %d, reason: %s" % [id, code, reason]
-	clients.erase(id)
 	print(s)
+	clients.erase(id)
 	
 func _disconnected(id, was_clean = false):
 	var s := "Client %d disconnected, clean: %s" % [id, str(was_clean)]
-	clients.erase(id)
 	print(s)
+	clients.erase(id)
 	
 func _on_data_from_client(id):
 	var pkt := _socket.get_peer(id).get_var() as Dictionary

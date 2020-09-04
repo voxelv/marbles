@@ -74,7 +74,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Factory="*res://factory.gd"
+Palette="*res://palette.gd"
 Logic="*res://logic.gd"
 Config="*res://config.gd"
 PKT="*res://net/pkt.gd"

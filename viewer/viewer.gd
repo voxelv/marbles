@@ -35,6 +35,7 @@ onready var roll_dice_button := find_node("roll_dice_button") as Button
 onready var pass_button := find_node("pass_button") as Button
 onready var dice_texturerect := find_node("dice_texturerect") as TextureRect
 onready var player_status_list := find_node("player_status_list") as Container
+onready var dice_panel := find_node("dice_panel") as PanelContainer
 
 # Members
 var select_state:int = select_state_type.NONE
@@ -114,9 +115,8 @@ func update_ui(game_state:GameState):
 		player_status.set_active(player == state.player_turn)
 		
 		# Update colors
-		var color_picker := player_status.color_picker as ColorPickerButton
-		color_picker.color = cci.color
-		color_picker.disabled = not Connection.can_control_player(player)
+		player_status.set_color(cci.color)
+		player_status.set_enabled(Connection.can_control_player(player))
 		
 		# Update names
 		var player_name := player_status.player_name as ToolButton
