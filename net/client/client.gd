@@ -100,8 +100,8 @@ func send_player_pass_request()->void:
 func send_player_move_request(from_idx:int, to_idx:int)->void:
 	_send_pkt(PKT.fmt_player_move_request(from_idx, to_idx))
 
-func send_player_set_color_request(player:int, color:Color):
-	_send_pkt(PKT.fmt_player_set_color_request(player, color))
+func send_player_set_color_request(player:int, color_id:int):
+	_send_pkt(PKT.fmt_player_set_color_request(player, color_id))
 
 func send_player_set_name_request(player:int, new_name:String):
 	_send_pkt(PKT.fmt_player_set_name_request(player, new_name))

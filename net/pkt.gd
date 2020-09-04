@@ -29,8 +29,8 @@ func fmt_player_pass_request():
 func fmt_player_move_request(from_idx:int, to_idx:int):
 	return {'type': type.PLAYER_MOVE_REQUEST, 'from_idx': from_idx, 'to_idx': to_idx}
 
-func fmt_player_set_color_request(player:int, color:Color):
-	return {'type': type.PLAYER_SET_COLOR_REQUEST, 'player':player, 'color': color}
+func fmt_player_set_color_request(player:int, color_id:int):
+	return {'type': type.PLAYER_SET_COLOR_REQUEST, 'player':player, 'color': color_id}
 
 func fmt_player_set_name_request(player:int, new_name:String):
 	return {'type': type.PLAYER_SET_NAME_REQUEST, 'player': player, 'name': new_name}

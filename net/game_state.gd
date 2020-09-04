@@ -33,7 +33,7 @@ func fmt()->Dictionary:
 		var cci := custom_clients[player] as CustomClientInfo
 		pkt['custom_clients'][player] = {
 			'display_name': cci.display_name,
-			'color': cci.color
+			'color': cci.color_id
 		}
 		
 	return pkt
@@ -53,7 +53,7 @@ func defmt(data:Dictionary)->void:
 	board.set_all(data['board'])
 	for player in data['custom_clients'].keys():
 		custom_clients[player].display_name = data['custom_clients'][player]['display_name']
-		custom_clients[player].color = data['custom_clients'][player]['color']
+		custom_clients[player].color_id = data['custom_clients'][player]['color']
 
 func set_from(game_state:GameState)->void:
 	game_phase = game_state.game_phase
@@ -64,4 +64,4 @@ func set_from(game_state:GameState)->void:
 	for player in game_state.custom_clients.keys():
 		var incoming_cci := game_state.custom_clients[player] as CustomClientInfo
 		custom_clients[player].display_name = incoming_cci.display_name
-		custom_clients[player].color = incoming_cci.color
+		custom_clients[player].color_id = incoming_cci.color_id

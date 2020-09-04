@@ -2,5 +2,5 @@ extends Node
 class_name CustomClientInfo
 
 var display_name := ""
-var color := Color.white
+var color_id := Palette.color.GRAY as int
 

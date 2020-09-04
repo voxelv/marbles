@@ -99,7 +99,7 @@ func update_ui(game_state:GameState):
 	# Update colors
 	var colors := []
 	for i in range(Logic.player.COUNT):
-		var color := (game_state.custom_clients[i] as CustomClientInfo).color as Color
+		var color := Palette.avail_colors[(game_state.custom_clients[i] as CustomClientInfo).color_id] as Color
 		colors.append(color)
 	board.set_player_colors(colors)
 	
@@ -115,13 +115,11 @@ func update_ui(game_state:GameState):
 		player_status.set_active(player == state.player_turn)
 		
 		# Update colors
-		player_status.set_color(cci.color)
+		player_status.set_color(Palette.avail_colors[cci.color_id])
 		player_status.set_enabled(Connection.can_control_player(player))
 		
 		# Update names
-		var player_name := player_status.player_name as ToolButton
-		player_name.disabled = not Connection.can_control_player(player)
-		player_name.text = cci.display_name
+		player_status.set_name(cci.display_name)
 		
 	set_board_state(game_state.board)
 	update_selectors()
@@ -196,8 +194,8 @@ func _on_pass_button_pressed()->void:
 func _on_client_send_button_pressed() -> void:
 	Connection.client.send_command_print_text()
 
-func _on_player_status_color_set(color, player):
-	Connection.client.send_player_set_color_request(player, color)
+func _on_player_status_color_set(color_id, player):
+	Connection.client.send_player_set_color_request(player, color_id)
 
 func _on_player_status_name_set(new_name, player):
 	Connection.client.send_player_set_name_request(player, new_name)

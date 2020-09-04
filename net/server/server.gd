@@ -50,7 +50,7 @@ func start_game()->void:
 	state.board.set_all(Logic.home_indices)
 	
 	for player in state.custom_clients.keys():
-		state.custom_clients[player].color = Palette.avail_colors[Palette.initial_colors[player]]
+		state.custom_clients[player].color_id = Palette.initial_colors[player]
 	
 	send_game_state(state)
 
@@ -135,7 +135,16 @@ func _handle_pkt(id:int, pkt:Dictionary):
 			var player = pkt.get('player', Logic.player.COUNT)
 			if not Logic.valid_player(player):
 				return
-			state.custom_clients[player].color = pkt.get('color', Color.white)
+			var request_color_id = pkt.get('color', Palette.color.GRAY)
+			var already_used := false
+			for p in range(Logic.player.COUNT):
+				if p == player:
+					continue
+				if state.custom_clients[p].color_id == request_color_id:
+					already_used = true
+			if already_used:
+				return
+			state.custom_clients[player].color_id = request_color_id
 			send_game_state(state)
 			
 		PKT.type.PLAYER_PASS_REQUEST:

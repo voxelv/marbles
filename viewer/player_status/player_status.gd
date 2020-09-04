@@ -51,9 +51,12 @@ func set_enabled(enabled:bool):
 	player_name.disabled = not enabled
 	player_color_button.disabled = not enabled
 
+func set_name(name_str:String):
+	player_name.text = name_str
+
 func _on_color_button_pressed(color_id:int):
 	color_popup.hide()
-	emit_signal("color_set", Palette.avail_colors[color_id] as Color)
+	emit_signal("color_set", color_id)
 
 func _on_player_color_button_pressed():
 	color_popup.popup(get_global_rect())
