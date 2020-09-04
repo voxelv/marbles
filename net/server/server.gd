@@ -22,7 +22,7 @@ func _ready() -> void:
 	
 	state.game_phase = Logic.game_phase.INIT
 
-func _process(delta:float) -> void:
+func _process(_delta:float) -> void:
 	match state.game_phase:
 		Logic.game_phase.INIT:
 			_socket.poll()

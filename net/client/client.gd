@@ -5,6 +5,8 @@ var _socket := WebSocketClient.new()
 var info := ClientInfo.new()
 var con_timer:Timer
 
+var con_count := 0
+
 func _ready():
 	_socket.connect("connection_closed", self, "_closed")
 	_socket.connect("connection_error", self, "_connection_error")
@@ -12,9 +14,7 @@ func _ready():
 	_socket.connect("data_received", self, "_on_data_from_server")
 	
 	if not Config.is_local:
-		var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
-		if err != OK:
-			print("Could not connect...")
+		_attempt_connection()
 		con_timer = Timer.new()
 		con_timer.wait_time = 1
 		con_timer.connect("timeout", self, "_on_con_timer_timeout")
@@ -25,10 +25,12 @@ func _on_con_timer_timeout()->void:
 	_attempt_connection()
 
 func _attempt_connection()->void:
-	print("Attempting connection...")
-	var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
-	if err != OK:
-		print("Could not connect...")
+	print("Attempting connection... %d" % con_count)
+	con_count += 1
+	if _socket.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
+		var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
+		if err != OK:
+			print("Could not connect...")
 
 func _closed(was_clean:bool=false):
 	print("Connection closed (%d), clean: %s" % [info.peer_id, was_clean])
@@ -36,7 +38,7 @@ func _closed(was_clean:bool=false):
 func _connected_to_server(proto:String):
 #	info.peer_id = _socket.id
 	con_timer.stop()
-	print("Connected.")
+	print("Connected (%s)." % proto)
 
 func _connection_error():
 	print("Connection error...")

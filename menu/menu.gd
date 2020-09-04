@@ -92,11 +92,22 @@ func _set_join_game(join:bool)->void:
 	join_game_items.visible = join
 	local_game_button.disabled = join
 	serve_game_button.disabled = join
+	if join:
+		(find_node("join_game_join") as Button).grab_focus()
 
 func _set_serve_game(serve:bool)->void:
 	serve_game_items.visible = serve
 	join_game_button.disabled = serve
 	local_game_button.disabled = serve
+
+func _on_join_game_server_focus_entered() -> void:
+	var join_game_server := find_node("join_game_server") as LineEdit
+	join_game_server.select()
+
+func _on_join_game_port_focus_entered() -> void:
+	var join_game_port := find_node("join_game_port") as LineEdit
+	join_game_port.select()
+
 
 
 
