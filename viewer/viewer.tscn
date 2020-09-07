@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://board/board.tscn" type="PackedScene" id=1]
 [ext_resource path="res://viewer/viewer.gd" type="Script" id=2]
@@ -12,6 +12,34 @@
 [ext_resource path="res://viewer/dice/dice_2.png" type="Texture" id=10]
 [ext_resource path="res://viewer/dice/dice_5.png" type="Texture" id=11]
 [ext_resource path="res://viewer/dice/dice.svg" type="Texture" id=12]
+[ext_resource path="res://viewer/menu-line.png" type="Texture" id=13]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.490196, 0.0117647, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 1, 1, 1 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id=8]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0.862745, 0.952941, 1, 1 )
@@ -28,9 +56,6 @@ adjustment_saturation = 0.62
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 1 )
-
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.490196, 0.0117647, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0, 0, 0, 1 )
@@ -66,21 +91,45 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer"]
-margin_right = 1024.0
+margin_right = 1200.0
 margin_bottom = 600.0
 mouse_filter = 2
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer"]
-margin_right = 1024.0
+margin_right = 1200.0
 margin_bottom = 600.0
 mouse_filter = 2
 custom_constants/separation = 0
 alignment = 1
 
+[node name="PanelContainer" type="PanelContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 124.0
+margin_right = 176.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 4 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+margin_right = 52.0
+margin_bottom = 600.0
+
+[node name="ToolButton" type="Button" parent="ui/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer2"]
+margin_right = 52.0
+margin_bottom = 52.0
+custom_styles/hover = SubResource( 9 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/disabled = SubResource( 8 )
+custom_styles/normal = SubResource( 8 )
+icon = ExtResource( 13 )
+
 [node name="CenterContainer" type="CenterContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 62.0
-margin_right = 662.0
+margin_left = 176.0
+margin_right = 776.0
 margin_bottom = 600.0
 mouse_filter = 2
 
@@ -166,8 +215,8 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 662.0
-margin_right = 962.0
+margin_left = 776.0
+margin_right = 1076.0
 margin_bottom = 600.0
 size_flags_vertical = 3
 

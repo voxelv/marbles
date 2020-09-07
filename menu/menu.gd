@@ -46,6 +46,9 @@ func _on_join_game_button_pressed() -> void:
 	Config.is_server = false
 	_set_join_game(true)
 
+func _on_join_game_join_action(_arg1):
+	_on_join_game_join_pressed()
+
 func _on_join_game_join_pressed() -> void:
 	Config.URL = (find_node("join_game_server") as LineEdit).text
 	Config.PORT = int((find_node("join_game_port") as LineEdit).text)

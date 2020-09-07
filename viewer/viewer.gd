@@ -103,6 +103,11 @@ func update_ui(game_state:GameState):
 		colors.append(color)
 	board.set_player_colors(colors)
 	
+	# Dice Panel color
+	if Logic.valid_player(game_state.player_turn):
+		var dice_panel_stylebox := dice_panel.get("custom_styles/panel") as StyleBoxFlat
+		dice_panel_stylebox.bg_color = colors[game_state.player_turn]
+	
 	# Update player_status
 	for player in game_state.custom_clients.keys():
 		if not Logic.valid_player(player):
@@ -112,7 +117,7 @@ func update_ui(game_state:GameState):
 		
 		# Update turn indicator
 		var player_status := player_status_list.get_child(player) as PlayerStatus
-		player_status.set_active(player == state.player_turn)
+		player_status.set_active(player == game_state.player_turn)
 		
 		# Update colors
 		player_status.set_color(Palette.avail_colors[cci.color_id])
