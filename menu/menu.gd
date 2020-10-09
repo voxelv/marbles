@@ -31,6 +31,8 @@ func _ready() -> void:
 		Config.is_local = false
 		_serve_game()
 	
+	Connection.clear_peers()
+	
 	if Connection.local_viewer == null:
 		show_only_buttons([local_game_button, join_game_button, serve_game_button, quit_to_desktop_button])
 	else:

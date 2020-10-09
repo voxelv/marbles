@@ -44,6 +44,10 @@ func _process(_delta:float) -> void:
 			else:
 				_socket.poll()
 
+func close_all_connections():
+	for peer_id in clients.keys():
+		_socket.disconnect_peer(peer_id)
+
 func start_game()->void:
 	state.game_phase = Logic.game_phase.STARTED
 	state.player_turn = Logic.player.A

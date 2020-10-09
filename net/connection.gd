@@ -6,6 +6,8 @@ var server:Server = null
 var local_viewer:Viewer = null
 
 func setup():
+	clear_peers()
+	
 	if Config.is_local:
 		client = LocalClient.new()
 		server = Server.new()
@@ -18,9 +20,15 @@ func setup():
 		client = Client.new()
 		add_child(client)
 	
-	
-	
 	print("Connection setup finished...")
+
+func clear_peers():
+	if client != null:
+		client.disconnect_from_server()
+		client.queue_free()
+	if server != null:
+		server.close_all_connections()
+		server.queue_free()
 
 func get_player()->int:
 	return client.info.player

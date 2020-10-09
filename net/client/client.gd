@@ -34,6 +34,8 @@ func _attempt_connection()->void:
 
 func _closed(was_clean:bool=false):
 	print("Connection closed (%d), clean: %s" % [info.peer_id, was_clean])
+	con_count = 0
+	con_timer.start()
 
 func _connected_to_server(proto:String):
 #	info.peer_id = _socket.id
@@ -50,6 +52,9 @@ func _on_data_from_server():
 func _process(_delta):
 #	if _socket.get_connection_status() != NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
 	_socket.poll()
+
+func disconnect_from_server():
+	_socket.disconnect_from_host()
 
 func _handle_pkt(pkt:Dictionary):
 	var type := pkt.get('type', PKT.type.NONE) as int
@@ -71,7 +76,8 @@ func _handle_pkt(pkt:Dictionary):
 			state.defmt(pkt)
 			if Config.is_local:
 				info.player = state.player_turn
-			Connection.local_viewer.update_ui(state)
+			if Connection.local_viewer != null:
+				Connection.local_viewer.update_ui(state)
 		
 		PKT.type.SET_CLIENTINFO:
 			info.peer_id = pkt.get('peer_id', -1)
