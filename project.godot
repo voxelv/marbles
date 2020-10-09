@@ -79,6 +79,7 @@ Logic="*res://logic.gd"
 Config="*res://config.gd"
 PKT="*res://net/pkt.gd"
 Connection="*res://net/connection.gd"
+Omni="*res://omni.gd"
 
 [rendering]
 

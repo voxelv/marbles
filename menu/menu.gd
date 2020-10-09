@@ -1,24 +1,13 @@
 extends Node
 
-onready var resume_game_button := find_node("resume_game_button") as Button
 onready var local_game_button := find_node("local_game_button") as Button
 onready var join_game_button := find_node("join_game_button") as Button
 onready var serve_game_button := find_node("serve_game_button") as Button
 onready var quit_to_desktop_button := find_node("quit_to_desktop_button") as Button
-onready var quit_to_menu_button := find_node("quit_to_menu_button") as Button
 
 onready var text_output := find_node("text_output") as TextEdit
 onready var join_game_items := find_node("join_game_items") as Control
 onready var serve_game_items := find_node("serve_game_items") as Control
-
-onready var all_buttons := [
-	resume_game_button,
-	local_game_button,
-	join_game_button,
-	serve_game_button,
-	quit_to_desktop_button,
-	quit_to_menu_button,
-]
 
 var viewer:Node = null
 var _peers := []
@@ -33,23 +22,16 @@ func _ready() -> void:
 	
 	Connection.clear_peers()
 	
-	if Connection.local_viewer == null:
-		show_only_buttons([local_game_button, join_game_button, serve_game_button, quit_to_desktop_button])
-	else:
-		show_only_buttons([resume_game_button, quit_to_desktop_button, quit_to_menu_button])
-
-func show_only_buttons(buttons:Array):
-	for b in all_buttons:
-		b.visible = false
-	for b in buttons:
-		b.visible = true
+func loading_viewer():
+	Omni.scene_for_loading_to_load = "res://viewer/viewer.tscn"
+	get_tree().change_scene("res://menu/loading.tscn")
 
 func _on_local_game_button_pressed():
 	Config.is_local = true
 	Config.is_server = false
 	
 	Connection.setup()
-	get_tree().change_scene("res://viewer/viewer.tscn")
+	loading_viewer()
 
 func _on_join_game_button_pressed() -> void:
 	Config.is_local = false
