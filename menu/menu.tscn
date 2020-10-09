@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://menu/menu.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 0.694118 )
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.490196, 0.0117647, 0, 1 )
@@ -17,15 +20,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui"]
+[node name="PanelContainer" type="PanelContainer" parent="ui"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer"]
+margin_right = 1024.0
+margin_bottom = 600.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="PanelContainer" parent="ui/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="ui/PanelContainer/HBoxContainer"]
 margin_left = 362.0
 margin_right = 662.0
 margin_bottom = 600.0
@@ -36,13 +47,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="ui/HBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer"]
 margin_right = 300.0
 margin_bottom = 600.0
 custom_constants/margin_right = 4
 custom_constants/margin_left = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer"]
 margin_left = 4.0
 margin_right = 296.0
 margin_bottom = 600.0
@@ -50,46 +61,53 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="local_game_button" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 220.0
+[node name="resume_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 137.0
 margin_right = 292.0
-margin_bottom = 270.0
+margin_bottom = 187.0
+rect_min_size = Vector2( 0, 50 )
+text = "RESUME GAME"
+
+[node name="local_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 192.0
+margin_right = 292.0
+margin_bottom = 242.0
 rect_min_size = Vector2( 0, 50 )
 focus_mode = 0
 text = "LOCAL GAME"
 
-[node name="join_game_button" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 275.0
+[node name="join_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 247.0
 margin_right = 292.0
-margin_bottom = 325.0
+margin_bottom = 297.0
 rect_min_size = Vector2( 0, 50 )
 focus_mode = 0
 text = "JOIN GAME"
 
-[node name="join_game_items" type="VBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="join_game_items" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
 margin_top = 301.0
 margin_right = 292.0
 margin_bottom = 354.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items"]
 margin_right = 292.0
 margin_bottom = 24.0
 
-[node name="join_game_server" type="LineEdit" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
+[node name="join_game_server" type="LineEdit" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
 margin_right = 179.0
 margin_bottom = 24.0
 focus_next = NodePath("../join_game_port")
 size_flags_horizontal = 3
 text = "derelictech.com"
 
-[node name="Label" type="Label" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
+[node name="Label" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
 margin_left = 184.0
 margin_right = 224.0
 margin_bottom = 24.0
 text = "Port:"
 
-[node name="join_game_port" type="LineEdit" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
+[node name="join_game_port" type="LineEdit" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer"]
 margin_left = 229.0
 margin_right = 292.0
 margin_bottom = 24.0
@@ -98,12 +116,12 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.25
 text = "9080"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items"]
 margin_top = 29.0
 margin_right = 292.0
 margin_bottom = 53.0
 
-[node name="join_game_cancel" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2"]
+[node name="join_game_cancel" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2"]
 margin_right = 143.0
 margin_bottom = 24.0
 focus_next = NodePath("../../HBoxContainer/join_game_server")
@@ -111,7 +129,7 @@ focus_mode = 1
 size_flags_horizontal = 3
 text = "Cancel"
 
-[node name="join_game_join" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2"]
+[node name="join_game_join" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2"]
 margin_left = 148.0
 margin_right = 292.0
 margin_bottom = 24.0
@@ -120,62 +138,79 @@ focus_mode = 1
 size_flags_horizontal = 3
 text = "JOIN!"
 
-[node name="serve_game_button" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 330.0
+[node name="serve_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 302.0
 margin_right = 292.0
-margin_bottom = 380.0
+margin_bottom = 352.0
 rect_min_size = Vector2( 0, 50 )
 focus_mode = 0
 text = "SERVE GAME"
 
-[node name="serve_game_items" type="VBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="serve_game_items" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
 margin_top = 356.0
 margin_right = 292.0
 margin_bottom = 409.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items"]
 margin_right = 292.0
 margin_bottom = 24.0
 
-[node name="Label" type="Label" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer"]
+[node name="Label" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer"]
 margin_right = 40.0
 margin_bottom = 24.0
 text = "Port:"
 
-[node name="serve_game_port" type="LineEdit" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer"]
+[node name="serve_game_port" type="LineEdit" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer"]
 margin_left = 45.0
 margin_right = 292.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items"]
 margin_top = 29.0
 margin_right = 292.0
 margin_bottom = 53.0
 
-[node name="serve_game_cancel" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer2"]
+[node name="serve_game_cancel" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer2"]
 margin_right = 143.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "Cancel"
 
-[node name="serve_game_serve" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer2"]
+[node name="serve_game_serve" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer2"]
 margin_left = 148.0
 margin_right = 292.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "SERVE!"
 
+[node name="quit_to_desktop_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 357.0
+margin_right = 292.0
+margin_bottom = 407.0
+rect_min_size = Vector2( 0, 50 )
+text = "QUIT TO DESKTOP"
+
+[node name="quit_to_menu_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 412.0
+margin_right = 292.0
+margin_bottom = 462.0
+rect_min_size = Vector2( 0, 50 )
+text = "QUIT TO MENU"
+
 [node name="Timer" type="Timer" parent="."]
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/local_game_button" to="." method="_on_local_game_button_pressed"]
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_button" to="." method="_on_join_game_button_pressed"]
-[connection signal="focus_entered" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer/join_game_server" to="." method="_on_join_game_server_focus_entered"]
-[connection signal="text_entered" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer/join_game_server" to="." method="_on_join_game_join_action"]
-[connection signal="focus_entered" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer/join_game_port" to="." method="_on_join_game_port_focus_entered"]
-[connection signal="text_entered" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer/join_game_port" to="." method="_on_join_game_join_action"]
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2/join_game_cancel" to="." method="_on_join_game_cancel_pressed"]
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2/join_game_join" to="." method="_on_join_game_join_pressed"]
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_button" to="." method="_on_serve_game_button_pressed"]
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer2/serve_game_cancel" to="." method="_on_serve_game_cancel_pressed"]
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer2/serve_game_serve" to="." method="_on_serve_game_serve_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/resume_game_button" to="." method="_on_resume_game_button_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/local_game_button" to="." method="_on_local_game_button_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_button" to="." method="_on_join_game_button_pressed"]
+[connection signal="focus_entered" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer/join_game_server" to="." method="_on_join_game_server_focus_entered"]
+[connection signal="text_entered" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer/join_game_server" to="." method="_on_join_game_join_action"]
+[connection signal="focus_entered" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer/join_game_port" to="." method="_on_join_game_port_focus_entered"]
+[connection signal="text_entered" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer/join_game_port" to="." method="_on_join_game_join_action"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2/join_game_cancel" to="." method="_on_join_game_cancel_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/join_game_items/HBoxContainer2/join_game_join" to="." method="_on_join_game_join_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_button" to="." method="_on_serve_game_button_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer2/serve_game_cancel" to="." method="_on_serve_game_cancel_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/serve_game_items/HBoxContainer2/serve_game_serve" to="." method="_on_serve_game_serve_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/quit_to_desktop_button" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/quit_to_menu_button" to="." method="_on_quit_to_menu_button_pressed"]

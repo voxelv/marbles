@@ -36,6 +36,7 @@ onready var pass_button := find_node("pass_button") as Button
 onready var dice_texturerect := find_node("dice_texturerect") as TextureRect
 onready var player_status_list := find_node("player_status_list") as Container
 onready var dice_panel := find_node("dice_panel") as PanelContainer
+onready var menu_button := find_node("menu_button") as Button
 
 # Members
 var select_state:int = select_state_type.NONE
@@ -76,7 +77,16 @@ func _ready():
 		player_status.connect("color_set", self, "_on_player_status_color_set", [i])
 		player_status.connect("name_set", self, "_on_player_status_name_set", [i])
 	
+	# Menu Button
+	menu_button.connect("pressed", self, "_on_menu_button_pressed")
+	
 	update_selectors()
+	
+	Connection.local_viewer = self
+	if Config.is_local:
+		Connection.local_connection_setup()
+	else:
+		Connection.remote_connection_setup()
 
 func _on_pass_own_position_marbles_toggled(pressed:bool):
 	Logic.pass_own_position_marbles = pressed
@@ -126,6 +136,8 @@ func update_ui(game_state:GameState):
 		# Update names
 		player_status.set_name(cci.display_name)
 		
+	board.show_marbles(game_state.game_phase == Logic.game_phase.STARTED)
+	
 	set_board_state(game_state.board)
 	update_selectors()
 
@@ -205,6 +217,10 @@ func _on_player_status_color_set(color_id, player):
 func _on_player_status_name_set(new_name, player):
 	Connection.client.send_player_set_name_request(player, new_name)
 
+func _on_menu_button_pressed() -> void:
+	Connection.client._socket.disconnect_from_host()
+	get_tree().change_scene("res://menu/menu.tscn")
+
 # Control Interaction
 func set_board_state(board_state_in:BoardState):
 	state.board.set_from(board_state_in)
@@ -252,6 +268,7 @@ func idx_pressed(idx:int):
 					select(idx)
 				else:
 					deselect()
+
 
 
 

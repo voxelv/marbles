@@ -84,7 +84,7 @@ func setup_marbles():
 		var color := [marble_color.A, marble_color.B, marble_color.C, marble_color.D]
 		for _m in range(len(Logic.home_indices[p])):
 			var new_marble := make_marble(color[p]) as Spatial
-			self.add_child(new_marble)
+			marbles_container.add_child(new_marble)
 			new_marble.visible = false
 			_marbles[p].append(new_marble)
 
@@ -112,7 +112,8 @@ func set_player_colors(colors:Array):
 	for i in range(len(colors)):
 		(player_marker_materials[i] as SpatialMaterial).albedo_color = colors[i]
 
-
+func show_marbles(show:bool):
+	marbles_container.visible = show
 
 
 
