@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://viewer/player_status/status_dot.svg" type="Texture" id=2]
@@ -8,7 +8,7 @@
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=2]
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -19,15 +19,15 @@ expand_margin_right = 2.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=3]
 
-[sub_resource type="StyleBoxFlat" id=8]
-
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=4]
 
 [sub_resource type="StyleBoxFlat" id=5]
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=6]
+
+[sub_resource type="StyleBoxFlat" id=7]
 content_margin_left = 7.5
 content_margin_right = 7.5
 content_margin_top = 5.0
@@ -42,6 +42,9 @@ expand_margin_left = 2.0
 expand_margin_right = 2.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.129412, 0.129412, 0.129412, 1 )
 
 [node name="player_status" type="PanelContainer"]
 margin_right = 276.0
@@ -88,11 +91,11 @@ margin_bottom = 48.0
 focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/focus = SubResource( 8 )
-custom_styles/disabled = SubResource( 9 )
-custom_styles/normal = SubResource( 5 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
 disabled = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
@@ -106,7 +109,7 @@ custom_constants/separation = 0
 margin_right = 234.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-custom_styles/hover = SubResource( 4 )
+custom_styles/hover = SubResource( 7 )
 custom_colors/font_color_disabled = Color( 0.886275, 0.886275, 0.886275, 1 )
 disabled = true
 text = "----"
@@ -179,6 +182,7 @@ margin_bottom = 48.0
 [node name="Panel" type="Panel" parent="color_popup"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_styles/panel = SubResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

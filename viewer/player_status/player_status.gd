@@ -20,15 +20,6 @@ var hover_style:StyleBoxFlat
 func _ready() -> void:
 	set_active(false)
 	
-#	color_popup.popup(get_global_rect()) # TODO remove
-	
-	for c in Palette.avail_colors.keys():
-		var color := Palette.avail_colors[c] as Color
-		var new_color_button = color_button_preload.instance()
-		new_color_button.connect("pressed", self, "_on_color_button_pressed", [c])
-		color_popup_buttons.add_child(new_color_button)
-		new_color_button.set_color(color)
-	
 	non_hover_style = (player_color_button.get('custom_styles/normal') as StyleBoxFlat).duplicate()
 	hover_style = (player_color_button.get('custom_styles/hover') as StyleBoxFlat).duplicate()
 	
@@ -60,6 +51,26 @@ func _on_color_button_pressed(color_id:int):
 
 func _on_player_color_button_pressed():
 	color_popup.popup(get_global_rect())
+	
+	# Remove previous color buttons
+	for b in color_popup_buttons.get_children():
+		(b as Node).queue_free()
+	
+	# Set color buttons
+	for c in Palette.avail_colors.keys():
+		var color := Palette.avail_colors[c] as Color
+		
+		# Gather used colors
+		var used_colors := []
+		for player in range(Logic.player.COUNT):
+			used_colors.append(Connection.local_viewer.state.custom_clients[player].color_id)
+		
+		if not c in used_colors:
+			var new_color_button = color_button_preload.instance()
+			new_color_button.connect("pressed", self, "_on_color_button_pressed", [c])
+			new_color_button.set_h_size_flags(SIZE_EXPAND_FILL)
+			color_popup_buttons.add_child(new_color_button)
+			new_color_button.set_color(color)
 
 func _on_player_name_pressed():
 	name_popup.popup(get_global_rect())
