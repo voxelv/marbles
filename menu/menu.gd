@@ -5,7 +5,6 @@ onready var join_game_button := find_node("join_game_button") as Button
 onready var serve_game_button := find_node("serve_game_button") as Button
 onready var quit_to_desktop_button := find_node("quit_to_desktop_button") as Button
 
-onready var text_output := find_node("text_output") as TextEdit
 onready var join_game_items := find_node("join_game_items") as Control
 onready var serve_game_items := find_node("serve_game_items") as Control
 
@@ -13,6 +12,8 @@ var viewer:Node = null
 var _peers := []
 
 func _ready() -> void:
+	Connection.clear_peers()
+	
 	var cli_args = OS.get_cmdline_args()
 	if "SERVER" in cli_args:
 		print("I am SERVER...")
@@ -20,11 +21,8 @@ func _ready() -> void:
 		Config.is_local = false
 		_serve_game()
 	
-	Connection.clear_peers()
-	
 func loading_viewer():
-	Omni.scene_for_loading_to_load = "res://viewer/viewer.tscn"
-	get_tree().change_scene("res://menu/loading.tscn")
+	Omni.change_scene_with_loading("res://viewer/viewer.tscn")
 
 func _on_local_game_button_pressed():
 	Config.is_local = true
@@ -46,15 +44,7 @@ func _on_join_game_join_pressed() -> void:
 	Config.PORT = int((find_node("join_game_port") as LineEdit).text)
 	
 	Connection.setup()
-	get_tree().change_scene("res://viewer/viewer.tscn")
-	
-#	viewer = viewer_packedscene.instance()
-#	var root = get_tree().get_root()
-#	root.add_child(viewer)
-#	Connection.local_viewer = viewer
-#	for p in peers:
-#		viewer.add_child(p)
-#	queue_free()
+	loading_viewer()
 
 func _on_join_game_cancel_pressed():
 	_set_join_game(false)
@@ -108,16 +98,6 @@ func _on_quit_button_pressed() -> void:
 func _delete_viewer():
 	if Connection.local_viewer != null:
 		Connection.local_viewer.queue_free()
-
-func _on_resume_game_button_pressed() -> void:
-	if Connection.local_viewer != null:
-		queue_free()
-
-func _on_quit_to_menu_button_pressed() -> void:
-	_delete_viewer()
-	yield(get_tree(), "idle_frame")
-	queue_free()
-	get_tree().change_scene("res://menu/menu.tscn")
 
 
 
