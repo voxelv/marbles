@@ -129,16 +129,32 @@ func _handle_pkt(id:int, pkt:Dictionary):
 				send_game_state(state)
 		
 		PKT.type.PLAYER_SET_NAME_REQUEST:
-			var player = pkt.get('player', Logic.player.COUNT)
-			if not Logic.valid_player(player):
+			var reported_player = pkt.get('player', Logic.player.COUNT)
+			if not validate_player(id, reported_player):
 				return
-			state.custom_clients[player].display_name = pkt.get('name', "?")
+			
+			var player = clients[id].player
+			
+			var requested_name := pkt.get('name', "?") as String
+			var already_used := false
+			for p in range(Logic.player.COUNT):
+				if p == player:
+					continue
+				if state.custom_clients[p].display_name == requested_name:
+					already_used = true
+			if already_used:
+				return
+			
+			state.custom_clients[player].display_name = requested_name
 			send_game_state(state)
 			
 		PKT.type.PLAYER_SET_COLOR_REQUEST:
-			var player = pkt.get('player', Logic.player.COUNT)
-			if not Logic.valid_player(player):
+			var reported_player = pkt.get('player', Logic.player.COUNT)
+			if not validate_player(id, reported_player):
 				return
+			
+			var player = clients[id].player
+			
 			var request_color_id = pkt.get('color', Palette.color.GRAY)
 			var already_used := false
 			for p in range(Logic.player.COUNT):
@@ -215,6 +231,17 @@ func _send_pkt(pkt:Dictionary, broadcast:bool=true, player:int=Logic.player.COUN
 			var id = get_id_from_player(player)
 			if id != -1:
 				_socket.get_peer(id).put_var(pkt)
+
+func validate_player(id:int, reported_player:int)->bool:
+	var player = clients[id].player
+	
+	if reported_player != player:
+		return false
+	
+	if not Logic.valid_player(player):
+		return false
+	
+	return true
 
 func get_id_from_player(player:int)->int:
 	var ret_id = -1
