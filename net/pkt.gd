@@ -33,6 +33,8 @@ func fmt_player_set_color_request(player:int, color_id:int):
 	return {'type': type.PLAYER_SET_COLOR_REQUEST, 'player':player, 'color': color_id}
 
 func fmt_player_set_name_request(player:int, new_name:String):
+	if len(new_name) > 128:
+		return {}
 	return {'type': type.PLAYER_SET_NAME_REQUEST, 'player': player, 'name': new_name}
 
 func fmt_game_state(state:GameState)->Dictionary:

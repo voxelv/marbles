@@ -91,6 +91,9 @@ func _handle_pkt(pkt:Dictionary):
 			}[info.player])
 
 func _send_pkt(pkt:Dictionary)->void:
+	if pkt.empty():
+		return
+	
 	if Config.is_local:
 		Connection.server._handle_pkt(info.peer_id, pkt)
 	else:

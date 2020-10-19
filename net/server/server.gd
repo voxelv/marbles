@@ -220,6 +220,9 @@ func _handle_pkt(id:int, pkt:Dictionary):
 				clients[id].player = state.player_turn
 
 func _send_pkt(pkt:Dictionary, broadcast:bool=true, player:int=Logic.player.COUNT)->void:
+	if pkt.empty():
+		return
+	
 	if Config.is_local:
 		Connection.client._handle_pkt(pkt)
 	else:
