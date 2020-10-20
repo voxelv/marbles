@@ -43,6 +43,13 @@ var all_indices := (
 	+ d_home_indices
 	)
 
+var a_position_indices := position_indices
+var b_position_indices := [position_indices[1], position_indices[2], position_indices[3], position_indices[0]]
+var c_position_indices := [position_indices[2], position_indices[3], position_indices[0], position_indices[1]]
+var d_position_indices := [position_indices[3], position_indices[0], position_indices[1], position_indices[2]]
+
+var player_position_indices := [a_position_indices, b_position_indices, c_position_indices, d_position_indices]
+
 func _ready():
 	call_deferred("_setup_dag")
 
@@ -116,7 +123,7 @@ func _movements_recurser(board_state:BoardState, dice_value:int, player:int, inc
 		var ending_indices := []
 		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[player][0]:
 			ending_indices.append(node.next_main_track_node.idx)
-		if node.next_position_node != null and origin_idx in position_indices:
+		if node.next_position_node != null and origin_idx in position_indices and (player_position_indices[player].find(node.next_position_node.idx) > player_position_indices[player].find(origin_idx)):
 			ending_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
 			if dice_value == 1 and origin_idx in position_indices:
@@ -138,7 +145,7 @@ func _movements_recurser(board_state:BoardState, dice_value:int, player:int, inc
 		var recurse_indices := []
 		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[player][0]:
 			recurse_indices.append(node.next_main_track_node.idx)
-		if node.next_position_node != null and origin_idx in position_indices:
+		if node.next_position_node != null and origin_idx in position_indices and (player_position_indices[player].find(node.next_position_node.idx) > player_position_indices[player].find(origin_idx)):
 			recurse_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
 			recurse_indices.append(node.next_center_node.idx)
