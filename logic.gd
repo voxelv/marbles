@@ -112,6 +112,9 @@ func calc_valid_movements(board_state:BoardState, dice_value:int, player:int, fr
 	
 	return ret
 
+func _no_position_looping(player:int, next_position_idx:int, origin_idx:int):
+	return (player_position_indices[player].find(next_position_idx) > player_position_indices[player].find(origin_idx))
+
 func _movements_recurser(board_state:BoardState, dice_value:int, player:int, increments_left:int, origin_idx:int, from_idx:int, path_here:Array)->Array:
 	var ret := []
 	
@@ -123,7 +126,7 @@ func _movements_recurser(board_state:BoardState, dice_value:int, player:int, inc
 		var ending_indices := []
 		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[player][0]:
 			ending_indices.append(node.next_main_track_node.idx)
-		if node.next_position_node != null and origin_idx in position_indices and (player_position_indices[player].find(node.next_position_node.idx) > player_position_indices[player].find(origin_idx)):
+		if node.next_position_node != null and origin_idx in position_indices and _no_position_looping(player, node.next_position_node.idx, origin_idx):
 			ending_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
 			if dice_value == 1 and origin_idx in position_indices:
@@ -137,7 +140,6 @@ func _movements_recurser(board_state:BoardState, dice_value:int, player:int, inc
 				ending_indices.append(position_indices[i])
 		for idx in ending_indices:
 			if not idx in board_state.marbles[player]:
-#				print("%d: %s" % [idx, str(path_here)])
 				ret.append(idx)
 	else:
 		assert(increments_left in [2, 3, 4, 5, 6])
@@ -145,7 +147,7 @@ func _movements_recurser(board_state:BoardState, dice_value:int, player:int, inc
 		var recurse_indices := []
 		if node.next_main_track_node != null and node.next_main_track_node.idx != track_indices[player][0]:
 			recurse_indices.append(node.next_main_track_node.idx)
-		if node.next_position_node != null and origin_idx in position_indices and (player_position_indices[player].find(node.next_position_node.idx) > player_position_indices[player].find(origin_idx)):
+		if node.next_position_node != null and origin_idx in position_indices and _no_position_looping(player, node.next_position_node.idx, origin_idx):
 			recurse_indices.append(node.next_position_node.idx)
 		if node.next_center_node != null:
 			recurse_indices.append(node.next_center_node.idx)
