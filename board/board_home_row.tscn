@@ -1,7 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://board/wood512_material.tres" type="Material" id=1]
+[ext_resource path="res://board/home_row_material.tres" type="Material" id=1]
 [ext_resource path="res://board/marble_hole.tscn" type="PackedScene" id=2]
+
 
 
 
