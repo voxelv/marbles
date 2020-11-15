@@ -5,8 +5,8 @@ onready var join_game_button := find_node("join_game_button") as Button
 onready var serve_game_button := find_node("serve_game_button") as Button
 onready var quit_to_desktop_button := find_node("quit_to_desktop_button") as Button
 
-onready var join_game_items := find_node("join_game_items") as Control
-onready var serve_game_items := find_node("serve_game_items") as Control
+onready var tabs := find_node("tabs") as TabContainer
+enum tab {MAIN, JOIN, SERVE}
 
 var viewer:Node = null
 var _peers := []
@@ -20,6 +20,9 @@ func _ready() -> void:
 		Config.is_server = true
 		Config.is_local = false
 		_serve_game()
+		
+	if OS.get_name() in ["OSX", "Server", "Windows", "X11"]:
+		serve_game_button.set_visible(true)
 	
 func loading_viewer():
 	Omni.change_scene_with_loading("res://viewer/viewer.tscn")
@@ -72,16 +75,12 @@ func _add_peers_to_root():
 		get_tree().get_root().add_child(p)
 
 func _set_join_game(join:bool)->void:
-	join_game_items.visible = join
-	local_game_button.disabled = join
-	serve_game_button.disabled = join
+	tabs.current_tab = tab.JOIN if join else tab.MAIN
 	if join:
 		(find_node("join_game_join") as Button).grab_focus()
 
 func _set_serve_game(serve:bool)->void:
-	serve_game_items.visible = serve
-	join_game_button.disabled = serve
-	local_game_button.disabled = serve
+	tabs.current_tab = tab.SERVE if serve else tab.MAIN
 
 func _on_join_game_server_focus_entered() -> void:
 	var join_game_server := find_node("join_game_server") as LineEdit
