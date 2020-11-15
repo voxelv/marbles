@@ -1,6 +1,12 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://board/board.gd" type="Script" id=1]
+[ext_resource path="res://board/interaction/board_pokey_hole.tscn" type="PackedScene" id=2]
+[ext_resource path="res://board/interaction/board_home_entrance.tscn" type="PackedScene" id=3]
+[ext_resource path="res://board/interaction/board_home.tscn" type="PackedScene" id=4]
+[ext_resource path="res://board/interaction/board_center.tscn" type="PackedScene" id=5]
+[ext_resource path="res://board/interaction/board_home_row.tscn" type="PackedScene" id=6]
+[ext_resource path="res://board/interaction/board_5_run.tscn" type="PackedScene" id=7]
 [ext_resource path="res://board/player_materials/D.tres" type="Material" id=8]
 [ext_resource path="res://board/player_materials/C.tres" type="Material" id=9]
 [ext_resource path="res://board/player_materials/B.tres" type="Material" id=10]
@@ -123,201 +129,283 @@ shape = SubResource( 5 )
 mesh = ExtResource( 13 )
 material/0 = ExtResource( 27 )
 
-[node name="home_rows" type="Spatial" parent="blender_board"]
+[node name="board_home_rows" type="Spatial" parent="blender_board"]
 
-[node name="a_home_row" type="MeshInstance" parent="blender_board/home_rows"]
+[node name="a_home_row" type="MeshInstance" parent="blender_board/board_home_rows"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0 )
 mesh = ExtResource( 14 )
 material/0 = ExtResource( 23 )
 
-[node name="b_home_row" type="MeshInstance" parent="blender_board/home_rows"]
+[node name="b_home_row" type="MeshInstance" parent="blender_board/board_home_rows"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.38419e-07, 0, 4 )
 mesh = ExtResource( 14 )
 material/0 = ExtResource( 23 )
 
-[node name="c_home_row" type="MeshInstance" parent="blender_board/home_rows"]
+[node name="c_home_row" type="MeshInstance" parent="blender_board/board_home_rows"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -4, 0, 0 )
 mesh = ExtResource( 14 )
 material/0 = ExtResource( 23 )
 
-[node name="d_home_row" type="MeshInstance" parent="blender_board/home_rows"]
+[node name="d_home_row" type="MeshInstance" parent="blender_board/board_home_rows"]
 transform = Transform( 1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 2.38419e-07, 0, -4 )
 mesh = ExtResource( 14 )
 material/0 = ExtResource( 23 )
 
-[node name="main_track_section" type="Spatial" parent="blender_board"]
+[node name="board_main_track_section" type="Spatial" parent="blender_board"]
 
-[node name="a_pokey_hole" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="a_pokey_hole" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5 )
 mesh = ExtResource( 12 )
 material/0 = ExtResource( 25 )
 
-[node name="a_5_run_1" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="a_5_run_1" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1.5 )
 mesh = ExtResource( 15 )
 material/0 = ExtResource( 24 )
 
-[node name="a_5_run_2" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="a_5_run_2" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.5, 0, 5 )
 mesh = ExtResource( 15 )
 material/0 = ExtResource( 24 )
 
-[node name="b_home_entrance" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="b_home_entrance" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 7.5 )
 mesh = ExtResource( 16 )
 material/0 = ExtResource( 26 )
 
-[node name="b_pokey_hole" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="b_pokey_hole" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.5, 0, 7.5 )
 mesh = ExtResource( 12 )
 material/0 = ExtResource( 25 )
 
-[node name="b_5_run_1" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="b_5_run_1" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -1.5, 0, 4 )
 mesh = ExtResource( 15 )
 material/0 = ExtResource( 24 )
 
-[node name="b_5_run_2" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="b_5_run_2" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -5, 0, 1.5 )
 mesh = ExtResource( 15 )
 material/0 = ExtResource( 24 )
 
-[node name="c_home_entrance" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="c_home_entrance" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -7.5, 0, -4.76837e-07 )
 mesh = ExtResource( 16 )
 material/0 = ExtResource( 26 )
 
-[node name="c_pokey_hole" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="c_pokey_hole" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -7.5, 0, -1.5 )
 mesh = ExtResource( 12 )
 material/0 = ExtResource( 25 )
 
-[node name="c_5_run_1" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="c_5_run_1" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( -1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, -4, 0, -1.5 )
 mesh = ExtResource( 15 )
 material/0 = ExtResource( 24 )
 
-[node name="c_5_run_2" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="c_5_run_2" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 3.0598e-07, 0, -1, 0, 1, 0, 1, 0, 3.0598e-07, -1.5, 0, -5 )
 mesh = ExtResource( 15 )
 material/0 = ExtResource( 24 )
 
-[node name="d_home_entrance" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="d_home_entrance" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 0, 0, -7.5 )
 mesh = ExtResource( 16 )
 material/0 = ExtResource( 26 )
 
-[node name="d_pokey_hole" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="d_pokey_hole" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 1.5, 0, -7.5 )
 mesh = ExtResource( 12 )
 material/0 = ExtResource( 25 )
 
-[node name="d_5_run_1" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="d_5_run_1" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 3.0598e-07, 0, -1, 0, 1, 0, 1, 0, 3.0598e-07, 1.5, 0, -4 )
 mesh = ExtResource( 15 )
 material/0 = ExtResource( 24 )
 
-[node name="d_5_run_2" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="d_5_run_2" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 1, 0, 3.49691e-07, 0, 1, 0, -3.49691e-07, 0, 1, 5, 0, -1.5 )
 mesh = ExtResource( 15 )
 material/0 = ExtResource( 24 )
 
-[node name="a_home_entrance" type="MeshInstance" parent="blender_board/main_track_section"]
+[node name="a_home_entrance" type="MeshInstance" parent="blender_board/board_main_track_section"]
 transform = Transform( 1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 7.5, 0, -4.76837e-07 )
 mesh = ExtResource( 16 )
 material/0 = ExtResource( 26 )
 
-[node name="homes" type="Spatial" parent="blender_board"]
+[node name="board_homes" type="Spatial" parent="blender_board"]
 
-[node name="a_home" type="MeshInstance" parent="blender_board/homes"]
+[node name="a_home" type="MeshInstance" parent="blender_board/board_homes"]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5, 0, 5 )
 mesh = ExtResource( 19 )
 material/0 = ExtResource( 22 )
 
-[node name="b_home" type="MeshInstance" parent="blender_board/homes"]
+[node name="b_home" type="MeshInstance" parent="blender_board/board_homes"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5 )
 mesh = ExtResource( 19 )
 material/0 = ExtResource( 22 )
 
-[node name="c_home" type="MeshInstance" parent="blender_board/homes"]
+[node name="c_home" type="MeshInstance" parent="blender_board/board_homes"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5, 0, -5 )
 mesh = ExtResource( 19 )
 material/0 = ExtResource( 22 )
 
-[node name="d_home" type="MeshInstance" parent="blender_board/homes"]
+[node name="d_home" type="MeshInstance" parent="blender_board/board_homes"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5, 0, -5 )
 mesh = ExtResource( 19 )
 material/0 = ExtResource( 22 )
 
-[node name="edges" type="Spatial" parent="blender_board"]
+[node name="board_edges" type="Spatial" parent="blender_board"]
 
-[node name="a" type="Spatial" parent="blender_board/edges"]
+[node name="a" type="Spatial" parent="blender_board/board_edges"]
 
-[node name="home_entrance_edge" type="MeshInstance" parent="blender_board/edges/a"]
+[node name="home_entrance_edge" type="MeshInstance" parent="blender_board/board_edges/a"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0 )
 mesh = ExtResource( 17 )
 material/0 = ExtResource( 21 )
 
-[node name="pokey_hole_edge" type="MeshInstance" parent="blender_board/edges/a"]
+[node name="pokey_hole_edge" type="MeshInstance" parent="blender_board/board_edges/a"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5 )
 mesh = ExtResource( 18 )
 material/0 = ExtResource( 21 )
 
-[node name="home_edge" type="MeshInstance" parent="blender_board/edges/a"]
+[node name="home_edge" type="MeshInstance" parent="blender_board/board_edges/a"]
 transform = Transform( 0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 5 )
 mesh = ExtResource( 20 )
 material/0 = ExtResource( 21 )
 
-[node name="b" type="Spatial" parent="blender_board/edges"]
+[node name="b" type="Spatial" parent="blender_board/board_edges"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
 
-[node name="home_entrance_edge" type="MeshInstance" parent="blender_board/edges/b"]
+[node name="home_entrance_edge" type="MeshInstance" parent="blender_board/board_edges/b"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0 )
 mesh = ExtResource( 17 )
 material/0 = ExtResource( 21 )
 
-[node name="pokey_hole_edge" type="MeshInstance" parent="blender_board/edges/b"]
+[node name="pokey_hole_edge" type="MeshInstance" parent="blender_board/board_edges/b"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5 )
 mesh = ExtResource( 18 )
 material/0 = ExtResource( 21 )
 
-[node name="home_edge" type="MeshInstance" parent="blender_board/edges/b"]
+[node name="home_edge" type="MeshInstance" parent="blender_board/board_edges/b"]
 transform = Transform( 0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 5 )
 mesh = ExtResource( 20 )
 material/0 = ExtResource( 21 )
 
-[node name="c" type="Spatial" parent="blender_board/edges"]
+[node name="c" type="Spatial" parent="blender_board/board_edges"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0 )
 
-[node name="home_entrance_edge" type="MeshInstance" parent="blender_board/edges/c"]
+[node name="home_entrance_edge" type="MeshInstance" parent="blender_board/board_edges/c"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0 )
 mesh = ExtResource( 17 )
 material/0 = ExtResource( 21 )
 
-[node name="pokey_hole_edge" type="MeshInstance" parent="blender_board/edges/c"]
+[node name="pokey_hole_edge" type="MeshInstance" parent="blender_board/board_edges/c"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5 )
 mesh = ExtResource( 18 )
 material/0 = ExtResource( 21 )
 
-[node name="home_edge" type="MeshInstance" parent="blender_board/edges/c"]
+[node name="home_edge" type="MeshInstance" parent="blender_board/board_edges/c"]
 transform = Transform( 0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 5 )
 mesh = ExtResource( 20 )
 material/0 = ExtResource( 21 )
 
-[node name="d" type="Spatial" parent="blender_board/edges"]
+[node name="d" type="Spatial" parent="blender_board/board_edges"]
 transform = Transform( 1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 0, 0, 0 )
 
-[node name="home_entrance_edge" type="MeshInstance" parent="blender_board/edges/d"]
+[node name="home_entrance_edge" type="MeshInstance" parent="blender_board/board_edges/d"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0 )
 mesh = ExtResource( 17 )
 material/0 = ExtResource( 21 )
 
-[node name="pokey_hole_edge" type="MeshInstance" parent="blender_board/edges/d"]
+[node name="pokey_hole_edge" type="MeshInstance" parent="blender_board/board_edges/d"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5 )
 mesh = ExtResource( 18 )
 material/0 = ExtResource( 21 )
 
-[node name="home_edge" type="MeshInstance" parent="blender_board/edges/d"]
+[node name="home_edge" type="MeshInstance" parent="blender_board/board_edges/d"]
 transform = Transform( 0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 5 )
 mesh = ExtResource( 20 )
 material/0 = ExtResource( 21 )
+
+[node name="interaction_board" type="Spatial" parent="."]
+
+[node name="center" type="Spatial" parent="interaction_board" instance=ExtResource( 5 )]
+
+[node name="home_rows" type="Spatial" parent="interaction_board"]
+
+[node name="a_home_row" type="Spatial" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4, 0, 0 )
+
+[node name="b_home_row" type="Spatial" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 4 )
+
+[node name="c_home_row" type="Spatial" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0 )
+
+[node name="d_home_row" type="Spatial" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0, -4 )
+
+[node name="main_track_section" type="Spatial" parent="interaction_board"]
+
+[node name="a_pokey" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 0, 1.5 )
+
+[node name="a_run_1" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+transform = Transform( -1, 0, -4.37114e-07, 0, 1, 0, 4.37114e-07, 0, -1, 4, 0, 1.5 )
+
+[node name="a_run_2" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+transform = Transform( 4.80825e-07, 0, -1, 0, 1, 0, 1, 0, 4.80825e-07, 1.5, 0, 5 )
+
+[node name="b_home_entrance" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.5 )
+
+[node name="b_pokey" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 7.5 )
+
+[node name="b_run_1" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.5, 0, 4 )
+
+[node name="b_run_2" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -5, 0, 1.5 )
+
+[node name="c_home_entrance" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
+transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -7.5, 0, 0 )
+
+[node name="c_pokey" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7.5, 0, -1.5 )
+
+[node name="c_run_1" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -4, 0, -1.5 )
+
+[node name="c_run_2" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+transform = Transform( -2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, -1.5, 0, -5 )
+
+[node name="d_home_entrance" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -7.5 )
+
+[node name="d_pokey" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 1.5, 0, -7.5 )
+
+[node name="d_run_1" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+transform = Transform( 3.0598e-07, 0, -1, 0, 1, 0, 1, 0, 3.0598e-07, 1.5, 0, -4 )
+
+[node name="d_run_2" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 3.49691e-07, 0, 1, 0, -3.49691e-07, 0, 1, 5, 0, -1.5 )
+
+[node name="a_home_entrance" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 0, 4.76837e-07 )
+
+[node name="homes" type="Spatial" parent="interaction_board"]
+
+[node name="a_home" type="Spatial" parent="interaction_board/homes" instance=ExtResource( 4 )]
+transform = Transform( 1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 5, 0, 4.99618 )
+
+[node name="b_home" type="Spatial" parent="interaction_board/homes" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5 )
+
+[node name="c_home" type="Spatial" parent="interaction_board/homes" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5, 0, -5 )
+
+[node name="d_home" type="Spatial" parent="interaction_board/homes" instance=ExtResource( 4 )]
+transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5, 0, -5 )

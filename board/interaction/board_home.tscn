@@ -1,0 +1,69 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.5, 0.5, 0.5 )
+
+[node name="board_home" type="Spatial"]
+
+[node name="positions" type="Spatial" parent="."]
+
+[node name="1" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.501, -1.5 )
+
+[node name="2" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.501, -0.5 )
+
+[node name="3" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.501, -1 )
+
+[node name="4" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501, 0 )
+
+[node name="5" type="Position3D" parent="positions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.501, 1 )
+
+[node name="clickables" type="Spatial" parent="."]
+
+[node name="1" type="Area" parent="clickables"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1.5 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="clickables/1"]
+shape = SubResource( 1 )
+
+[node name="2" type="Area" parent="clickables"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -0.5 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="clickables/2"]
+shape = SubResource( 1 )
+
+[node name="3" type="Area" parent="clickables"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="clickables/3"]
+shape = SubResource( 1 )
+
+[node name="4" type="Area" parent="clickables"]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="clickables/4"]
+shape = SubResource( 1 )
+
+[node name="5" type="Area" parent="clickables"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape" type="CollisionShape" parent="clickables/5"]
+shape = SubResource( 1 )
