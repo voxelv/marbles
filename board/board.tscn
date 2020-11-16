@@ -330,82 +330,82 @@ material/0 = ExtResource( 21 )
 
 [node name="interaction_board" type="Spatial" parent="."]
 
-[node name="center" type="Spatial" parent="interaction_board" instance=ExtResource( 5 )]
+[node name="center" parent="interaction_board" instance=ExtResource( 5 )]
 
 [node name="home_rows" type="Spatial" parent="interaction_board"]
 
-[node name="a_home_row" type="Spatial" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
+[node name="a_home_row" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4, 0, 0 )
 
-[node name="b_home_row" type="Spatial" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
+[node name="b_home_row" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 4 )
 
-[node name="c_home_row" type="Spatial" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
+[node name="c_home_row" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0 )
 
-[node name="d_home_row" type="Spatial" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
+[node name="d_home_row" parent="interaction_board/home_rows" instance=ExtResource( 6 )]
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0, -4 )
 
 [node name="main_track_section" type="Spatial" parent="interaction_board"]
 
-[node name="a_pokey" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
+[node name="a_pokey" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 0, 1.5 )
 
-[node name="a_run_1" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+[node name="a_run_1" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
 transform = Transform( -1, 0, -4.37114e-07, 0, 1, 0, 4.37114e-07, 0, -1, 4, 0, 1.5 )
 
-[node name="a_run_2" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+[node name="a_run_2" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
 transform = Transform( 4.80825e-07, 0, -1, 0, 1, 0, 1, 0, 4.80825e-07, 1.5, 0, 5 )
 
-[node name="b_home_entrance" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
+[node name="b_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.5 )
 
-[node name="b_pokey" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
+[node name="b_pokey" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 7.5 )
 
-[node name="b_run_1" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+[node name="b_run_1" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.5, 0, 4 )
 
-[node name="b_run_2" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+[node name="b_run_2" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -5, 0, 1.5 )
 
-[node name="c_home_entrance" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
+[node name="c_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
 transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -7.5, 0, 0 )
 
-[node name="c_pokey" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
+[node name="c_pokey" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7.5, 0, -1.5 )
 
-[node name="c_run_1" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+[node name="c_run_1" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -4, 0, -1.5 )
 
-[node name="c_run_2" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+[node name="c_run_2" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
 transform = Transform( -2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, -1.5, 0, -5 )
 
-[node name="d_home_entrance" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
+[node name="d_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -7.5 )
 
-[node name="d_pokey" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
+[node name="d_pokey" parent="interaction_board/main_track_section" instance=ExtResource( 2 )]
 transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 1.5, 0, -7.5 )
 
-[node name="d_run_1" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+[node name="d_run_1" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
 transform = Transform( 3.0598e-07, 0, -1, 0, 1, 0, 1, 0, 3.0598e-07, 1.5, 0, -4 )
 
-[node name="d_run_2" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
+[node name="d_run_2" parent="interaction_board/main_track_section" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 3.49691e-07, 0, 1, 0, -3.49691e-07, 0, 1, 5, 0, -1.5 )
 
-[node name="a_home_entrance" type="Spatial" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
+[node name="a_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 0, 4.76837e-07 )
 
 [node name="homes" type="Spatial" parent="interaction_board"]
 
-[node name="a_home" type="Spatial" parent="interaction_board/homes" instance=ExtResource( 4 )]
+[node name="a_home" parent="interaction_board/homes" instance=ExtResource( 4 )]
 transform = Transform( 1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 5, 0, 4.99618 )
 
-[node name="b_home" type="Spatial" parent="interaction_board/homes" instance=ExtResource( 4 )]
+[node name="b_home" parent="interaction_board/homes" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5 )
 
-[node name="c_home" type="Spatial" parent="interaction_board/homes" instance=ExtResource( 4 )]
+[node name="c_home" parent="interaction_board/homes" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5, 0, -5 )
 
-[node name="d_home" type="Spatial" parent="interaction_board/homes" instance=ExtResource( 4 )]
+[node name="d_home" parent="interaction_board/homes" instance=ExtResource( 4 )]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5, 0, -5 )
