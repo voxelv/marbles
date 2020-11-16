@@ -5,6 +5,7 @@ var _socket := WebSocketServer.new()
 
 var state := GameState.new()
 var clients := {}
+var games := {}
 
 func _ready() -> void:
 	randomize()

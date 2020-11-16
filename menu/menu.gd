@@ -65,7 +65,7 @@ func _serve_game():
 	OS.set_window_title("[SERVER]")
 	
 	Connection.setup()
-	get_tree().change_scene("res://menu/serve_game/serve_game.tscn")
+	get_tree().change_scene("res://menu/served_games/served_games.tscn")
 
 func _on_serve_game_cancel_pressed()->void:
 	_set_serve_game(false)

@@ -76,7 +76,7 @@ margin_right = 292.0
 margin_bottom = 270.0
 rect_min_size = Vector2( 0, 50 )
 focus_mode = 0
-text = "LOCAL GAME"
+text = "LOCAL GAME (Pass & Play)"
 
 [node name="join_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
 margin_top = 275.0
@@ -84,7 +84,7 @@ margin_right = 292.0
 margin_bottom = 325.0
 rect_min_size = Vector2( 0, 50 )
 focus_mode = 0
-text = "JOIN GAME"
+text = "JOIN GAME (Online only)"
 
 [node name="serve_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
 visible = false
@@ -93,7 +93,7 @@ margin_right = 292.0
 margin_bottom = 352.0
 rect_min_size = Vector2( 0, 50 )
 focus_mode = 0
-text = "SERVE GAME"
+text = "SERVE GAMES (Advanced)"
 
 [node name="quit_to_desktop_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
 margin_top = 330.0
@@ -204,9 +204,7 @@ margin_right = 292.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
-text = "SERVE!"
-
-[node name="Timer" type="Timer" parent="."]
+text = "BECOME HUB"
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/local_game_button" to="." method="_on_local_game_button_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/join_game_button" to="." method="_on_join_game_button_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/serve_game_button" to="." method="_on_serve_game_button_pressed"]
