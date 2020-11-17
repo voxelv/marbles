@@ -66,6 +66,7 @@ tab_align = 0
 tabs_visible = false
 
 [node name="main_menu" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 alignment = 1
@@ -103,7 +104,6 @@ rect_min_size = Vector2( 0, 50 )
 text = "QUIT TO DESKTOP"
 
 [node name="join_game_menu" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 alignment = 1
@@ -119,7 +119,7 @@ margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
 focus_next = NodePath("../join_game_port")
 size_flags_horizontal = 3
-text = "derelictech.com"
+text = "localhost"
 
 [node name="Label" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer"]
 margin_left = 184.0
@@ -137,6 +137,7 @@ focus_next = NodePath("../../HBoxContainer2/join_game_join")
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.25
 text = "9080"
+align = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu"]
 margin_top = 297.0
@@ -185,6 +186,8 @@ margin_right = 292.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
 size_flags_horizontal = 3
+text = "9080"
+align = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu"]
 margin_top = 297.0

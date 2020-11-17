@@ -30,6 +30,16 @@ _global_script_classes=[ {
 "path": "res://net/client/custom_client_info.gd"
 }, {
 "base": "Node",
+"class": "Game",
+"language": "GDScript",
+"path": "res://game/game.gd"
+}, {
+"base": "Node",
+"class": "GameInfoUI",
+"language": "GDScript",
+"path": "res://game/game_info.gd"
+}, {
+"base": "Node",
 "class": "GameState",
 "language": "GDScript",
 "path": "res://net/game_state.gd"
@@ -59,6 +69,8 @@ _global_script_class_icons={
 "Client": "",
 "ClientInfo": "",
 "CustomClientInfo": "",
+"Game": "",
+"GameInfoUI": "",
 "GameState": "",
 "LocalClient": "",
 "PlayerStatus": "",

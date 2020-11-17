@@ -196,11 +196,12 @@ func _on_bounds_clicked(_camera, event, _click_position, _click_normal, _shape_i
 				update_selectors()
 
 func _on_dice_button_pressed(dice_value_in:int):
-	Connection.server.send_player_roll_result(dice_value_in)
-	if select_state == select_state_type.SLCT:
-		select(select_index)
-	else:
-		deselect()
+	if Config.is_local:
+		Connection.server.send_player_roll_result(dice_value_in)
+		if select_state == select_state_type.SLCT:
+			select(select_index)
+		else:
+			deselect()
 
 func _on_roll_dice_button_pressed():
 	Connection.client.send_player_roll_request()
