@@ -19,6 +19,11 @@ func _ready() -> void:
 		var err = (_socket as WebSocketServer).listen(Config.PORT)
 		if err != OK:
 			print("Server could not listen...")
+		
+		if Config.number_of_games > 0:
+			print("Creating %d games..." % [Config.number_of_games])
+			for i in range(Config.number_of_games):
+				create_game(i)
 	else:
 		create_game()
 
@@ -71,6 +76,8 @@ func _client_connected(id, proto):
 	new_clientinfo.game_key = game_key
 	game.players[id] = new_clientinfo
 	clients[id] = new_clientinfo
+	
+	print("Added client %d to game %s" % [id, str(game_key)])
 	
 	# Sync-up ClientInfo
 	send_set_clientinfo(clients[id])
@@ -155,14 +162,23 @@ func _send_pkt(pkt:Dictionary, broadcast:bool=true, peer_id:int=-1)->void:
 func get_games()->Dictionary:
 	return(games)
 
-func create_game():
+func create_game(key=null):
+	if key in games:
+		return  # This game is already created
+	
 	var new_game := Game.new()
+	
+	if key == null:
+		# Create a game with next available integer
+		var games_key := 0
+		while games_key in games.keys():
+			games_key += 1
+		key = games_key
+	
 	new_game.game_state.game_phase = Logic.game_phase.INIT
-	var games_key := 0
-	while games_key in games.keys():
-		games_key += 1
-	games[games_key] = new_game
-	new_game.connect("sync_game", self, "_on_game_sync_game", [games_key])
+	games[key] = new_game
+	new_game.game_key = key
+	new_game.connect("sync_game", self, "_on_game_sync_game", [key])
 
 func _on_game_sync_game(games_key):
 	if not games_key in games.keys():

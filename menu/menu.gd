@@ -17,6 +17,16 @@ func _ready() -> void:
 	var cli_args = OS.get_cmdline_args()
 	if "SERVER" in cli_args:
 		print("I am SERVER...")
+		
+		# Number of games
+		var parsed_args := {}
+		for arg in cli_args:
+			if arg.find("=") > -1:
+				var key_value = arg.split("=")
+				parsed_args[key_value[0].lstrip("--")] = key_value[1]
+		if "n_games" in parsed_args:
+			Config.number_of_games = int(parsed_args["n_games"])
+		
 		Config.is_server = true
 		Config.is_local = false
 		_serve_game()

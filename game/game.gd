@@ -1,11 +1,15 @@
 extends Node
 class_name Game
 
+const TICK_MULTIPLIER = 2000
+
 signal sync_game
 
-var game_name := ""
+var game_key := ""
 var game_state : GameState
 var players := {}  # Dictionary of ClientInfo (peer_id as key)
+var _counter := 0
+var _tick_x1000_count := -1
 
 func _init():
 	game_state = GameState.new()
@@ -22,6 +26,13 @@ func tick():
 					start_game()
 		Logic.game_phase.STARTED:
 			pass
+	
+	if _counter % TICK_MULTIPLIER == 0:
+		_counter = 0
+		_tick_x1000_count += 1
+		print("Game: %s tick: %d (x%d) Status: %s Players: %d" % [str(game_key), _tick_x1000_count, TICK_MULTIPLIER, {Logic.game_phase.INIT: "INIT", Logic.game_phase.STARTED: "STARTED", Logic.game_phase.COUNT: "???"}[game_state.game_phase], len(players)])
+	
+	_counter += 1
 
 func start_game()->void:
 	game_state.game_phase = Logic.game_phase.STARTED
@@ -138,7 +149,7 @@ func player_set_name_request(id:int, pkt:Dictionary):
 		return
 	
 	game_state.custom_clients[player].display_name = requested_name
-	emit_signal("sync_game")
+#	emit_signal("sync_game")
 
 func player_set_color_request(id:int, pkt:Dictionary):
 	var reported_player = pkt.get('player', Logic.player.COUNT)
@@ -157,7 +168,7 @@ func player_set_color_request(id:int, pkt:Dictionary):
 	if already_used:
 		return
 	game_state.custom_clients[player].color_id = request_color_id
-	emit_signal("sync_game")
+#	emit_signal("sync_game")
 
 func player_pass_request(id:int, pkt:Dictionary):
 	increment_player_turn()
