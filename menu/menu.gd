@@ -33,6 +33,8 @@ func _ready() -> void:
 		
 	if OS.get_name() in ["OSX", "Server", "Windows", "X11"]:
 		serve_game_button.set_visible(true)
+	if OS.get_name() in ["HTML5"]:
+		quit_to_desktop_button.set_visible(false)
 	
 func loading_viewer():
 	Omni.change_scene_with_loading("res://viewer/viewer.tscn")
