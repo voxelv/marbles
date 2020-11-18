@@ -23,7 +23,7 @@ func _ready() -> void:
 		if Config.number_of_games > 0:
 			print("Creating %d games..." % [Config.number_of_games])
 			for i in range(Config.number_of_games):
-				create_game(i)
+				create_game(str(i))
 	else:
 		create_game()
 
@@ -37,53 +37,14 @@ func close_all_connections():
 	for peer_id in clients.keys():
 		_socket.disconnect_peer(peer_id)
 
-func _get_connected_player_list()->Array:
-	var connected_players := []
-	for peer_id in clients.keys():
-		var peer_player = clients[peer_id].player
-		if Logic.valid_player(peer_player) and not peer_player in connected_players:
-			connected_players.append(peer_player)
-	return(connected_players)
-
 func _client_connected(id, proto):
 	print("Client %d connected with protocol: %s" % [id, proto])
 	var new_clientinfo = ClientInfo.new(id)
 	
-	# Add player to a game that is available
-	if len(games) < 1:
-		# No games available
-		print("No games available. Disconnecting client %d" % [id])
-		_socket.disconnect_peer(id)
-		return
-	
-	var player := Logic.player.COUNT as int
-	var game:Game = null
-	var games_keys = games.keys()
-	var game_key = games_keys[0]
-	for i in range(len(games_keys)):
-		game_key = games_keys[i]
-		game = (games[game_key] as Game)
-		if not game.has_all_players():
-			player = game.next_open_player()
-			game_key = games_keys[i]
-			break
-	
-	if player == Logic.player.COUNT:
-		# Couldn't add player to game TODO
-		return
-	
-	new_clientinfo.player = player
-	new_clientinfo.game_key = game_key
-	game.players[id] = new_clientinfo
 	clients[id] = new_clientinfo
-	
-	print("Added client %d to game %s" % [id, str(game_key)])
 	
 	# Sync-up ClientInfo
 	send_set_clientinfo(clients[id])
-	
-	# Sync-up game_state
-	send_game_state_direct(game.game_state, id)
 
 func remove_client(id:int):
 	for game in games.values():
@@ -114,6 +75,52 @@ func _handle_pkt(id:int, pkt:Dictionary):
 	if type == PKT.type.NONE:
 		return
 	
+	# Server handles some packets
+	var server_handled := false
+	match type:
+		PKT.type.PLAYER_JOIN_GAME_REQUEST:
+			var game_key = pkt.get('game_key', "")
+			if not typeof(game_key) == TYPE_STRING:
+				return
+			
+			if game_key in games:
+				pass
+			elif game_key.empty():
+				game_key = find_game()
+				if game_key.empty():
+					game_key = create_game()
+			else:
+				game_key = create_game(game_key)
+			
+			var game := games[game_key] as Game
+			var player := game.next_open_player()
+			
+			(clients[id] as ClientInfo).game_key = game_key
+			(clients[id] as ClientInfo).player = player
+			game.players[id] = clients[id]
+			
+			# Sync-up client info
+			send_set_clientinfo(clients[id])
+	
+			print("Added client %d to game %s" % [id, str(game_key)])
+			
+			# Sync-up game_state
+			send_game_state_direct(game.game_state, id)
+			
+			server_handled = true
+			
+		PKT.type.CMD:
+			var cmd = pkt.get('cmd', PKT.cmd.NONE)
+			if cmd == PKT.type.NONE:
+				return
+			match pkt.get('cmd', PKT.cmd.NONE):
+				PKT.cmd.PRINT_TEXT:
+					print("SERVER: PRINT_TEXT COMMAND RX")
+			server_handled = true
+	
+	if server_handled:
+		return
+	
 	var game := (games.get(clients[id].game_key, null) as Game)
 	if game == null:
 		return
@@ -134,16 +141,6 @@ func _handle_pkt(id:int, pkt:Dictionary):
 		
 		PKT.type.PLAYER_MOVE_REQUEST:
 			game.player_move_request(id, pkt)
-	
-	# Server handles CMD packets
-	match type:
-		PKT.type.CMD:
-			var cmd = pkt.get('cmd', PKT.cmd.NONE)
-			if cmd == PKT.type.NONE:
-				return
-			match pkt.get('cmd', PKT.cmd.NONE):
-				PKT.cmd.PRINT_TEXT:
-					print("SERVER: PRINT_TEXT COMMAND RX")
 
 func _send_pkt(pkt:Dictionary, broadcast:bool=true, peer_id:int=-1)->void:
 	if pkt.empty():
@@ -162,23 +159,55 @@ func _send_pkt(pkt:Dictionary, broadcast:bool=true, peer_id:int=-1)->void:
 func get_games()->Dictionary:
 	return(games)
 
-func create_game(key=null):
+func create_game(key:String="")->String:
 	if key in games:
-		return  # This game is already created
+		return(key)  # This game is already created
 	
 	var new_game := Game.new()
 	
-	if key == null:
+	if key.empty():
 		# Create a game with next available integer
 		var games_key := 0
-		while games_key in games.keys():
+		while str(games_key) in games.keys():
 			games_key += 1
-		key = games_key
+		key = str(games_key)
 	
 	new_game.game_state.game_phase = Logic.game_phase.INIT
 	games[key] = new_game
 	new_game.game_key = key
 	new_game.connect("sync_game", self, "_on_game_sync_game", [key])
+	return(key)
+
+func find_game()->String:
+	var game_key := ""
+	
+	if len(games) <= 0:
+		return(game_key)
+	
+	# Find a game with an open player slot
+	var games_keys = games.keys()
+	var game:Game = null
+	game_key = games_keys[0]
+	for i in range(len(games_keys)):
+		game_key = games_keys[i]
+		game = (games[game_key] as Game)
+		if not game.has_all_players():
+			game_key = games_keys[i]
+			break
+	
+	return(game_key)
+
+func delete_game(game_key:String):
+	if not game_key in games:
+		return
+	
+	var game := games[game_key] as Game
+	var player_ids := []
+	for ci in game.players.values():
+		player_ids.append((ci as ClientInfo).peer_id)
+	for id in player_ids:
+		remove_client(id)
+	games.erase(game_key)
 
 func _on_game_sync_game(games_key):
 	if not games_key in games.keys():

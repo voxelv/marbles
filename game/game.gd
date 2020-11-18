@@ -1,7 +1,7 @@
 extends Node
 class_name Game
 
-const TICK_MULTIPLIER = 2000
+const TICK_MULTIPLIER = 1000
 
 signal sync_game
 
@@ -9,28 +9,48 @@ var game_key := ""
 var game_state : GameState
 var players := {}  # Dictionary of ClientInfo (peer_id as key)
 var _counter := 0
-var _tick_x1000_count := -1
+var _tick_xn000_count := -1
+var close_timer : Timer
 
 func _init():
 	game_state = GameState.new()
+	close_timer = Timer.new()
+	close_timer.connect("timeout", self, "_on_close_timer_timeout")
+	Connection.server.add_child(close_timer)
+
+func _on_close_timer_timeout():
+	print("Game: %s closing..." % [game_key])
+	Connection.server.remove_child(close_timer)
+	Connection.server.delete_game(game_key)
+	queue_free()
 
 func tick():
 	match game_state.game_phase:
 		Logic.game_phase.INIT:
 			if Config.is_local:
 				# Start the game immediately
+				close_timer.stop()
 				start_game()
 			else:
 				# Wait until all players are connected before starting game
 				if has_all_players():
 					start_game()
+				if len(players) <= 0 and close_timer.time_left == 0.0:
+					close_timer.start(Config.GAME_REMOVAL_TIME)
+				elif len(players) > 0:
+					close_timer.stop()
+				
 		Logic.game_phase.STARTED:
-			pass
+			# Reset the game if nobody is playing
+			if len(players) <= 0:
+				game_state.game_phase = Logic.game_phase.INIT
+			else:
+				close_timer.stop()
 	
 	if _counter % TICK_MULTIPLIER == 0:
 		_counter = 0
-		_tick_x1000_count += 1
-		print("Game: %s tick: %d (x%d) Status: %s Players: %d" % [str(game_key), _tick_x1000_count, TICK_MULTIPLIER, {Logic.game_phase.INIT: "INIT", Logic.game_phase.STARTED: "STARTED", Logic.game_phase.COUNT: "???"}[game_state.game_phase], len(players)])
+		_tick_xn000_count += 1
+		print("Game: %s tick: %d (x%d) Status: %s Players: %d Timeout: %f" % [str(game_key), _tick_xn000_count, TICK_MULTIPLIER, {Logic.game_phase.INIT: "INIT", Logic.game_phase.STARTED: "STARTED", Logic.game_phase.COUNT: "???"}[game_state.game_phase], len(players), close_timer.time_left])
 	
 	_counter += 1
 

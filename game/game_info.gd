@@ -4,19 +4,21 @@ class_name GameInfoUI
 signal delete_button_pressed
 
 onready var status_label := find_node("status_label") as Label
+onready var game_key_label := find_node("game_key_label") as Label
 
 var colors := []
-var game : Game
 
 func _ready() -> void:
 	for c in "abcd":
 		colors.append(find_node("%s_color" % c) as ColorRect)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 #	update_with_game(game)
 	pass
 
 func update_with_game(game:Game):
+	game_key_label.text = game.game_key
+	
 	if game.game_state != null:
 		status_label.text = {
 			Logic.game_phase.INIT: 		"INIT",
@@ -33,6 +35,10 @@ func update_with_game(game:Game):
 				(colors[i] as ColorRect).color = Color.green
 			else:
 				(colors[i] as ColorRect).color = Color.red
+
+func _on_delete_button_pressed():
+	emit_signal("delete_button_pressed", game_key_label.text)
+
 
 
 

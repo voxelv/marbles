@@ -55,8 +55,7 @@ func _on_join_game_join_action(_arg1):
 	_on_join_game_join_pressed()
 
 func _on_join_game_join_pressed() -> void:
-	Config.URL = (find_node("join_game_server") as LineEdit).text
-	Config.PORT = int((find_node("join_game_port") as LineEdit).text)
+	Config.game_key = (find_node("join_game_game_key") as LineEdit).text
 	
 	Connection.setup()
 	loading_viewer()
@@ -93,14 +92,6 @@ func _set_join_game(join:bool)->void:
 
 func _set_serve_game(serve:bool)->void:
 	tabs.current_tab = tab.SERVE if serve else tab.MAIN
-
-func _on_join_game_server_focus_entered() -> void:
-	var join_game_server := find_node("join_game_server") as LineEdit
-	join_game_server.select()
-
-func _on_join_game_port_focus_entered() -> void:
-	var join_game_port := find_node("join_game_port") as LineEdit
-	join_game_port.select()
 
 func _on_quit_button_pressed() -> void:
 	_delete_viewer()

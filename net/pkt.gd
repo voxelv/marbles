@@ -5,6 +5,7 @@ enum type {
 	CMD, 
 	SET_CLIENTINFO, 
 	GAME_STATE, 
+	PLAYER_JOIN_GAME_REQUEST,
 	PLAYER_ROLL_REQUEST, 
 	PLAYER_PASS_REQUEST, 
 	PLAYER_MOVE_REQUEST, 
@@ -41,3 +42,13 @@ func fmt_game_state(state:GameState)->Dictionary:
 	var pkt = state.fmt()
 	pkt['type'] = type.GAME_STATE
 	return pkt
+
+func fmt_player_join_game_request(game_key:String)->Dictionary:
+	return {'type': type.PLAYER_JOIN_GAME_REQUEST, 'game_key': game_key}
+	
+	
+	
+	
+	
+	
+	

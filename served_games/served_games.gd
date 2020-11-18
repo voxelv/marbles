@@ -14,15 +14,17 @@ func _process(delta):
 		for game_info_ui in game_infos_container.get_children():
 			game_info_ui.set_visible(false)
 		
-		for i in len(games):
+		var games_keys = games.keys()
+		for i in range(len(games_keys)):
 			var game_info_ui:GameInfoUI
 			if (game_infos_container.get_child_count() - 1) < i:
 				game_info_ui = GameInfoUIPreload.instance()
 				game_infos_container.add_child(game_info_ui)
+				game_info_ui.connect("delete_button_pressed", Connection.server, "delete_game")
 			else:
 				game_info_ui = game_infos_container.get_child(i) as GameInfoUI
 			
-			var game := (games[i] as Game)
+			var game := (games[games_keys[i]] as Game)
 			game_info_ui.set_visible(true)
 			game_info_ui.update_with_game(game)
 

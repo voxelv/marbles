@@ -41,6 +41,7 @@ func _connected_to_server(proto:String):
 #	info.peer_id = _socket.id
 	con_timer.stop()
 	print("Connected (%s)." % proto)
+	Connection.client.send_player_join_game_request(Config.game_key)
 
 func _connection_error():
 	print("Connection error...")
@@ -117,6 +118,8 @@ func send_player_set_color_request(player:int, color_id:int):
 func send_player_set_name_request(player:int, new_name:String):
 	_send_pkt(PKT.fmt_player_set_name_request(player, new_name))
 
+func send_player_join_game_request(game_key:String):
+	_send_pkt(PKT.fmt_player_join_game_request(game_key))
 
 
 

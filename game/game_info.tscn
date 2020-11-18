@@ -12,16 +12,32 @@ margin_right = 292.0
 margin_bottom = 370.0
 size_flags_horizontal = 3
 theme = ExtResource( 2 )
+custom_constants/separation = 0
 alignment = 1
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-margin_top = 54.0
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_top = 42.0
 margin_right = 292.0
-margin_bottom = 86.0
+margin_bottom = 66.0
+
+[node name="game_key_label" type="Label" parent="HBoxContainer"]
+margin_right = 73.0
+margin_bottom = 24.0
+text = "game_key"
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_left = 78.0
+margin_right = 88.0
+margin_bottom = 24.0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_top = 66.0
+margin_right = 292.0
+margin_bottom = 98.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
@@ -102,8 +118,9 @@ margin_right = 256.0
 margin_bottom = 24.0
 text = "D"
 
-[node name="Button" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer"]
+[node name="delete_button" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer"]
 margin_left = 261.0
 margin_right = 284.0
 margin_bottom = 24.0
 text = "X"
+[connection signal="pressed" from="PanelContainer/MarginContainer/HBoxContainer/delete_button" to="." method="_on_delete_button_pressed"]

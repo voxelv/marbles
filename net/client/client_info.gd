@@ -1,7 +1,7 @@
 extends Node
 class_name ClientInfo
 
-var game_key = null
+var game_key := ""
 var peer_id := -1
 var player := Logic.player.COUNT as int
 
