@@ -118,7 +118,7 @@ func send_player_set_color_request(player:int, color_id:int):
 func send_player_set_name_request(player:int, new_name:String):
 	_send_pkt(PKT.fmt_player_set_name_request(player, new_name))
 
-func send_player_join_game_request(game_key:String):
+func send_player_join_game_request(game_key:=""):
 	_send_pkt(PKT.fmt_player_join_game_request(game_key))
 
 

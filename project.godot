@@ -93,6 +93,14 @@ PKT="*res://net/pkt.gd"
 Connection="*res://net/connection.gd"
 Omni="*res://omni.gd"
 
+[display]
+
+window/size/height=576
+
+[gui]
+
+theme/use_hidpi=true
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

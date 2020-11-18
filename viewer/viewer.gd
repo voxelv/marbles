@@ -85,6 +85,7 @@ func _ready():
 	Connection.local_viewer = self
 	if Config.is_local:
 		Connection.local_connection_setup()
+		Connection.client.send_player_join_game_request()
 	else:
 		Connection.remote_connection_setup()
 

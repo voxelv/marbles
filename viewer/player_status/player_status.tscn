@@ -47,7 +47,7 @@ expand_margin_bottom = 2.0
 bg_color = Color( 0.129412, 0.129412, 0.129412, 1 )
 
 [node name="player_status" type="PanelContainer"]
-margin_right = 276.0
+margin_right = 165.0
 margin_bottom = 48.0
 theme = ExtResource( 1 )
 custom_styles/panel = SubResource( 1 )
@@ -57,7 +57,7 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 276.0
+margin_right = 165.0
 margin_bottom = 48.0
 custom_constants/separation = 0
 
@@ -100,13 +100,13 @@ disabled = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 margin_left = 42.0
-margin_right = 276.0
+margin_right = 165.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 custom_constants/separation = 0
 
 [node name="player_name" type="ToolButton" parent="HBoxContainer/VBoxContainer"]
-margin_right = 234.0
+margin_right = 123.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 custom_styles/hover = SubResource( 7 )
@@ -119,19 +119,19 @@ align = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 margin_top = 24.0
-margin_right = 234.0
+margin_right = 123.0
 margin_bottom = 48.0
 
 [node name="player_status" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_right = 114.0
+margin_right = 59.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "Status"
 clip_text = true
 
 [node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 119.0
-margin_right = 234.0
+margin_left = 64.0
+margin_right = 123.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
