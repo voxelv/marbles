@@ -37,6 +37,8 @@ onready var dice_texturerect := find_node("dice_texturerect") as TextureRect
 onready var player_status_list := find_node("player_status_list") as Container
 onready var dice_panel := find_node("dice_panel") as PanelContainer
 onready var menu_button := find_node("menu_button") as Button
+onready var board_viewport_container := find_node("board_viewport_container") as ViewportContainer
+onready var menu_panel := find_node("menu_panel") as PanelContainer
 
 # Members
 var select_state:int = select_state_type.NONE
@@ -119,6 +121,11 @@ func update_ui(game_state:GameState):
 		var dice_panel_stylebox := dice_panel.get("custom_styles/panel") as StyleBoxFlat
 		dice_panel_stylebox.bg_color = colors[game_state.player_turn]
 	
+	# Menu Panel color
+	if Logic.valid_player(Connection.get_player()):
+		var menu_panel_stylebox := menu_panel.get("custom_styles/panel") as StyleBoxFlat
+		menu_panel_stylebox.bg_color = colors[Connection.get_player()]
+	
 	# Update player_status
 	for player in game_state.custom_clients.keys():
 		if not Logic.valid_player(player):
@@ -150,7 +157,7 @@ func update_selectors():
 			for c in valid_move_highlights.get_children():
 				(c as Node2D).visible = false
 			if state.player_has_rolled and Connection.get_player() == state.player_turn:
-				update_valid_move_highlights(state.board.marbles[Connection.get_player()])
+				update_valid_move_highlights(state.board.marbles[state.controls_players_marbles])
 		
 		select_state_type.SLCT:
 			selector.visible = true
@@ -168,12 +175,13 @@ func update_valid_move_highlights(valid_moves_in:Array):
 			highlight.visible = false
 
 func _on_area_entered(idx:int):
+	idx_label.text = str(idx)
+	
 	if can_select(idx):
 		selector_highlight.visible = true
 		selector_highlight.position = camera.unproject_position(board.all_positions[idx])
-		idx_label.text = str(idx)
 		if not idx in valid_moves:
-			update_valid_move_highlights(Logic.calc_valid_movements(state.board, state.dice_value, Connection.get_player(), idx))
+			update_valid_move_highlights(Logic.calc_valid_movements(state.board, state.dice_value, state.controls_players_marbles, idx))
 
 func _on_area_exited(_idx:int):
 	selector_highlight.visible = false
@@ -223,6 +231,17 @@ func _on_menu_button_pressed() -> void:
 	Connection.client._socket.disconnect_from_host()
 	get_tree().change_scene("res://menu/menu.tscn")
 
+func _on_board_viewport_container_resized():
+	var size := board_viewport_container.rect_size
+	if size.x > size.y:
+		camera.keep_aspect = Camera.KEEP_HEIGHT
+	else:
+		camera.keep_aspect = Camera.KEEP_WIDTH
+
+func _on_win_pressed(player:int):
+	if Config.is_local:
+		Connection.server.win_player_game_0(player)
+
 # Control Interaction
 func set_board_state(board_state_in:BoardState):
 	state.board.set_from(board_state_in)
@@ -237,14 +256,14 @@ func deselect():
 func select(idx:int):
 	select_index = idx
 	select_state = select_state_type.SLCT
-	valid_moves = Logic.calc_valid_movements(state.board, state.dice_value, Connection.get_player(), idx)
+	valid_moves = Logic.calc_valid_movements(state.board, state.dice_value, state.controls_players_marbles, idx)
 	update_selectors()
 
 func can_select(idx:int)->bool:
 	if not state.game_phase == Logic.game_phase.STARTED:
 		return false
 	
-	var ret := (idx in state.board.marbles[Connection.get_player()]) as bool
+	var ret := (idx in state.board.marbles[state.controls_players_marbles]) as bool
 	match select_state:
 		select_state_type.NONE:
 			ret = ret and state.player_has_rolled
@@ -266,10 +285,12 @@ func idx_pressed(idx:int):
 				elif idx in valid_moves:
 					Connection.client.send_player_move_request(select_index, idx)
 					deselect()
-				elif idx in state.board.marbles[Connection.get_player()]:
+				elif idx in state.board.marbles[state.controls_players_marbles]:
 					select(idx)
 				else:
 					deselect()
+
+
 
 
 

@@ -35,6 +35,8 @@ func _process(_delta:float) -> void:
 
 func close_all_connections():
 	for peer_id in clients.keys():
+		if peer_id == -1 and Config.is_local:
+			continue
 		_socket.disconnect_peer(peer_id)
 
 func _client_connected(id, proto):
@@ -240,8 +242,13 @@ func send_game_state_direct(game_state:GameState, peer_id:int)->void:
 		var game := games.values()[0] as Game
 		game.game_state.dice_value = game_state.dice_value
 	_send_pkt(PKT.fmt_game_state(game_state), false, peer_id)
-	
 
+func win_player_game_0(player:int):
+	if not "0" in games:
+		return
+	var game := games["0"] as Game
+	game.game_state.board.marbles[player] = Logic.home_row_indices[player]
+	_on_game_sync_game("0")
 
 
 

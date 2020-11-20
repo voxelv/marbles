@@ -24,6 +24,13 @@ func _on_close_timer_timeout():
 	Connection.server.delete_game(game_key)
 	queue_free()
 
+func _update_marble_control():
+	var teammate_map := [2, 3, 0, 1]
+	if all_marbles_home_for_player(game_state.player_turn):
+		game_state.controls_players_marbles = teammate_map[game_state.player_turn]
+	else:
+		game_state.controls_players_marbles = game_state.player_turn
+
 func tick():
 	match game_state.game_phase:
 		Logic.game_phase.INIT:
@@ -57,6 +64,7 @@ func tick():
 func start_game()->void:
 	game_state.game_phase = Logic.game_phase.STARTED
 	game_state.player_turn = Logic.player.A
+	_update_marble_control()
 	game_state.board.set_all(Logic.home_indices)
 	
 	for player in game_state.custom_clients.keys():
@@ -122,6 +130,7 @@ func increment_player_turn():
 			game_state.player_turn = 0
 		if Config.is_local:
 			players[get_id_from_player(prev_player_turn)].player = game_state.player_turn
+	_update_marble_control()
 
 func get_id_from_player(player:int)->int:
 	var ret_id = -1
@@ -130,7 +139,16 @@ func get_id_from_player(player:int)->int:
 			ret_id = id
 			break
 	return ret_id
+
+func all_marbles_home_for_player(player:int)->bool:
+	var ret := true
 	
+	for position_idx in Logic.home_row_indices[player]:
+		if not position_idx in game_state.board.marbles[player]:
+			ret = false
+	
+	return(ret)
+
 func player_roll_request(id:int, pkt:Dictionary):
 	if not game_state.game_phase == Logic.game_phase.STARTED:
 		return
@@ -149,6 +167,10 @@ func player_roll_request(id:int, pkt:Dictionary):
 		
 		game_state.dice_value = roll_result
 		game_state.player_has_rolled = true
+		
+		# If player has won, they can help their teammate
+		_update_marble_control()
+		
 		emit_signal("sync_game")
 
 func player_set_name_request(id:int, pkt:Dictionary):
@@ -196,51 +218,54 @@ func player_pass_request(id:int, pkt:Dictionary):
 	emit_signal("sync_game")
 
 func player_move_request(id:int, pkt:Dictionary):
-			var player = players[id].player
-			var from_idx = pkt.get('from_idx', -1)
-			var to_idx = pkt.get('to_idx', -1)
-			if from_idx < 0 or to_idx < 0:
-				return
-			
-			print("Player Move Request: %d to %d" %[from_idx, to_idx])
-			
-			# Do the calculations
-			# If move is valid, move the marble and broadcast the new board
-				# Move is valid if in calculated valid moves, and player's turn, and from player's marble
-			if not game_state.player_has_rolled:
-				return
-			if not player == game_state.player_turn:
-				return
-			if not from_idx in game_state.board.marbles[player]:
-				return
-			var valid_moves := Logic.calc_valid_movements(game_state.board, game_state.dice_value, player, from_idx)
-			if not to_idx in valid_moves:
-				return
-			
-			# Move the marble
-			game_state.board.set_marble(player, game_state.board.get_marble_idx(player, from_idx), to_idx)
-			
-			# If to_idx has another player's marble, send it home
-			var other_player_marble_idx := -1
-			var other_player := Logic.player.COUNT as int
-			for p in range(Logic.player.COUNT):
-				if p == player:
-					continue
-				if to_idx in game_state.board.marbles[p]:
-					other_player = p
-					other_player_marble_idx = game_state.board.get_marble_idx(p, to_idx)
-			if Logic.valid_player(other_player) and other_player_marble_idx >= 0:
-				# Move other player's marble home
-				game_state.board.set_marble(other_player, other_player_marble_idx, Logic.get_first_empty_home_idx(game_state.board, other_player))
-			
-			# Handle end of roll
-			increment_player_turn()
-			if not game_state.dice_value == 6:
-				game_state.dice_value = 0
-			emit_signal("sync_game")
-			
-			if Config.is_local:
-				players[id].player = game_state.player_turn
+	var player = players[id].player
+	var from_idx = pkt.get('from_idx', -1)
+	var to_idx = pkt.get('to_idx', -1)
+	if from_idx < 0 or to_idx < 0:
+		return
+	
+	print("Game: %s Player Move Request: %d to %d" %[game_key, from_idx, to_idx])
+	
+	# Do the calculations
+	# If move is valid, move the marble and broadcast the new board
+		# Move is valid if in calculated valid moves, and player's turn, and from player's marble
+	if not game_state.player_has_rolled:
+		return
+	if not player == game_state.player_turn:
+		return
+	if not from_idx in game_state.board.marbles[game_state.controls_players_marbles]:
+		return
+	var valid_moves := Logic.calc_valid_movements(
+		game_state.board, game_state.dice_value, 
+		game_state.controls_players_marbles, 
+		from_idx)
+	if not to_idx in valid_moves:
+		return
+	
+	# Move the marble
+	game_state.board.set_marble(game_state.controls_players_marbles, game_state.board.get_marble_idx(game_state.controls_players_marbles, from_idx), to_idx)
+	
+	# If to_idx has another player's marble, send it home
+	var other_player_marble_idx := -1
+	var other_player := Logic.player.COUNT as int
+	for p in range(Logic.player.COUNT):
+		if p == game_state.controls_players_marbles:
+			continue
+		if to_idx in game_state.board.marbles[p]:
+			other_player = p
+			other_player_marble_idx = game_state.board.get_marble_idx(p, to_idx)
+	if Logic.valid_player(other_player) and other_player_marble_idx >= 0:
+		# Move other player's marble home
+		game_state.board.set_marble(other_player, other_player_marble_idx, Logic.get_first_empty_home_idx(game_state.board, other_player))
+	
+	# Handle end of roll
+	increment_player_turn()
+	if not game_state.dice_value == 6:
+		game_state.dice_value = 0
+	emit_signal("sync_game")
+	
+	if Config.is_local:
+		players[id].player = game_state.player_turn
 
 
 
