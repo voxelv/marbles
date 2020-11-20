@@ -5,6 +5,8 @@ onready var join_game_button := find_node("join_game_button") as Button
 onready var serve_game_button := find_node("serve_game_button") as Button
 onready var quit_to_desktop_button := find_node("quit_to_desktop_button") as Button
 
+onready var join_game_game_key := find_node("join_game_game_key") as LineEdit
+
 onready var tabs := find_node("tabs") as TabContainer
 enum tab {MAIN, JOIN, SERVE}
 
@@ -39,6 +41,18 @@ func _ready() -> void:
 func loading_viewer():
 	Omni.change_scene_with_loading("res://viewer/viewer.tscn")
 
+func prompt_for_game_key():
+	var is_mobile_browser := false
+	if OS.has_feature('JavaScript'):
+		if JavaScript.eval("""
+		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+		"""):
+			is_mobile_browser = true
+	if is_mobile_browser:
+		join_game_game_key.text = JavaScript.eval("""
+		window.prompt('Game Key')
+		""", true)
+
 func _on_local_game_button_pressed():
 	Config.is_local = true
 	Config.is_server = false
@@ -50,6 +64,7 @@ func _on_join_game_button_pressed() -> void:
 	Config.is_local = false
 	Config.is_server = false
 	_set_join_game(true)
+	prompt_for_game_key()
 
 func _on_join_game_join_action(_arg1):
 	_on_join_game_join_pressed()
@@ -101,10 +116,5 @@ func _delete_viewer():
 	if Connection.local_viewer != null:
 		Connection.local_viewer.queue_free()
 
-
-
-
-
-
-
-
+func _on_join_game_game_key_mouse_entered():
+	prompt_for_game_key()

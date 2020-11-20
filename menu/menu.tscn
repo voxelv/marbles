@@ -212,6 +212,7 @@ text = "BECOME HUB"
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/join_game_button" to="." method="_on_join_game_button_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/serve_game_button" to="." method="_on_serve_game_button_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/quit_to_desktop_button" to="." method="_on_quit_button_pressed"]
+[connection signal="mouse_entered" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer/join_game_game_key" to="." method="_on_join_game_game_key_mouse_entered"]
 [connection signal="text_entered" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer/join_game_game_key" to="." method="_on_join_game_join_action"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2/join_game_cancel" to="." method="_on_join_game_cancel_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2/join_game_join" to="." method="_on_join_game_join_pressed"]
