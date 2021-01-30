@@ -313,23 +313,23 @@ text = "Back"
 
 [node name="Control" type="Control" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
 margin_left = 305.0
-margin_right = 420.0
+margin_right = 422.0
 margin_bottom = 50.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Previous" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 425.0
-margin_right = 575.0
+margin_left = 427.0
+margin_right = 577.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 150, 0 )
 text = "Previous"
 
 [node name="page_counter" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 580.0
-margin_top = 7.0
+margin_left = 582.0
+margin_top = 4.0
 margin_right = 625.0
-margin_bottom = 42.0
+margin_bottom = 45.0
 text = "0/0"
 __meta__ = {
 "_edit_use_anchors_": false

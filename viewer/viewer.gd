@@ -3,6 +3,7 @@ class_name Viewer
 
 # Enumerations
 enum select_state_type{NONE, SLCT}
+enum layout{HORZ, VERT}
 
 # Types
 const Board := preload("res://board/board.gd")
@@ -40,11 +41,17 @@ onready var menu_button := find_node("menu_button") as Button
 onready var board_viewport_container := find_node("board_viewport_container") as ViewportContainer
 onready var menu_panel := find_node("menu_panel") as PanelContainer
 
+onready var all_elements_h = find_node("all_elements_h") as BoxContainer
+onready var info_area_v = find_node("info_area_v") as BoxContainer
+onready var all_elements_v = find_node("all_elements_v") as BoxContainer
+onready var info_area_h = find_node("info_area_h") as BoxContainer
+
 # Members
 var select_state:int = select_state_type.NONE
 var select_index := -1
 var valid_moves := []
 var state := GameState.new()
+var layout_state := layout.HORZ as int
 
 func _ready():
 	randomize()
@@ -81,6 +88,9 @@ func _ready():
 	
 	# Menu Button
 	menu_button.connect("pressed", self, "_on_menu_button_pressed")
+	
+	# Layout
+	get_tree().get_root().connect("size_changed", self, "_on_window_resized")
 	
 	update_selectors()
 	
@@ -242,6 +252,51 @@ func _on_win_pressed(player:int):
 	if Config.is_local:
 		Connection.server.win_player_game_0(player)
 
+func _on_aspect_button_pressed():
+	if layout_state == layout.HORZ:
+		set_layout(layout.VERT)
+	else:
+		set_layout(layout.HORZ)
+
+func _on_window_resized():
+	print(OS.window_size)
+	if OS.window_size.x > OS.window_size.y:
+		set_layout(layout.HORZ)
+	else:
+		set_layout(layout.VERT)
+
+func set_layout(layout_in:int)->void:
+	if layout_state == layout_in:
+		return
+	else:
+		match(layout_in):
+			layout.HORZ:
+				for c in all_elements_v.get_children():
+					all_elements_v.remove_child(c)
+					all_elements_h.add_child(c)
+				for c in info_area_h.get_children():
+					info_area_h.remove_child(c)
+					info_area_v.add_child(c)
+				
+				all_elements_v.visible = false
+				all_elements_h.visible = true
+				info_area_h.visible = false
+				info_area_v.visible = true
+
+			layout.VERT:
+				for c in all_elements_h.get_children():
+					all_elements_h.remove_child(c)
+					all_elements_v.add_child(c)
+				for c in info_area_v.get_children():
+					info_area_v.remove_child(c)
+					info_area_h.add_child(c)
+					
+				all_elements_h.visible = false
+				all_elements_v.visible = true
+				info_area_v.visible = false
+				info_area_h.visible = true
+	layout_state = layout_in
+
 # Control Interaction
 func set_board_state(board_state_in:BoardState):
 	state.board.set_from(board_state_in)
@@ -289,24 +344,4 @@ func idx_pressed(idx:int):
 					select(idx)
 				else:
 					deselect()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
