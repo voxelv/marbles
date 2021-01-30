@@ -8,7 +8,7 @@ onready var quit_to_desktop_button := find_node("quit_to_desktop_button") as But
 onready var join_game_game_key := find_node("join_game_game_key") as LineEdit
 
 onready var tabs := find_node("tabs") as TabContainer
-enum tab {MAIN, JOIN, SERVE}
+enum tab {MAIN, JOIN, SERVE, HOW_TO_PLAY}
 
 var viewer:Node = null
 var _peers := []
@@ -63,8 +63,14 @@ func _on_local_game_button_pressed():
 func _on_join_game_button_pressed() -> void:
 	Config.is_local = false
 	Config.is_server = false
-	_set_join_game(true)
+	_set_menu(tab.JOIN)
 	prompt_for_game_key()
+
+func _set_menu(tab:int)->void:
+	tabs.current_tab = tab
+
+func _on_how_to_play_button_pressed():
+	_set_menu(tab.HOW_TO_PLAY)
 
 func _on_join_game_join_action(_arg1):
 	_on_join_game_join_pressed()
@@ -75,13 +81,10 @@ func _on_join_game_join_pressed() -> void:
 	Connection.setup()
 	loading_viewer()
 
-func _on_join_game_cancel_pressed():
-	_set_join_game(false)
-
 func _on_serve_game_button_pressed() -> void:
 	Config.is_local = false
 	Config.is_server = true
-	_set_serve_game(true)
+	_set_menu(tab.SERVE)
 
 func _on_serve_game_serve_pressed()->void:
 	Config.PORT = int((find_node("serve_game_port") as LineEdit).text)
@@ -93,20 +96,9 @@ func _serve_game():
 	Connection.setup()
 	get_tree().change_scene("res://served_games/served_games.tscn")
 
-func _on_serve_game_cancel_pressed()->void:
-	_set_serve_game(false)
-
 func _add_peers_to_root():
 	for p in _peers:
 		get_tree().get_root().add_child(p)
-
-func _set_join_game(join:bool)->void:
-	tabs.current_tab = tab.JOIN if join else tab.MAIN
-	if join:
-		(find_node("join_game_join") as Button).grab_focus()
-
-func _set_serve_game(serve:bool)->void:
-	tabs.current_tab = tab.SERVE if serve else tab.MAIN
 
 func _on_quit_button_pressed() -> void:
 	_delete_viewer()
