@@ -259,8 +259,12 @@ func _on_aspect_button_pressed():
 		set_layout(layout.HORZ)
 
 func _on_window_resized():
-	print(OS.window_size)
-	if OS.window_size.x > OS.window_size.y:
+	calc_and_set_layout()
+
+func calc_and_set_layout():
+	var size = get_tree().get_root().size
+	print(size)
+	if size.x > size.y:
 		set_layout(layout.HORZ)
 	else:
 		set_layout(layout.VERT)
