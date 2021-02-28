@@ -8,6 +8,7 @@ func _ready() -> void:
 	non_hover_style = (get("custom_styles/normal") as StyleBoxFlat).duplicate()
 
 func set_color(color:Color):
+	print(get_rect())
 	hover_style.bg_color = color
 	non_hover_style.bg_color = color
 	for s in ["normal", "disabled", "focus", "pressed"]:

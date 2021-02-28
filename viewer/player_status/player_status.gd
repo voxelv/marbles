@@ -5,32 +5,22 @@ signal color_set
 signal name_set
 
 const color_button_preload := preload("res://viewer/player_status/color_button.tscn")
+const hover_style := preload("res://viewer/player_status/hover_style.tres")
+const normal_style := preload("res://viewer/player_status/normal_style.tres")
 
 onready var arrow = find_node("arrow") as TextureRect
-onready var player_color_button = find_node("player_color_button") as Button
-onready var player_name = find_node("player_name") as ToolButton
-onready var name_popup = find_node("name_popup") as Popup
-onready var name_entry = find_node("name_entry") as LineEdit
+onready var player_color = find_node("player_color") as ColorRect
+onready var player_name = find_node("player_name") as Label
 onready var color_popup = find_node("color_popup") as Popup
 onready var color_popup_buttons = find_node("color_popup_buttons")
 
-var non_hover_style:StyleBoxFlat
-var hover_style:StyleBoxFlat
+var enabled := false
 
 func _ready() -> void:
 	set_active(false)
-	
-	non_hover_style = (player_color_button.get('custom_styles/normal') as StyleBoxFlat).duplicate()
-	hover_style = (player_color_button.get('custom_styles/hover') as StyleBoxFlat).duplicate()
-	
-	player_color_button.connect("pressed", self, "_on_player_color_button_pressed")
 
 func set_color(color:Color)->void:
-	hover_style.bg_color = color
-	non_hover_style.bg_color = color
-	for s in ["normal", "disabled", "focus", "pressed"]:
-		player_color_button.set("custom_styles/%s" % s, non_hover_style)
-	player_color_button.set("custom_styles/hover", hover_style)
+	player_color.color = color
 
 func set_active(active:bool):
 	if active:
@@ -39,8 +29,7 @@ func set_active(active:bool):
 		arrow.self_modulate = Color(0)
 
 func set_enabled(enabled:bool):
-	player_name.disabled = not enabled
-	player_color_button.disabled = not enabled
+	self.enabled = enabled
 
 func set_name(name_str:String):
 	player_name.text = name_str
@@ -68,19 +57,8 @@ func _on_player_color_button_pressed():
 		if not c in used_colors:
 			var new_color_button = color_button_preload.instance()
 			new_color_button.connect("pressed", self, "_on_color_button_pressed", [c])
-			new_color_button.set_h_size_flags(SIZE_EXPAND_FILL)
 			color_popup_buttons.add_child(new_color_button)
 			new_color_button.set_color(color)
 
-func _on_player_name_pressed():
-	name_popup.popup(get_global_rect())
-	name_entry.text = player_name.text
-	name_entry.select_all()
-
-func _on_LineEdit_text_entered(new_text):
-	player_name.text = new_text
-	player_name.release_focus()
-	name_popup.hide()
-	emit_signal("name_set", new_text)
-
-
+func _on_button_pressed() -> void:
+	_on_player_color_button_pressed()

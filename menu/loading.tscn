@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://menu/loading.gd" type="Script" id=2]
 
 [node name="loading" type="Node"]
@@ -22,8 +22,8 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="ui/CenterContainer"]
-margin_left = 476.0
-margin_top = 288.0
-margin_right = 547.0
-margin_bottom = 312.0
+margin_left = 452.0
+margin_top = 270.0
+margin_right = 571.0
+margin_bottom = 306.0
 text = "Loading..."

@@ -281,9 +281,19 @@ margin_bottom = 312.0
 size_flags_vertical = 3
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/PanelContainer2/MarginContainer/VBoxContainer"]
+[node name="roll_dice_button" type="Button" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/PanelContainer2/MarginContainer/VBoxContainer"]
 margin_right = 284.0
-margin_bottom = 175.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 250, 75 )
+focus_mode = 0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+text = "ROLL"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/PanelContainer2/MarginContainer/VBoxContainer"]
+margin_top = 83.0
+margin_right = 284.0
+margin_bottom = 258.0
 alignment = 1
 
 [node name="dice_panel" type="PanelContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/PanelContainer2/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -302,16 +312,6 @@ texture = ExtResource( 12 )
 expand = true
 stretch_mode = 6
 
-[node name="roll_dice_button" type="Button" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/PanelContainer2/MarginContainer/VBoxContainer"]
-margin_top = 183.0
-margin_right = 284.0
-margin_bottom = 258.0
-rect_min_size = Vector2( 250, 75 )
-focus_mode = 0
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
-text = "ROLL"
-
 [node name="pass_button" type="Button" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/PanelContainer2/MarginContainer/VBoxContainer"]
 margin_top = 266.0
 margin_right = 284.0
@@ -324,18 +324,18 @@ text = "PASS"
 [node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v"]
 margin_top = 320.0
 margin_right = 292.0
-margin_bottom = 516.0
+margin_bottom = 496.0
 size_flags_horizontal = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/VBoxContainer"]
 margin_right = 292.0
-margin_bottom = 196.0
+margin_bottom = 176.0
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 9 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/VBoxContainer/PanelContainer"]
 margin_right = 292.0
-margin_bottom = 196.0
+margin_bottom = 176.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
@@ -348,26 +348,26 @@ __meta__ = {
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 288.0
-margin_bottom = 192.0
+margin_bottom = 172.0
 
 [node name="player_a_status" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/VBoxContainer/PanelContainer/MarginContainer/player_status_list" instance=ExtResource( 5 )]
 margin_right = 284.0
-margin_bottom = 41.0
+margin_bottom = 36.0
 
 [node name="player_b_status" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/VBoxContainer/PanelContainer/MarginContainer/player_status_list" instance=ExtResource( 5 )]
-margin_top = 49.0
+margin_top = 44.0
 margin_right = 284.0
-margin_bottom = 90.0
+margin_bottom = 80.0
 
 [node name="player_c_status" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/VBoxContainer/PanelContainer/MarginContainer/player_status_list" instance=ExtResource( 5 )]
-margin_top = 98.0
+margin_top = 88.0
 margin_right = 284.0
-margin_bottom = 139.0
+margin_bottom = 124.0
 
 [node name="player_d_status" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/VBoxContainer/PanelContainer/MarginContainer/player_status_list" instance=ExtResource( 5 )]
-margin_top = 147.0
+margin_top = 132.0
 margin_right = 284.0
-margin_bottom = 188.0
+margin_bottom = 168.0
 
 [node name="logic_testing" type="HBoxContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v"]
 visible = false

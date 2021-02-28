@@ -12,13 +12,6 @@ var custom_clients := {}
 func _init() -> void:
 	for player in range(Logic.player.COUNT):
 		custom_clients[player] = CustomClientInfo.new()
-		custom_clients[player].display_name = "Player %s" % {
-			Logic.player.A: "A",
-			Logic.player.B: "B",
-			Logic.player.C: "C",
-			Logic.player.D: "D",
-			Logic.player.COUNT: "?",
-		}[player]
 
 func fmt()->Dictionary:
 	var pkt :=  {

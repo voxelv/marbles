@@ -69,6 +69,7 @@ func start_game()->void:
 	
 	for player in game_state.custom_clients.keys():
 		game_state.custom_clients[player].color_id = Palette.initial_colors[player]
+		game_state.custom_clients[player].display_name = Palette.color.keys()[Palette.initial_colors[player]]
 	
 	emit_signal("sync_game")
 
@@ -210,6 +211,7 @@ func player_set_color_request(id:int, pkt:Dictionary):
 	if already_used:
 		return
 	game_state.custom_clients[player].color_id = request_color_id
+	game_state.custom_clients[player].display_name = Palette.color.keys()[request_color_id]
 #	emit_signal("sync_game")
 
 func player_pass_request(id:int, pkt:Dictionary):

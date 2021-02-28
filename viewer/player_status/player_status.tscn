@@ -1,37 +1,22 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://viewer/player_status/status_dot.svg" type="Texture" id=2]
 [ext_resource path="res://viewer/player_status/player_status.gd" type="Script" id=3]
 [ext_resource path="res://viewer/player_status/right_arrow.svg" type="Texture" id=4]
+[ext_resource path="res://viewer/player_status/normal_style.tres" type="StyleBox" id=6]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
+[sub_resource type="StyleBoxEmpty" id=11]
 
-[sub_resource type="StyleBoxFlat" id=2]
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0.870588, 0.870588, 0.870588, 1 )
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.129412, 0.129412, 0.129412, 1 )
 
-[sub_resource type="StyleBoxFlat" id=3]
-
-[sub_resource type="StyleBoxFlat" id=4]
-
-[sub_resource type="StyleBoxFlat" id=5]
-
-[sub_resource type="StyleBoxFlat" id=6]
-
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=13]
 content_margin_left = 0.0
 content_margin_right = 0.0
 content_margin_top = 0.0
 content_margin_bottom = 0.0
+bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
 draw_center = false
 border_width_left = 2
 border_width_top = 2
@@ -43,35 +28,33 @@ expand_margin_right = 2.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxEmpty" id=9]
+[sub_resource type="StyleBoxEmpty" id=14]
 
-[sub_resource type="StyleBoxEmpty" id=10]
+[sub_resource type="StyleBoxEmpty" id=15]
 
-[sub_resource type="StyleBoxEmpty" id=11]
+[sub_resource type="StyleBoxEmpty" id=16]
 
-[sub_resource type="StyleBoxEmpty" id=12]
-
-[sub_resource type="StyleBoxFlat" id=8]
-bg_color = Color( 0.129412, 0.129412, 0.129412, 1 )
+[sub_resource type="StyleBoxEmpty" id=17]
 
 [node name="player_status" type="PanelContainer"]
 margin_right = 135.0
 margin_bottom = 35.0
+mouse_filter = 1
 theme = ExtResource( 1 )
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = ExtResource( 6 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 135.0
-margin_bottom = 42.0
-custom_constants/separation = 0
+margin_right = 137.0
+margin_bottom = 36.0
+custom_constants/separation = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
 margin_right = 35.0
-margin_bottom = 42.0
+margin_bottom = 36.0
 rect_min_size = Vector2( 35, 35 )
 custom_constants/margin_right = 0
 custom_constants/margin_top = 0
@@ -80,36 +63,29 @@ custom_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer"]
 margin_right = 35.0
-margin_bottom = 42.0
+margin_bottom = 36.0
 custom_constants/separation = 0
 
 [node name="arrow" type="TextureRect" parent="HBoxContainer/MarginContainer/HBoxContainer"]
 margin_right = 17.0
-margin_bottom = 42.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 4 )
 expand = true
 stretch_mode = 6
 
-[node name="player_color_button" type="Button" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="player_color" type="ColorRect" parent="HBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 17.0
 margin_right = 35.0
-margin_bottom = 42.0
-focus_mode = 0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/hover = SubResource( 2 )
-custom_styles/pressed = SubResource( 3 )
-custom_styles/focus = SubResource( 4 )
-custom_styles/disabled = SubResource( 5 )
-custom_styles/normal = SubResource( 6 )
-disabled = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 35.0
-margin_right = 135.0
-margin_bottom = 42.0
+margin_left = 37.0
+margin_right = 137.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 custom_constants/separation = 0
 
@@ -117,91 +93,62 @@ custom_constants/separation = 0
 margin_right = 100.0
 margin_bottom = 36.0
 
-[node name="player_name" type="ToolButton" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="player_name" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_right = 100.0
 margin_bottom = 36.0
 rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 3
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 9 )
-custom_styles/focus = SubResource( 10 )
-custom_styles/disabled = SubResource( 11 )
-custom_styles/normal = SubResource( 12 )
-custom_colors/font_color_disabled = Color( 0.886275, 0.886275, 0.886275, 1 )
-disabled = true
+size_flags_vertical = 3
+custom_styles/normal = SubResource( 11 )
 text = "----"
-flat = false
 clip_text = true
-align = 0
 
 [node name="status_dot" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 visible = false
-margin_left = 105.0
-margin_right = 123.0
-margin_bottom = 35.0
+margin_left = 108.0
+margin_right = 126.0
+margin_bottom = 36.0
 rect_min_size = Vector2( 18, 18 )
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
 
-[node name="name_popup" type="Popup" parent="."]
-margin_right = 236.0
-margin_bottom = 48.0
-
-[node name="Panel" type="Panel" parent="name_popup"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="name_popup/Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="name_entry" type="LineEdit" parent="name_popup/Panel/VBoxContainer"]
-margin_top = 12.0
-margin_right = 236.0
-margin_bottom = 36.0
-text = "Name"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="color_popup" type="Popup" parent="."]
-margin_right = 276.0
-margin_bottom = 48.0
+visible = true
+margin_right = 137.0
+margin_bottom = 36.0
 
 [node name="Panel" type="Panel" parent="color_popup"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="color_popup/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="color_popup"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="color_popup_buttons" type="HBoxContainer" parent="color_popup/Panel/MarginContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 272.0
-margin_bottom = 44.0
+[node name="color_popup_buttons" type="HBoxContainer" parent="color_popup/MarginContainer"]
+margin_right = 137.0
+margin_bottom = 36.0
+custom_constants/separation = 4
 alignment = 1
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/player_name" to="." method="_on_player_name_pressed"]
-[connection signal="text_entered" from="name_popup/Panel/VBoxContainer/name_entry" to="." method="_on_LineEdit_text_entered"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="button" type="Button" parent="."]
+margin_right = 137.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 0, 35 )
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 14 )
+custom_styles/focus = SubResource( 15 )
+custom_styles/disabled = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
+[connection signal="pressed" from="button" to="." method="_on_button_pressed"]
