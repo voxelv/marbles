@@ -96,6 +96,7 @@ Omni="*res://omni.gd"
 [display]
 
 window/size/height=576
+window/dpi/allow_hidpi=true
 
 [gui]
 
