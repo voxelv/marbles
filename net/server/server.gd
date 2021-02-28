@@ -131,9 +131,6 @@ func _handle_pkt(id:int, pkt:Dictionary):
 	match type:
 		PKT.type.PLAYER_ROLL_REQUEST:
 			game.player_roll_request(id, pkt)
-		
-		PKT.type.PLAYER_SET_NAME_REQUEST:
-			game.player_set_name_request(id, pkt)
 			
 		PKT.type.PLAYER_SET_COLOR_REQUEST:
 			game.player_set_color_request(id, pkt)

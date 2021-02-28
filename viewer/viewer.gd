@@ -234,9 +234,6 @@ func _on_client_send_button_pressed() -> void:
 func _on_player_status_color_set(color_id, player):
 	Connection.client.send_player_set_color_request(player, color_id)
 
-func _on_player_status_name_set(new_name, player):
-	Connection.client.send_player_set_name_request(player, new_name)
-
 func _on_menu_button_pressed() -> void:
 	Connection.client._socket.disconnect_from_host()
 	get_tree().change_scene("res://menu/menu.tscn")

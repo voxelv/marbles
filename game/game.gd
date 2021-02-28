@@ -174,26 +174,6 @@ func player_roll_request(id:int, pkt:Dictionary):
 		
 		emit_signal("sync_game")
 
-func player_set_name_request(id:int, pkt:Dictionary):
-	var reported_player = pkt.get('player', Logic.player.COUNT)
-	if not validate_player(id, reported_player):
-		return
-	
-	var player = players[id].player
-	
-	var requested_name := pkt.get('name', "?") as String
-	var already_used := false
-	for p in range(Logic.player.COUNT):
-		if p == player:
-			continue
-		if game_state.custom_clients[p].display_name == requested_name:
-			already_used = true
-	if already_used:
-		return
-	
-	game_state.custom_clients[player].display_name = requested_name
-#	emit_signal("sync_game")
-
 func player_set_color_request(id:int, pkt:Dictionary):
 	var reported_player = pkt.get('player', Logic.player.COUNT)
 	if not validate_player(id, reported_player):
