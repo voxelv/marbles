@@ -19,7 +19,7 @@ const materials = [
 	preload("res://board/player_materials/D.tres")
 ]
 
-# 4 arrays: player n's 5 marbles indexes for n = 0, 1, 2, 3
+# 4 arrays: player n's 5 marbles indices for n = 0, 1, 2, 3
 # corresponding to player a, b, c, d
 var _marbles := []
 
@@ -38,6 +38,7 @@ func _ready() -> void:
 		var mat := (player_markers.get_child(i) as MeshInstance).get_surface_material(0)
 		player_marker_materials.append(mat)
 	
+	_setup_board_materials()
 	setup_marbles()
 
 func _positions_recurse(node:Node)->void:
@@ -77,6 +78,26 @@ func connect_bounds(signal_name:String, node:Node, function_name:String):
 
 func _on_mouse_entered(idx:int)->void:
 	print("Entered %d" % idx)
+
+func _setup_board_materials():
+	for key in Palette.board_colors.keys():
+		if key == 'center':
+			var mi := find_node(key) as MeshInstance
+			var sm = mi.get_surface_material(0) as SpatialMaterial
+			sm.albedo_color = Palette.board_colors[key]
+		elif key == 'edge':
+			for sub_edge_key in ['home_entrance', 'pokey_hole', 'home']:
+				var mi := find_node('%s_edge' % sub_edge_key) as MeshInstance
+				var sm = mi.get_surface_material(0) as SpatialMaterial
+				sm.albedo_color = Palette.board_colors[key]
+		elif key == '5_run':
+			var mi := find_node('a_%s_1' % key) as MeshInstance
+			var sm = mi.get_surface_material(0) as SpatialMaterial
+			sm.albedo_color = Palette.board_colors[key]
+		else:
+			var mi := find_node('a_%s' % key) as MeshInstance
+			var sm = mi.get_surface_material(0) as SpatialMaterial
+			sm.albedo_color = Palette.board_colors[key]
 
 func setup_marbles():
 	for p in range(Logic.player.COUNT):

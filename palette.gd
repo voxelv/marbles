@@ -13,3 +13,12 @@ const avail_colors := {
 	color.GRAY: Color("bbbbbb"),
 }
 
+const board_colors := {
+	'5_run': "aaaaaa",
+	'center': "f5de82",
+	'edge': "8b8b8b",
+	'home_entrance': "dcff6e",
+	'home': "dad0ff",
+	'home_row': "e7bbd7",
+	'pokey_hole': "ffffff"
+}
