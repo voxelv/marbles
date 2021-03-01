@@ -175,6 +175,7 @@ func create_game(key:String="")->String:
 	games[key] = new_game
 	new_game.game_key = key
 	new_game.connect("sync_game", self, "_on_game_sync_game", [key])
+	new_game.connect("sync_ui", self, "_on_game_sync_ui", [key])
 	return(key)
 
 func find_game()->String:
@@ -216,6 +217,14 @@ func _on_game_sync_game(games_key):
 		var client_info := (p as ClientInfo)
 		send_game_state_direct(game.game_state, client_info.peer_id)
 
+func _on_game_sync_ui(games_key):
+	if not games_key in games.keys():
+		return
+	var game := (games.get(games_key, null) as Game)
+	for p in game.players.values():
+		var client_info := (p as ClientInfo)
+		send_ui_direct(game.ui_state, client_info.peer_id)
+
 func send_command_print_text()->void:
 	_send_pkt(PKT.fmt_cmd_print_text())
 
@@ -239,6 +248,10 @@ func send_game_state_direct(game_state:GameState, peer_id:int)->void:
 		var game := games.values()[0] as Game
 		game.game_state.dice_value = game_state.dice_value
 	_send_pkt(PKT.fmt_game_state(game_state), false, peer_id)
+
+func send_ui_direct(ui_state:UIState, peer_id:int)->void:
+	
+	pass
 
 func win_player_game_0(player:int):
 	if not "0" in games:

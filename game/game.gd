@@ -4,9 +4,11 @@ class_name Game
 const TICK_MULTIPLIER = 1000
 
 signal sync_game
+signal sync_ui
 
 var game_key := ""
 var game_state : GameState
+var ui_state : UIState
 var players := {}  # Dictionary of ClientInfo (peer_id as key)
 var _counter := 0
 var _tick_xn000_count := -1
@@ -66,10 +68,6 @@ func start_game()->void:
 	game_state.player_turn = Logic.player.A
 	_update_marble_control()
 	game_state.board.set_all(Logic.home_indices)
-	
-	for player in game_state.custom_clients.keys():
-		game_state.custom_clients[player].color_id = Palette.initial_colors[player]
-		game_state.custom_clients[player].display_name = Palette.color.keys()[Palette.initial_colors[player]]
 	
 	emit_signal("sync_game")
 
@@ -179,19 +177,19 @@ func player_set_color_request(id:int, pkt:Dictionary):
 	if not validate_player(id, reported_player):
 		return
 	
-	var player = players[id].player
-	
-	var request_color_id = pkt.get('color', Palette.color.GRAY)
-	var already_used := false
-	for p in range(Logic.player.COUNT):
-		if p == player:
-			continue
-		if game_state.custom_clients[p].color_id == request_color_id:
-			already_used = true
-	if already_used:
-		return
-	game_state.custom_clients[player].color_id = request_color_id
-	game_state.custom_clients[player].display_name = Palette.color.keys()[request_color_id]
+#	var player = players[id].player
+#
+#	var request_color_id = pkt.get('color', Palette.color.GRAY)
+#	var already_used := false
+#	for p in range(Logic.player.COUNT):
+#		if p == player:
+#			continue
+#		if game_state.custom_clients[p].color_id == request_color_id:
+#			already_used = true
+#	if already_used:
+#		return
+#	game_state.custom_clients[player].color_id = request_color_id
+#	game_state.custom_clients[player].display_name = Palette.color.keys()[request_color_id]
 #	emit_signal("sync_game")
 
 func player_pass_request(id:int, pkt:Dictionary):

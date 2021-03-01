@@ -45,20 +45,20 @@ func _on_player_color_button_pressed():
 	for b in color_popup_buttons.get_children():
 		(b as Node).queue_free()
 	
-	# Set color buttons
-	for c in Palette.avail_colors.keys():
-		var color := Palette.avail_colors[c] as Color
-		
-		# Gather used colors
-		var used_colors := []
-		for player in range(Logic.player.COUNT):
-			used_colors.append(Connection.local_viewer.state.custom_clients[player].color_id)
-		
-		if not c in used_colors:
-			var new_color_button = color_button_preload.instance()
-			new_color_button.connect("pressed", self, "_on_color_button_pressed", [c])
-			color_popup_buttons.add_child(new_color_button)
-			new_color_button.set_color(color)
+#	# Set color buttons
+#	for c in Palette.avail_colors.keys():
+#		var color := Palette.avail_colors[c] as Color
+#
+#		# Gather used colors
+#		var used_colors := []
+#		for player in range(Logic.player.COUNT):
+#			used_colors.append(Connection.local_viewer.state.custom_clients[player].color_id)
+#
+#		if not c in used_colors:
+#			var new_color_button = color_button_preload.instance()
+#			new_color_button.connect("pressed", self, "_on_color_button_pressed", [c])
+#			color_popup_buttons.add_child(new_color_button)
+#			new_color_button.set_color(color)
 
 func _on_button_pressed() -> void:
 	_on_player_color_button_pressed()

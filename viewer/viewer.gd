@@ -120,39 +120,39 @@ func update_ui(game_state:GameState):
 		pass_button.disabled = true
 	
 	# Update colors
-	var colors := []
-	for i in range(Logic.player.COUNT):
-		var color := Palette.avail_colors[(game_state.custom_clients[i] as CustomClientInfo).color_id] as Color
-		colors.append(color)
-	board.set_player_colors(colors)
+#	var colors := []
+#	for i in range(Logic.player.COUNT):
+#		var color := Palette.avail_colors[(game_state.custom_clients[i] as CustomClientInfo).color_id] as Color
+#		colors.append(color)
+#	board.set_player_colors(colors)
 	
 	# Dice Panel color
-	if Logic.valid_player(game_state.player_turn):
-		var dice_panel_stylebox := dice_panel.get("custom_styles/panel") as StyleBoxFlat
-		dice_panel_stylebox.bg_color = colors[game_state.player_turn]
+#	if Logic.valid_player(game_state.player_turn):
+#		var dice_panel_stylebox := dice_panel.get("custom_styles/panel") as StyleBoxFlat
+#		dice_panel_stylebox.bg_color = colors[game_state.player_turn]
 	
 	# Menu Panel color
-	if Logic.valid_player(Connection.get_player()):
-		var menu_panel_stylebox := menu_panel.get("custom_styles/panel") as StyleBoxFlat
-		menu_panel_stylebox.bg_color = colors[Connection.get_player()]
+#	if Logic.valid_player(Connection.get_player()):
+#		var menu_panel_stylebox := menu_panel.get("custom_styles/panel") as StyleBoxFlat
+#		menu_panel_stylebox.bg_color = colors[Connection.get_player()]
 	
 	# Update player_status
-	for player in game_state.custom_clients.keys():
-		if not Logic.valid_player(player):
-			continue
-		
-		var cci = (game_state.custom_clients[player] as CustomClientInfo)
-		
-		# Update turn indicator
-		var player_status := player_status_list.get_child(player) as PlayerStatus
-		player_status.set_active(player == game_state.player_turn)
-		
-		# Update colors
-		player_status.set_color(Palette.avail_colors[cci.color_id])
-		player_status.set_enabled(Connection.can_control_player(player))
-		
-		# Update names
-		player_status.set_name(cci.display_name)
+#	for player in game_state.custom_clients.keys():
+#		if not Logic.valid_player(player):
+#			continue
+#
+#		var cci = (game_state.custom_clients[player] as CustomClientInfo)
+#
+#		# Update turn indicator
+#		var player_status := player_status_list.get_child(player) as PlayerStatus
+#		player_status.set_active(player == game_state.player_turn)
+#
+#		# Update colors
+#		player_status.set_color(Palette.avail_colors[cci.color_id])
+#		player_status.set_enabled(Connection.can_control_player(player))
+#
+#		# Update names
+#		player_status.set_name(cci.display_name)
 		
 	board.show_marbles(game_state.game_phase == Logic.game_phase.STARTED)
 	
