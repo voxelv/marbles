@@ -16,8 +16,11 @@ func _ready() -> void:
 		_socket.connect("data_received", self, "_on_data_from_client")
 		
 		# Initiate Connection
-		var err = (_socket as WebSocketServer).listen(Config.PORT)
-		if err != OK:
+		print("Attempt listening on port %d protocols: %s" % [Config.PORT, str(Config.PROTOCOLS)])
+		var err = (_socket as WebSocketServer).listen(Config.PORT, Config.PROTOCOLS)
+		if err == OK:
+			print("Server listening on port %d protocols: %s" % [Config.PORT, Config.PROTOCOLS])
+		else:
 			print("Server could not listen...")
 		
 		if Config.number_of_games > 0:

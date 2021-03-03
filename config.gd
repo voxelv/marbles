@@ -5,6 +5,7 @@ const GAME_REMOVAL_TIME = 20.0  # Seconds
 #var URL := "45.79.67.18"
 var URL := "localhost"
 var PORT := 9080
+var PROTOCOLS := ['marbles']
 
 var game_key := ""
 

@@ -16,6 +16,7 @@ var close_timer : Timer
 
 func _init():
 	game_state = GameState.new()
+	ui_state = UIState.new()
 	close_timer = Timer.new()
 	close_timer.connect("timeout", self, "_on_close_timer_timeout")
 	Connection.server.add_child(close_timer)
