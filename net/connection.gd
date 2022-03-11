@@ -23,10 +23,10 @@ func setup():
 	print("Connection setup finished...")
 
 func clear_peers():
-	if client != null:
+	if is_instance_valid(client):
 		client.disconnect_from_server()
 		client.queue_free()
-	if server != null:
+	if is_instance_valid(server):
 		server.close_all_connections()
 		server.queue_free()
 

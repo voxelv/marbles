@@ -135,30 +135,30 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu"]
-margin_top = 216.0
-margin_right = 424.0
-margin_bottom = 251.0
+margin_top = 212.0
+margin_right = 442.0
+margin_bottom = 248.0
 
 [node name="Label" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer3"]
 margin_right = 126.0
-margin_bottom = 35.0
+margin_bottom = 36.0
 text = "Game Key:"
 
 [node name="Label2" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer3"]
 self_modulate = Color( 1, 1, 1, 0.772549 )
-margin_left = 131.0
-margin_right = 424.0
-margin_bottom = 35.0
+margin_left = 134.0
+margin_right = 442.0
+margin_bottom = 36.0
 text = "(Leave empty for random)"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu"]
 margin_top = 256.0
-margin_right = 424.0
-margin_bottom = 296.0
+margin_right = 442.0
+margin_bottom = 298.0
 
 [node name="join_game_game_key" type="LineEdit" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer"]
-margin_right = 424.0
-margin_bottom = 40.0
+margin_right = 442.0
+margin_bottom = 42.0
 rect_min_size = Vector2( 0, 40 )
 focus_next = NodePath("../join_game_port")
 size_flags_horizontal = 3
@@ -166,12 +166,12 @@ align = 1
 placeholder_text = "Enter Key"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu"]
-margin_top = 301.0
-margin_right = 424.0
-margin_bottom = 351.0
+margin_top = 306.0
+margin_right = 442.0
+margin_bottom = 356.0
 
 [node name="join_game_cancel" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2"]
-margin_right = 209.0
+margin_right = 217.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
 focus_next = NodePath("../../HBoxContainer/join_game_server")
@@ -180,8 +180,8 @@ size_flags_horizontal = 3
 text = "Cancel"
 
 [node name="join_game_join" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2"]
-margin_left = 214.0
-margin_right = 424.0
+margin_left = 225.0
+margin_right = 442.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
 focus_next = NodePath("../join_game_cancel")
@@ -196,39 +196,39 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu"]
-margin_top = 236.0
+margin_top = 234.0
 margin_right = 292.0
 margin_bottom = 276.0
 
 [node name="Label" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer"]
-margin_top = 2.0
-margin_right = 62.0
-margin_bottom = 37.0
+margin_top = 3.0
+margin_right = 57.0
+margin_bottom = 39.0
 text = "Port:"
 
 [node name="serve_game_port" type="LineEdit" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer"]
-margin_left = 67.0
+margin_left = 65.0
 margin_right = 292.0
-margin_bottom = 40.0
+margin_bottom = 42.0
 rect_min_size = Vector2( 0, 40 )
 size_flags_horizontal = 3
 text = "9080"
 align = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu"]
-margin_top = 281.0
+margin_top = 284.0
 margin_right = 292.0
-margin_bottom = 331.0
+margin_bottom = 334.0
 
 [node name="serve_game_cancel" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer2"]
-margin_right = 123.0
+margin_right = 115.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 text = "Cancel"
 
 [node name="serve_game_serve" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer2"]
-margin_left = 128.0
+margin_left = 123.0
 margin_right = 292.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
@@ -244,15 +244,15 @@ script = ExtResource( 3 )
 
 [node name="CenterContainer" type="CenterContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu"]
 margin_right = 780.0
-margin_bottom = 513.0
+margin_bottom = 510.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="how_to_play_tabs" type="TabContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer"]
 margin_left = 390.0
-margin_top = 256.0
+margin_top = 255.0
 margin_right = 390.0
-margin_bottom = 256.0
+margin_bottom = 255.0
 tabs_visible = false
 
 [node name="how_to_play_goal" type="RichTextLabel" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer/how_to_play_tabs"]
@@ -314,24 +314,24 @@ rect_min_size = Vector2( 300, 50 )
 text = "Back"
 
 [node name="Control" type="Control" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 305.0
-margin_right = 422.0
+margin_left = 308.0
+margin_right = 415.0
 margin_bottom = 50.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Previous" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 427.0
-margin_right = 577.0
+margin_left = 423.0
+margin_right = 573.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 150, 0 )
 text = "Previous"
 
 [node name="page_counter" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 582.0
-margin_top = 4.0
-margin_right = 625.0
-margin_bottom = 45.0
+margin_left = 581.0
+margin_top = 7.0
+margin_right = 622.0
+margin_bottom = 43.0
 text = "0/0"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -343,6 +343,7 @@ margin_right = 780.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 150, 0 )
 text = "Next"
+
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/local_game_button" to="." method="_on_local_game_button_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/join_game_button" to="." method="_on_join_game_button_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/HBoxContainer/how_to_play_button" to="." method="_on_how_to_play_button_pressed"]
