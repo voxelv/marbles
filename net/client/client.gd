@@ -8,16 +8,16 @@ var con_timer:Timer
 var con_count := 0
 
 func _ready():
-	_socket.connect("connection_closed", self, "_closed")
-	_socket.connect("connection_error", self, "_connection_error")
-	_socket.connect("connection_established", self, "_connected_to_server")
-	_socket.connect("data_received", self, "_on_data_from_server")
+	_socket.connect("connection_closed", Callable(self, "_closed"))
+	_socket.connect("connection_error", Callable(self, "_connection_error"))
+	_socket.connect("connection_established", Callable(self, "_connected_to_server"))
+	_socket.connect("data_received", Callable(self, "_on_data_from_server"))
 	
 	if not Config.is_local:
 		_attempt_connection()
 		con_timer = Timer.new()
 		con_timer.wait_time = 1
-		con_timer.connect("timeout", self, "_on_con_timer_timeout")
+		con_timer.connect("timeout", Callable(self, "_on_con_timer_timeout"))
 		add_child(con_timer)
 		con_timer.start()
 
@@ -27,7 +27,7 @@ func _on_con_timer_timeout()->void:
 func _attempt_connection()->void:
 	print("Attempting connection... %d" % con_count)
 	con_count += 1
-	if _socket.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
+	if _socket.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
 		if err != OK:
 			print("Could not connect...")
@@ -77,13 +77,13 @@ func _handle_pkt(pkt:Dictionary):
 			state.defmt(pkt)
 			if Config.is_local:
 				info.player = state.player_turn
-			if Connection.local_viewer != null:
-				Connection.local_viewer.update_ui(state)
+#			if Connection.local_viewer != null: # TODO FIX
+#				Connection.local_viewer.update_ui(state)
 		
 		PKT.type.SET_CLIENTINFO:
 			info.peer_id = pkt.get('peer_id', -1)
 			info.player = pkt.get('player', Logic.player.COUNT)
-			OS.set_window_title({
+			DisplayServer.window_set_title({
 				Logic.player.A: "[A]",
 				Logic.player.B: "[B]",
 				Logic.player.C: "[C]",
@@ -92,7 +92,7 @@ func _handle_pkt(pkt:Dictionary):
 			}[info.player])
 
 func _send_pkt(pkt:Dictionary)->void:
-	if pkt.empty():
+	if pkt.is_empty():
 		return
 	
 	if Config.is_local:

@@ -8,15 +8,20 @@ const color_button_preload := preload("res://viewer/player_status/color_button.t
 const hover_style := preload("res://viewer/player_status/hover_style.tres")
 const normal_style := preload("res://viewer/player_status/normal_style.tres")
 
-onready var arrow = find_node("arrow") as TextureRect
-onready var player_color = find_node("player_color") as ColorRect
-onready var player_name = find_node("player_name") as Label
-onready var color_popup = find_node("color_popup") as Popup
-onready var color_popup_buttons = find_node("color_popup_buttons")
+var arrow :TextureRect
+var player_color :ColorRect
+var player_name :Label
+var color_popup :Popup
+var color_popup_buttons :BoxContainer
 
 var enabled := false
 
 func _ready() -> void:
+	arrow = get_node("HBoxContainer/MarginContainer/HBoxContainer/arrow")
+	player_color = get_node("HBoxContainer/MarginContainer/HBoxContainer/player_color")
+	player_name = get_node("HBoxContainer/VBoxContainer/HBoxContainer/player_name")
+	color_popup = get_node("color_popup")
+	color_popup_buttons = get_node("color_popup/MarginContainer/color_popup_buttons")
 	set_active(false)
 
 func set_color(color:Color)->void:
@@ -24,7 +29,7 @@ func set_color(color:Color)->void:
 
 func set_active(active:bool):
 	if active:
-		arrow.self_modulate = Color.white
+		arrow.self_modulate = Color.GHOST_WHITE
 	else:
 		arrow.self_modulate = Color(0)
 
@@ -51,7 +56,7 @@ func _on_player_color_button_pressed():
 		
 		# Gather used colors
 		var used_colors := []
-		for player in range(Logic.player.COUNT):
+		for player in range(4):
 			used_colors.append(Connection.local_viewer.state.custom_clients[player].color_id)
 		
 		if not c in used_colors:

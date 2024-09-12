@@ -1,19 +1,26 @@
 extends Node
 
-onready var local_game_button := find_node("local_game_button") as Button
-onready var join_game_button := find_node("join_game_button") as Button
-onready var serve_game_button := find_node("serve_game_button") as Button
-onready var quit_to_desktop_button := find_node("quit_to_desktop_button") as Button
+var local_game_button :Button
+var join_game_button :Button
+var serve_game_button :Button
+var quit_to_desktop_button :Button
 
-onready var join_game_game_key := find_node("join_game_game_key") as LineEdit
+var join_game_game_key :LineEdit
 
-onready var tabs := find_node("tabs") as TabContainer
+var tabs :TabContainer
+
 enum tab {MAIN, JOIN, SERVE, HOW_TO_PLAY}
 
 var viewer:Node = null
 var _peers := []
 
 func _ready() -> void:
+	local_game_button = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/local_game_button")
+	join_game_button = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/join_game_button")
+	serve_game_button = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/serve_game_button")
+	quit_to_desktop_button = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/quit_to_desktop_button")
+	join_game_game_key = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer/join_game_game_key")
+	tabs = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs")
 	Connection.clear_peers()
 	
 	var cli_args = OS.get_cmdline_args()
@@ -76,7 +83,7 @@ func _on_join_game_join_action(_arg1):
 	_on_join_game_join_pressed()
 
 func _on_join_game_join_pressed() -> void:
-	Config.game_key = (find_node("join_game_game_key") as LineEdit).text
+	Config.game_key = (find_nodes("join_game_game_key")[0] as LineEdit).text
 	
 	Connection.setup()
 	loading_viewer()
@@ -87,7 +94,7 @@ func _on_serve_game_button_pressed() -> void:
 	_set_menu(tab.SERVE)
 
 func _on_serve_game_serve_pressed()->void:
-	Config.PORT = int((find_node("serve_game_port") as LineEdit).text)
+	Config.PORT = ((find_nodes("serve_game_port")[0] as LineEdit).text as int)
 	_serve_game()
 
 func _serve_game():

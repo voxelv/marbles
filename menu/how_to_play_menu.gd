@@ -1,7 +1,10 @@
 extends VBoxContainer
 
-onready var how_to_play_tabs := find_node("how_to_play_tabs") as TabContainer
-onready var page_counter := find_node("page_counter") as Label
+@onready @export_node_path(TabContainer) var how_to_play_tabs_path
+@onready @export_node_path(Label) var page_counter_path
+
+@onready var how_to_play_tabs:TabContainer = get_node(how_to_play_tabs_path)
+@onready var page_counter:Label = get_node(page_counter_path)
 
 func _ready():
 	update_page_counter()

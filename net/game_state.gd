@@ -1,16 +1,16 @@
 extends Node
 class_name GameState
 
-var game_phase := Logic.game_phase.COUNT as int
-var player_turn := Logic.player.COUNT as int
-var controls_players_marbles := Logic.player.COUNT as int
+var game_phase := 2
+var player_turn := 4
+var controls_players_marbles := 4
 var player_has_rolled := false
 var dice_value := 0
 var board := BoardState.new()
 var custom_clients := {}
 
 func _init() -> void:
-	for player in range(Logic.player.COUNT):
+	for player in range(4):
 		custom_clients[player] = CustomClientInfo.new()
 
 func fmt()->Dictionary:

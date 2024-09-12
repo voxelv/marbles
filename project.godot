@@ -6,97 +6,27 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "Node",
-"class": "BoardState",
-"language": "GDScript",
-"path": "res://net/board_state.gd"
-}, {
-"base": "Node",
-"class": "Client",
-"language": "GDScript",
-"path": "res://net/client/client.gd"
-}, {
-"base": "Node",
-"class": "ClientInfo",
-"language": "GDScript",
-"path": "res://net/client/client_info.gd"
-}, {
-"base": "Node",
-"class": "CustomClientInfo",
-"language": "GDScript",
-"path": "res://net/client/custom_client_info.gd"
-}, {
-"base": "Node",
-"class": "Game",
-"language": "GDScript",
-"path": "res://game/game.gd"
-}, {
-"base": "Node",
-"class": "GameInfoUI",
-"language": "GDScript",
-"path": "res://game/game_info.gd"
-}, {
-"base": "Node",
-"class": "GameState",
-"language": "GDScript",
-"path": "res://net/game_state.gd"
-}, {
-"base": "Client",
-"class": "LocalClient",
-"language": "GDScript",
-"path": "res://net/client/local_client.gd"
-}, {
-"base": "PanelContainer",
-"class": "PlayerStatus",
-"language": "GDScript",
-"path": "res://viewer/player_status/player_status.gd"
-}, {
-"base": "Node",
-"class": "Server",
-"language": "GDScript",
-"path": "res://net/server/server.gd"
-}, {
-"base": "Node",
-"class": "Viewer",
-"language": "GDScript",
-"path": "res://viewer/viewer.gd"
-} ]
-_global_script_class_icons={
-"BoardState": "",
-"Client": "",
-"ClientInfo": "",
-"CustomClientInfo": "",
-"Game": "",
-"GameInfoUI": "",
-"GameState": "",
-"LocalClient": "",
-"PlayerStatus": "",
-"Server": "",
-"Viewer": ""
-}
+config_version=5
 
 [application]
 
 config/name="marbles"
 run/main_scene="res://menu/menu.tscn"
+config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
 
 [autoload]
 
 Palette="*res://palette.gd"
+Omni="*res://omni.gd"
+Connection="*res://net/connection.gd"
 Logic="*res://logic.gd"
 Config="*res://config.gd"
 PKT="*res://net/pkt.gd"
-Connection="*res://net/connection.gd"
-Omni="*res://omni.gd"
 
 [display]
 
 window/size/height=576
-window/dpi/allow_hidpi=true
 
 [gui]
 
@@ -104,6 +34,7 @@ theme/use_hidpi=true
 
 [rendering]
 
+renderer/rendering_method="mobile"
 quality/driver/driver_name="GLES2"
-environment/default_clear_color=Color( 0, 0, 0, 1 )
+environment/default_clear_color=Color(0, 0, 0, 1)
 environment/default_environment="res://default_env.tres"

@@ -10,10 +10,10 @@ func _ready() -> void:
 	randomize()
 	
 	if not Config.is_local:
-		_socket.connect("client_connected", self, "_client_connected")
-		_socket.connect("client_disconnected", self, "_disconnected")
-		_socket.connect("client_close_request", self, "_close_request")
-		_socket.connect("data_received", self, "_on_data_from_client")
+		_socket.connect("client_connected", Callable(self, "_client_connected"))
+		_socket.connect("client_disconnected", Callable(self, "_disconnected"))
+		_socket.connect("client_close_request", Callable(self, "_close_request"))
+		_socket.connect("data_received", Callable(self, "_on_data_from_client"))
 		
 		# Initiate Connection
 		var err = (_socket as WebSocketServer).listen(Config.PORT)
@@ -87,9 +87,9 @@ func _handle_pkt(id:int, pkt:Dictionary):
 			
 			if game_key in games:
 				pass
-			elif game_key.empty():
+			elif game_key.is_empty():
 				game_key = find_game()
-				if game_key.empty():
+				if game_key.is_empty():
 					game_key = create_game()
 			else:
 				game_key = create_game(game_key)
@@ -142,7 +142,7 @@ func _handle_pkt(id:int, pkt:Dictionary):
 			game.player_move_request(id, pkt)
 
 func _send_pkt(pkt:Dictionary, broadcast:bool=true, peer_id:int=-1)->void:
-	if pkt.empty():
+	if pkt.is_empty():
 		return
 	
 	if Config.is_local:
@@ -164,7 +164,7 @@ func create_game(key:String="")->String:
 	
 	var new_game := Game.new()
 	
-	if key.empty():
+	if key.is_empty():
 		# Create a game with next available integer
 		var games_key := 0
 		while str(games_key) in games.keys():
@@ -174,7 +174,7 @@ func create_game(key:String="")->String:
 	new_game.game_state.game_phase = Logic.game_phase.INIT
 	games[key] = new_game
 	new_game.game_key = key
-	new_game.connect("sync_game", self, "_on_game_sync_game", [key])
+	new_game.connect("sync_game", Callable(self, "_on_game_sync_game"), [key])
 	return(key)
 
 func find_game()->String:

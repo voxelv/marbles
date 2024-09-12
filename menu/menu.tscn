@@ -1,347 +1,220 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://b2w5udryk40h4"]
 
-[ext_resource path="res://theme.tres" type="Theme" id=1]
-[ext_resource path="res://menu/menu.gd" type="Script" id=2]
-[ext_resource path="res://menu/how_to_play_menu.gd" type="Script" id=3]
-
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 0.694118 )
-
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.490196, 0.0117647, 0, 1 )
+[ext_resource type="Theme" uid="uid://dxskuts3loc73" path="res://theme.tres" id="1"]
+[ext_resource type="Script" path="res://menu/menu.gd" id="2"]
+[ext_resource type="Script" path="res://menu/how_to_play_menu.gd" id="3"]
 
 [node name="menu" type="Node"]
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
+theme = ExtResource("1")
 
 [node name="PanelContainer" type="PanelContainer" parent="ui"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer"]
-margin_right = 1024.0
-margin_bottom = 576.0
+layout_mode = 2
 alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PanelContainer" type="PanelContainer" parent="ui/PanelContainer/HBoxContainer"]
-margin_left = 342.0
-margin_right = 682.0
-margin_bottom = 576.0
-rect_min_size = Vector2( 300, 0 )
+layout_mode = 2
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MarginContainer" type="MarginContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer"]
-margin_right = 340.0
-margin_bottom = 576.0
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
+layout_mode = 2
 
 [node name="tabs" type="TabContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 336.0
-margin_bottom = 572.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-tab_align = 0
 tabs_visible = false
 
 [node name="main_menu" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 2
 alignment = 1
 
 [node name="local_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
-margin_top = 148.0
-margin_right = 332.0
-margin_bottom = 198.0
-rect_min_size = Vector2( 0, 50 )
+layout_mode = 2
 focus_mode = 0
 text = "LOCAL GAME (Pass & Play)"
 
 [node name="join_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
-margin_top = 206.0
-margin_right = 332.0
-margin_bottom = 256.0
-rect_min_size = Vector2( 0, 50 )
+layout_mode = 2
 focus_mode = 0
 text = "JOIN GAME (Online only)"
 
 [node name="Control" type="Control" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
-margin_top = 264.0
-margin_right = 332.0
-margin_bottom = 284.0
-rect_min_size = Vector2( 0, 20 )
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
-margin_top = 292.0
-margin_right = 332.0
-margin_bottom = 334.0
+layout_mode = 2
 alignment = 1
 
 [node name="how_to_play_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/HBoxContainer"]
-margin_left = 77.0
-margin_right = 255.0
-margin_bottom = 42.0
+layout_mode = 2
 text = "HOW TO PLAY"
 
 [node name="Control2" type="Control" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
-margin_top = 342.0
-margin_right = 332.0
-margin_bottom = 362.0
-rect_min_size = Vector2( 0, 20 )
+layout_mode = 2
 
 [node name="serve_game_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
 visible = false
-margin_top = 302.0
-margin_right = 292.0
-margin_bottom = 352.0
-rect_min_size = Vector2( 0, 50 )
+layout_mode = 2
 focus_mode = 0
 text = "SERVE GAMES (Advanced)"
 
 [node name="quit_to_desktop_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu"]
-margin_top = 370.0
-margin_right = 332.0
-margin_bottom = 420.0
-rect_min_size = Vector2( 0, 50 )
+layout_mode = 2
 text = "QUIT TO DESKTOP"
 
 [node name="join_game_menu" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 2
 alignment = 1
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu"]
-margin_top = 212.0
-margin_right = 442.0
-margin_bottom = 248.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer3"]
-margin_right = 126.0
-margin_bottom = 36.0
+layout_mode = 2
 text = "Game Key:"
 
 [node name="Label2" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer3"]
-self_modulate = Color( 1, 1, 1, 0.772549 )
-margin_left = 134.0
-margin_right = 442.0
-margin_bottom = 36.0
+self_modulate = Color(1, 1, 1, 0.772549)
+layout_mode = 2
 text = "(Leave empty for random)"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu"]
-margin_top = 256.0
-margin_right = 442.0
-margin_bottom = 298.0
+layout_mode = 2
 
 [node name="join_game_game_key" type="LineEdit" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer"]
-margin_right = 442.0
-margin_bottom = 42.0
-rect_min_size = Vector2( 0, 40 )
-focus_next = NodePath("../join_game_port")
+layout_mode = 2
 size_flags_horizontal = 3
-align = 1
+focus_next = NodePath("../join_game_port")
 placeholder_text = "Enter Key"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu"]
-margin_top = 306.0
-margin_right = 442.0
-margin_bottom = 356.0
+layout_mode = 2
 
 [node name="join_game_cancel" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2"]
-margin_right = 217.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 0, 50 )
+layout_mode = 2
+size_flags_horizontal = 3
 focus_next = NodePath("../../HBoxContainer/join_game_server")
 focus_mode = 1
-size_flags_horizontal = 3
 text = "Cancel"
 
 [node name="join_game_join" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2"]
-margin_left = 225.0
-margin_right = 442.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 0, 50 )
+layout_mode = 2
+size_flags_horizontal = 3
 focus_next = NodePath("../join_game_cancel")
 focus_mode = 1
-size_flags_horizontal = 3
 text = "JOIN!"
 
 [node name="serve_game_menu" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 2
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu"]
-margin_top = 234.0
-margin_right = 292.0
-margin_bottom = 276.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer"]
-margin_top = 3.0
-margin_right = 57.0
-margin_bottom = 39.0
+layout_mode = 2
 text = "Port:"
 
 [node name="serve_game_port" type="LineEdit" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer"]
-margin_left = 65.0
-margin_right = 292.0
-margin_bottom = 42.0
-rect_min_size = Vector2( 0, 40 )
+layout_mode = 2
 size_flags_horizontal = 3
 text = "9080"
-align = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu"]
-margin_top = 284.0
-margin_right = 292.0
-margin_bottom = 334.0
+layout_mode = 2
 
 [node name="serve_game_cancel" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer2"]
-margin_right = 115.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 0, 50 )
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Cancel"
 
 [node name="serve_game_serve" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer2"]
-margin_left = 123.0
-margin_right = 292.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 0, 50 )
+layout_mode = 2
 size_flags_horizontal = 3
 text = "BECOME HUB"
 
 [node name="how_to_play_menu" type="VBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 2
 alignment = 1
-script = ExtResource( 3 )
+script = ExtResource("3")
+how_to_play_tabs_path = NodePath("CenterContainer/how_to_play_tabs")
+page_counter_path = NodePath("HBoxContainer/page_counter")
 
 [node name="CenterContainer" type="CenterContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu"]
-margin_right = 780.0
-margin_bottom = 510.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="how_to_play_tabs" type="TabContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer"]
-margin_left = 390.0
-margin_top = 255.0
-margin_right = 390.0
-margin_bottom = 255.0
+layout_mode = 2
 tabs_visible = false
 
 [node name="how_to_play_goal" type="RichTextLabel" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer/how_to_play_tabs"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 780, 0 )
+layout_mode = 2
 text = "Goal: Get your team's marbles home before the other players!"
-fit_content_height = true
 
 [node name="how_to_play_roll" type="RichTextLabel" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer/how_to_play_tabs"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 780, 0 )
+layout_mode = 2
 text = "Roll a dice. \"Come out\" on a 6 or 1, or move clockwise around the holes of the \"cross\" shaped track."
-fit_content_height = true
 
 [node name="how_to_play_position" type="RichTextLabel" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer/how_to_play_tabs"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 780, 0 )
+layout_mode = 2
 text = "Position: The four corner holes of the track closest to the Center Hole are called \"Position\". When starting your turn, a marble in Position may move forward either along the track, or along other \"Positions\"."
-fit_content_height = true
 
 [node name="how_to_play_center" type="RichTextLabel" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer/how_to_play_tabs"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 780, 0 )
+layout_mode = 2
 text = "Center Hole: If you roll one more than would put you in \"Position\", rather than move along the track, you may move to the Center Hole. You may only move out of the Center Hole to a \"Position\" if you roll a 1."
-fit_content_height = true
 
 [node name="how_to_play_landing" type="RichTextLabel" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer/how_to_play_tabs"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 780, 0 )
+layout_mode = 2
 text = "Landing on Players: If you land on another player's marble, their marble is sent home, and your marble remains."
-fit_content_height = true
 
 [node name="how_to_play_team" type="RichTextLabel" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/CenterContainer/how_to_play_tabs"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 780, 0 )
+layout_mode = 2
 text = "Teams: Once you finish, you must roll and move for your teammate (Your teammate is the player across from you diagonally)."
-fit_content_height = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu"]
-margin_top = 518.0
-margin_right = 780.0
-margin_bottom = 568.0
+layout_mode = 2
 
 [node name="how_to_play_back_button" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_right = 300.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 300, 50 )
+layout_mode = 2
 text = "Back"
 
 [node name="Control" type="Control" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 308.0
-margin_right = 415.0
-margin_bottom = 50.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Previous" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 423.0
-margin_right = 573.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 150, 0 )
+layout_mode = 2
 text = "Previous"
 
 [node name="page_counter" type="Label" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 581.0
-margin_top = 7.0
-margin_right = 622.0
-margin_bottom = 43.0
+layout_mode = 2
 text = "0/0"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Next" type="Button" parent="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer"]
-margin_left = 630.0
-margin_right = 780.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 150, 0 )
+layout_mode = 2
 text = "Next"
 
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/local_game_button" to="." method="_on_local_game_button_pressed"]
@@ -350,11 +223,10 @@ text = "Next"
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/serve_game_button" to="." method="_on_serve_game_button_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/quit_to_desktop_button" to="." method="_on_quit_button_pressed"]
 [connection signal="mouse_entered" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer/join_game_game_key" to="." method="_on_join_game_game_key_mouse_entered"]
-[connection signal="text_entered" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer/join_game_game_key" to="." method="_on_join_game_join_action"]
-[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2/join_game_cancel" to="." method="_set_menu" binds= [ 0 ]]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2/join_game_cancel" to="." method="_set_menu" binds= [0]]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer2/join_game_join" to="." method="_on_join_game_join_pressed"]
-[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer2/serve_game_cancel" to="." method="_set_menu" binds= [ 0 ]]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer2/serve_game_cancel" to="." method="_set_menu" binds= [0]]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/serve_game_menu/HBoxContainer2/serve_game_serve" to="." method="_on_serve_game_serve_pressed"]
-[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer/how_to_play_back_button" to="." method="_set_menu" binds= [ 0 ]]
+[connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer/how_to_play_back_button" to="." method="_set_menu" binds= [0]]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer/Previous" to="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu" method="_on_Previous_pressed"]
 [connection signal="pressed" from="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu/HBoxContainer/Next" to="ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/how_to_play_menu" method="_on_Next_pressed"]

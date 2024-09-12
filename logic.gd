@@ -3,7 +3,6 @@ extends Node
 enum game_phase {INIT, STARTED, COUNT}
 enum player{A, B, C, D, COUNT}
 
-const DAGNode := preload("res://dag/dag_node.gd")
 const NUM_MARBLES_PER_PLAYER := 5
 
 var dag := []
@@ -54,7 +53,7 @@ func _ready():
 	call_deferred("_setup_dag")
 
 func valid_player(player:int)->bool:
-	return(player >= 0 and player < Logic.player.COUNT)
+	return(player >= 0 and player < 4)
 
 func get_first_empty_home_idx(board_state:BoardState, player:int)->int:
 	assert(valid_player(player))

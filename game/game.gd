@@ -15,7 +15,7 @@ var close_timer : Timer
 func _init():
 	game_state = GameState.new()
 	close_timer = Timer.new()
-	close_timer.connect("timeout", self, "_on_close_timer_timeout")
+	close_timer.connect("timeout", Callable(self, "_on_close_timer_timeout"))
 	Connection.server.add_child(close_timer)
 
 func _on_close_timer_timeout():
@@ -77,7 +77,7 @@ func has_all_players()->bool:
 	# If Local game, there's only one player (client)
 	if Config.is_local and len(players) >= 1:
 		var found_a_player := false
-		for i in range(Logic.player.COUNT):
+		for i in range(4):
 			var found := false
 			for ci in players.values():
 				if ci.player == i:
@@ -93,7 +93,7 @@ func has_all_players()->bool:
 	
 	# Check all players
 	var all_found := true
-	for i in range(Logic.player.COUNT):
+	for i in range(4):
 		var found := false
 		for ci in players.values():
 			if (ci as ClientInfo).player == i:
@@ -103,8 +103,8 @@ func has_all_players()->bool:
 	return(all_found)
 
 func next_open_player()->int:
-	var ret := Logic.player.COUNT as int
-	for i in range(Logic.player.COUNT):
+	var ret := 4
+	for i in range(4):
 		var found := false
 		for ci in players.values():
 			if (ci as ClientInfo).player == i:
@@ -183,7 +183,7 @@ func player_set_color_request(id:int, pkt:Dictionary):
 	
 	var request_color_id = pkt.get('color', Palette.color.GRAY)
 	var already_used := false
-	for p in range(Logic.player.COUNT):
+	for p in range(4):
 		if p == player:
 			continue
 		if game_state.custom_clients[p].color_id == request_color_id:
@@ -229,8 +229,8 @@ func player_move_request(id:int, pkt:Dictionary):
 	
 	# If to_idx has another player's marble, send it home
 	var other_player_marble_idx := -1
-	var other_player := Logic.player.COUNT as int
-	for p in range(Logic.player.COUNT):
+	var other_player := 4
+	for p in range(4):
 		if p == game_state.controls_players_marbles:
 			continue
 		if to_idx in game_state.board.marbles[p]:

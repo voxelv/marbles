@@ -1,127 +1,73 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://do5qdw6hm542m"]
 
-[ext_resource path="res://theme.tres" type="Theme" id=1]
-[ext_resource path="res://viewer/player_status/status_dot.svg" type="Texture" id=2]
-[ext_resource path="res://viewer/player_status/player_status.gd" type="Script" id=3]
-[ext_resource path="res://viewer/player_status/right_arrow.svg" type="Texture" id=4]
-[ext_resource path="res://viewer/player_status/normal_style.tres" type="StyleBox" id=6]
-
-[sub_resource type="StyleBoxEmpty" id=11]
-
-[sub_resource type="StyleBoxFlat" id=12]
-bg_color = Color( 0.129412, 0.129412, 0.129412, 1 )
-
-[sub_resource type="StyleBoxFlat" id=13]
-content_margin_left = 0.0
-content_margin_right = 0.0
-content_margin_top = 0.0
-content_margin_bottom = 0.0
-bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 1, 1, 1, 1 )
-expand_margin_left = 2.0
-expand_margin_right = 2.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxEmpty" id=14]
-
-[sub_resource type="StyleBoxEmpty" id=15]
-
-[sub_resource type="StyleBoxEmpty" id=16]
-
-[sub_resource type="StyleBoxEmpty" id=17]
+[ext_resource type="Theme" uid="uid://dxskuts3loc73" path="res://theme.tres" id="1"]
+[ext_resource type="Texture2D" uid="uid://ku5mxpft4ge4" path="res://viewer/player_status/status_dot.svg" id="2"]
+[ext_resource type="Script" path="res://viewer/player_status/player_status.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://b8lrrt4vjugw5" path="res://viewer/player_status/right_arrow.svg" id="4"]
 
 [node name="player_status" type="PanelContainer"]
-margin_right = 135.0
-margin_bottom = 35.0
 mouse_filter = 1
-theme = ExtResource( 1 )
-custom_styles/panel = ExtResource( 6 )
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+theme = ExtResource( "1" )
+script = ExtResource( "3" )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 137.0
-margin_bottom = 36.0
-custom_constants/separation = 2
+offset_right = 139.0
+offset_bottom = 35.0
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_right = 35.0
-margin_bottom = 36.0
-rect_min_size = Vector2( 35, 35 )
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
+rect_min_size = Vector2(35, 35)
+offset_right = 35.0
+offset_bottom = 35.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer"]
-margin_right = 35.0
-margin_bottom = 36.0
-custom_constants/separation = 0
+offset_right = 35.0
+offset_bottom = 35.0
 
 [node name="arrow" type="TextureRect" parent="HBoxContainer/MarginContainer/HBoxContainer"]
-margin_right = 17.0
-margin_bottom = 36.0
+offset_right = 15.0
+offset_bottom = 35.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 4 )
-expand = true
+texture = ExtResource( "4" )
 stretch_mode = 6
 
 [node name="player_color" type="ColorRect" parent="HBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 17.0
-margin_right = 35.0
-margin_bottom = 36.0
+offset_left = 19.0
+offset_right = 35.0
+offset_bottom = 35.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 37.0
-margin_right = 137.0
-margin_bottom = 36.0
+offset_left = 39.0
+offset_right = 139.0
+offset_bottom = 35.0
 size_flags_horizontal = 3
-custom_constants/separation = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
-margin_right = 100.0
-margin_bottom = 36.0
+offset_right = 100.0
+offset_bottom = 26.0
 
 [node name="player_name" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_right = 100.0
-margin_bottom = 36.0
-rect_min_size = Vector2( 100, 0 )
+rect_min_size = Vector2(100, 0)
+offset_right = 100.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/normal = SubResource( 11 )
 text = "----"
 clip_text = true
 
 [node name="status_dot" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 visible = false
-margin_left = 108.0
-margin_right = 126.0
-margin_bottom = 36.0
-rect_min_size = Vector2( 18, 18 )
-texture = ExtResource( 2 )
-expand = true
+rect_min_size = Vector2(18, 18)
+texture = ExtResource( "2" )
 stretch_mode = 6
 
 [node name="color_popup" type="Popup" parent="."]
-visible = true
-margin_right = 137.0
-margin_bottom = 36.0
 
 [node name="Panel" type="Panel" parent="color_popup"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -134,21 +80,16 @@ __meta__ = {
 }
 
 [node name="color_popup_buttons" type="HBoxContainer" parent="color_popup/MarginContainer"]
-margin_right = 137.0
-margin_bottom = 36.0
-custom_constants/separation = 4
+offset_right = 1024.0
+offset_bottom = 600.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="button" type="Button" parent="."]
-margin_right = 137.0
-margin_bottom = 36.0
-rect_min_size = Vector2( 0, 35 )
-custom_styles/hover = SubResource( 13 )
-custom_styles/pressed = SubResource( 14 )
-custom_styles/focus = SubResource( 15 )
-custom_styles/disabled = SubResource( 16 )
-custom_styles/normal = SubResource( 17 )
+rect_min_size = Vector2(0, 35)
+offset_right = 139.0
+offset_bottom = 35.0
+
 [connection signal="pressed" from="button" to="." method="_on_button_pressed"]
