@@ -176,16 +176,3 @@ func _debug_dag(idx:int):
 	if node.home_row_owner != Logic.player.COUNT:
 		s += "owner: %d" % node.home_row_owner
 	print(s)
-
-
-
-
-
-
-
-
-
-
-
-
-

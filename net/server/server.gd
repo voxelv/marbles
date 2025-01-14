@@ -1,7 +1,8 @@
 extends Node
 class_name Server
 
-var _socket := WebSocketServer.new()
+var _tcp : TCPServer = null
+var _socket := WebSocketPeer.new()
 
 var clients := {}
 var games := {}
@@ -10,13 +11,14 @@ func _ready() -> void:
 	randomize()
 	
 	if not Config.is_local:
-		_socket.connect("client_connected", Callable(self, "_client_connected"))
-		_socket.connect("client_disconnected", Callable(self, "_disconnected"))
-		_socket.connect("client_close_request", Callable(self, "_close_request"))
-		_socket.connect("data_received", Callable(self, "_on_data_from_client"))
+		#_socket.connect("client_connected", Callable(self, "_client_connected"))
+		#_socket.connect("client_disconnected", Callable(self, "_disconnected"))
+		#_socket.connect("client_close_request", Callable(self, "_close_request"))
+		#_socket.connect("data_received", Callable(self, "_on_data_from_client"))
 		
 		# Initiate Connection
-		var err = (_socket as WebSocketServer).listen(Config.PORT)
+		_tcp = TCPServer.new()
+		var err = _tcp.listen(Config.PORT)
 		if err != OK:
 			print("Server could not listen...")
 		
@@ -27,8 +29,14 @@ func _ready() -> void:
 	else:
 		create_game()
 
-func _process(_delta:float) -> void:
+func process_socket():
 	_socket.poll()
+	while _tcp.is_connection_available():
+		var peer = _tcp.take_connection()
+		_socket.accept_stream(peer)
+
+func _process(_delta:float) -> void:
+	process_socket()
 	
 	for game in games.values():
 		game.tick()
@@ -174,7 +182,7 @@ func create_game(key:String="")->String:
 	new_game.game_state.game_phase = Logic.game_phase.INIT
 	games[key] = new_game
 	new_game.game_key = key
-	new_game.connect("sync_game", Callable(self, "_on_game_sync_game"), [key])
+	new_game.sync_game.connect(_on_game_sync_game.bind(key))
 	return(key)
 
 func find_game()->String:
@@ -246,8 +254,3 @@ func win_player_game_0(player:int):
 	var game := games["0"] as Game
 	game.game_state.board.marbles[player] = Logic.home_row_indices[player]
 	_on_game_sync_game("0")
-
-
-
-
-

@@ -2,7 +2,6 @@ extends PanelContainer
 class_name PlayerStatus
 
 signal color_set
-signal name_set
 
 const color_button_preload := preload("res://viewer/player_status/color_button.tscn")
 const hover_style := preload("res://viewer/player_status/hover_style.tres")
@@ -36,7 +35,7 @@ func set_active(active:bool):
 func set_enabled(enabled:bool):
 	self.enabled = enabled
 
-func set_name(name_str:String):
+func set_player_name(name_str:String):
 	player_name.text = name_str
 
 func _on_color_button_pressed(color_id:int):

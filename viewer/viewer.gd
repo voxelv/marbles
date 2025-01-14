@@ -35,7 +35,7 @@ const dice_images := [
 @onready var pass_button := Omni.find_node(self, "pass_button") as Button
 @onready var dice_texturerect := Omni.find_node(self, "dice_texturerect") as TextureRect
 @onready var player_status_list := Omni.find_node(self, "player_status_list") as Container
-@onready var dice_panel := Omni.find_node(self, "dice_panel") as PanelContainer
+@onready var dice_panel := %dice_panel as PanelContainer
 @onready var menu_button := Omni.find_node(self, "menu_button") as Button
 @onready var board_viewport_container := Omni.find_node(self, "board_viewport_container") as SubViewportContainer
 @onready var menu_panel := Omni.find_node(self, "menu_panel") as PanelContainer
@@ -82,8 +82,7 @@ func _ready():
 	# Connect color changing controls
 	for i in range(player_status_list.get_child_count()):
 		var player_status = player_status_list.get_child(i)
-		player_status.connect("color_set", Callable(self, "_on_player_status_color_set"), [i])
-		player_status.connect("name_set", Callable(self, "_on_player_status_name_set"), [i])
+		player_status.color_set.connect(Callable(self, "_on_player_status_color_set").bind(i))
 	
 	# Menu Button
 	menu_button.connect("pressed", Callable(self, "_on_menu_button_pressed"))
@@ -96,6 +95,7 @@ func _ready():
 	if Config.is_local:
 		Connection.local_connection_setup()
 		Connection.client.send_player_join_game_request()
+		Connection.client.viewer = self
 	else:
 		Connection.remote_connection_setup()
 
@@ -123,16 +123,6 @@ func update_ui(game_state:GameState):
 		var color := Palette.avail_colors[(game_state.custom_clients[i] as CustomClientInfo).color_id] as Color
 		colors.append(color)
 	board.set_player_colors(colors)
-	
-	# Dice Panel color
-	if Logic.valid_player(game_state.player_turn):
-		var dice_panel_stylebox := dice_panel.get("custom_styles/panel") as StyleBoxFlat
-		dice_panel_stylebox.bg_color = colors[game_state.player_turn]
-	
-	# Menu Panel color
-	if Logic.valid_player(Connection.get_player()):
-		var menu_panel_stylebox := menu_panel.get("custom_styles/panel") as StyleBoxFlat
-		menu_panel_stylebox.bg_color = colors[Connection.get_player()]
 	
 	# Update player_status
 	for player in game_state.custom_clients.keys():
@@ -237,11 +227,8 @@ func _on_menu_button_pressed() -> void:
 	get_tree().change_scene("res://menu/menu.tscn")
 
 func _on_board_viewport_container_resized():
-	var size : Vector2 = board_viewport_container.rect_size
-	if size.x > size.y:
-		camera.keep_aspect = Camera2D.KEEP_HEIGHT
-	else:
-		camera.keep_aspect = Camera2D.KEEP_WIDTH
+	var size : Vector2 = board_viewport_container.size
+	# TODO: Camera.keep_aspect
 
 func _on_win_pressed(player:int):
 	if Config.is_local:
@@ -343,4 +330,3 @@ func idx_pressed(idx:int):
 					select(idx)
 				else:
 					deselect()
-

@@ -7,4 +7,3 @@ var player := 4
 
 func _init(peer_id_in:int=-1) -> void:
 	peer_id = peer_id_in
-

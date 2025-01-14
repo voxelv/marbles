@@ -1,10 +1,7 @@
 extends VBoxContainer
 
-@onready @export_node_path(TabContainer) var how_to_play_tabs_path
-@onready @export_node_path(Label) var page_counter_path
-
-@onready var how_to_play_tabs:TabContainer = get_node(how_to_play_tabs_path)
-@onready var page_counter:Label = get_node(page_counter_path)
+@onready var how_to_play_tabs = %how_to_play_tabs
+@onready var page_counter = %page_counter
 
 func _ready():
 	update_page_counter()

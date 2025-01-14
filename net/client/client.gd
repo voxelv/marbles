@@ -1,23 +1,20 @@
 extends Node
 class_name Client
 
-var _socket := WebSocketClient.new()
+var _socket := WebSocketPeer.new()
 var info := ClientInfo.new()
-var con_timer:Timer
+var viewer: Viewer = null
 
+var con_timer := Timer.new()
+var connected := false
 var con_count := 0
 
 func _ready():
-	_socket.connect("connection_closed", Callable(self, "_closed"))
-	_socket.connect("connection_error", Callable(self, "_connection_error"))
-	_socket.connect("connection_established", Callable(self, "_connected_to_server"))
-	_socket.connect("data_received", Callable(self, "_on_data_from_server"))
 	
 	if not Config.is_local:
-		_attempt_connection()
-		con_timer = Timer.new()
 		con_timer.wait_time = 1
-		con_timer.connect("timeout", Callable(self, "_on_con_timer_timeout"))
+		_attempt_connection()
+		con_timer.timeout.connect(_on_con_timer_timeout)
 		add_child(con_timer)
 		con_timer.start()
 
@@ -27,10 +24,9 @@ func _on_con_timer_timeout()->void:
 func _attempt_connection()->void:
 	print("Attempting connection... %d" % con_count)
 	con_count += 1
-	if _socket.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
-		var err := (_socket as WebSocketClient).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
-		if err != OK:
-			print("Could not connect...")
+	var err := (_socket as WebSocketPeer).connect_to_url("%s:%d" % [Config.URL, Config.PORT])
+	if err != OK:
+		print("Could not connect...")
 
 func _closed(was_clean:bool=false):
 	print("Connection closed (%d), clean: %s" % [info.peer_id, was_clean])
@@ -43,16 +39,29 @@ func _connected_to_server(proto:String):
 	print("Connected (%s)." % proto)
 	Connection.client.send_player_join_game_request(Config.game_key)
 
-func _connection_error():
-	print("Connection error...")
-
-func _on_data_from_server():
-	var pkt := _socket.get_peer(1).get_var() as Dictionary
-	_handle_pkt(pkt)
+func process_socket():
+	_socket.poll()
+	var state = _socket.get_ready_state()
+	if state == WebSocketPeer.STATE_OPEN:
+		while _socket.get_available_packet_count():
+			_handle_pkt(_socket.get_var() as Dictionary)
+		if not connected:
+			connected = true
+			_connected_to_server(_socket.get_selected_protocol())
+	elif state == WebSocketPeer.STATE_CLOSING:
+		connected = false
+		print("Connection closing...")
+	elif state == WebSocketPeer.STATE_CLOSED:
+		connected = false
+		var code = _socket.get_close_code()
+		var reason = _socket.get_close_reason()
+		_closed(code != -1)
+	else:
+		connected = false
 
 func _process(_delta):
-#	if _socket.get_connection_status() != NetworkedMultiplayerPeer.CONNECTION_DISCONNECTED:
-	_socket.poll()
+	if not Config.is_local:
+		process_socket()
 
 func disconnect_from_server():
 	_socket.disconnect_from_host()
@@ -77,8 +86,8 @@ func _handle_pkt(pkt:Dictionary):
 			state.defmt(pkt)
 			if Config.is_local:
 				info.player = state.player_turn
-#			if Connection.local_viewer != null: # TODO FIX
-#				Connection.local_viewer.update_ui(state)
+				if Connection.client.viewer != null:
+					Connection.client.viewer.update_ui(state)
 		
 		PKT.type.SET_CLIENTINFO:
 			info.peer_id = pkt.get('peer_id', -1)
@@ -117,10 +126,3 @@ func send_player_set_color_request(player:int, color_id:int):
 
 func send_player_join_game_request(game_key:=""):
 	_send_pkt(PKT.fmt_player_join_game_request(game_key))
-
-
-
-
-
-
-

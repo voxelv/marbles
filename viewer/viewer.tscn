@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dmym2hhm8o0ja"]
+[gd_scene load_steps=10 format=3 uid="uid://dmym2hhm8o0ja"]
 
 [ext_resource type="PackedScene" uid="uid://bcfidu4pjb5qp" path="res://board/board.tscn" id="1"]
 [ext_resource type="Script" path="res://viewer/viewer.gd" id="2"]
 [ext_resource type="Theme" uid="uid://dxskuts3loc73" path="res://theme.tres" id="3"]
 [ext_resource type="PackedScene" path="res://viewer/select_highlight.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://do5qdw6hm542m" path="res://viewer/player_status/player_status.tscn" id="5"]
+[ext_resource type="Texture2D" uid="uid://bstt0i3qukkhw" path="res://viewer/dice/dice_0.svg" id="5_lun2n"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3on2w"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -27,6 +28,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("3")
 
@@ -53,6 +56,7 @@ mouse_filter = 2
 alignment = 1
 
 [node name="menu_panel" type="PanelContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h"]
+visible = false
 layout_mode = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/menu_panel"]
@@ -77,7 +81,7 @@ stretch = true
 transparent_bg = true
 handle_input_locally = false
 physics_object_picking = true
-size = Vector2i(1091, 648)
+size = Vector2i(948, 648)
 render_target_clear_mode = 1
 render_target_update_mode = 4
 
@@ -128,6 +132,7 @@ layout_mode = 2
 text = "00"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer"]
@@ -165,6 +170,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="dice_panel" type="PanelContainer" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/PanelContainer2/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -172,7 +178,8 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-stretch_mode = 6
+texture = ExtResource("5_lun2n")
+stretch_mode = 5
 
 [node name="pass_button" type="Button" parent="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/PanelContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -286,7 +293,3 @@ alignment = 1
 [connection signal="pressed" from="ui/MarginContainer/VBoxContainer/all_elements_h/menu_panel/VBoxContainer2/aspect_button" to="." method="_on_aspect_button_pressed"]
 [connection signal="resized" from="ui/MarginContainer/VBoxContainer/all_elements_h/board_viewport_container" to="." method="_on_board_viewport_container_resized"]
 [connection signal="pressed" from="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/client_send_test/client_send_button" to="." method="_on_client_send_button_pressed"]
-[connection signal="pressed" from="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/win_testing/a_win" to="." method="_on_win_pressed" binds= [0]]
-[connection signal="pressed" from="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/win_testing/b_win" to="." method="_on_win_pressed" binds= [1]]
-[connection signal="pressed" from="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/win_testing/c_win" to="." method="_on_win_pressed" binds= [2]]
-[connection signal="pressed" from="ui/MarginContainer/VBoxContainer/all_elements_h/VBoxContainer/PanelContainer/MarginContainer/info_area_v/win_testing/d_win" to="." method="_on_win_pressed" binds= [3]]

@@ -73,7 +73,8 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.360784, 0.360784, 0.360784, 1)
 
-[sub_resource type="StyleBoxEmpty" id="10"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gbcm"]
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="11"]
 
@@ -102,5 +103,5 @@ LineEdit/icons/clear = SubResource("6")
 LineEdit/styles/focus = SubResource("7")
 LineEdit/styles/normal = SubResource("8")
 LineEdit/styles/read_only = SubResource("9")
-Panel/styles/panel = SubResource("10")
+Panel/styles/panel = SubResource("StyleBoxFlat_4gbcm")
 TabContainer/styles/panel = SubResource("11")

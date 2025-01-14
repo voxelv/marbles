@@ -57,7 +57,16 @@ func tick():
 	if _counter % TICK_MULTIPLIER == 0:
 		_counter = 0
 		_tick_xn000_count += 1
-		print("Game: %s tick: %d (x%d) Status: %s Players: %d Timeout: %f" % [str(game_key), _tick_xn000_count, TICK_MULTIPLIER, {Logic.game_phase.INIT: "INIT", Logic.game_phase.STARTED: "STARTED", Logic.game_phase.COUNT: "???"}[game_state.game_phase], len(players), close_timer.time_left])
+		print("Game: %s tick: %d (x%d) Status: %s Players: %d Timeout: %f" % [
+			str(game_key), 
+			_tick_xn000_count, 
+			TICK_MULTIPLIER, 
+			{
+				Logic.game_phase.INIT: "INIT", 
+				Logic.game_phase.STARTED: "STARTED", 
+				Logic.game_phase.COUNT: "???"
+			}[game_state.game_phase], len(players), close_timer.time_left]
+		)
 	
 	_counter += 1
 
@@ -172,7 +181,7 @@ func player_roll_request(id:int, pkt:Dictionary):
 		# If player has won, they can help their teammate
 		_update_marble_control()
 		
-		emit_signal("sync_game")
+		sync_game.emit()
 
 func player_set_color_request(id:int, pkt:Dictionary):
 	var reported_player = pkt.get('player', Logic.player.COUNT)
@@ -248,20 +257,3 @@ func player_move_request(id:int, pkt:Dictionary):
 	
 	if Config.is_local:
 		players[id].player = game_state.player_turn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

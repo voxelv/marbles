@@ -2,7 +2,7 @@ extends Node
 
 const GameInfoUIPreload := preload("res://game/game_info.tscn")
 
-onready var game_infos_container := find_node("game_infos_container") as Control
+@onready var game_infos_container := %game_infos_container as Control
 
 func _ready():
 	pass
@@ -16,11 +16,11 @@ func _process(delta):
 		
 		var games_keys = games.keys()
 		for i in range(len(games_keys)):
-			var game_info_ui:GameInfoUI
+			var game_info_ui:GameInfoUI = null
 			if (game_infos_container.get_child_count() - 1) < i:
-				game_info_ui = GameInfoUIPreload.instance()
+				game_info_ui = GameInfoUIPreload.instantiate()
 				game_infos_container.add_child(game_info_ui)
-				game_info_ui.connect("delete_button_pressed", Connection.server, "delete_game")
+				game_info_ui.delete_button_pressed.connect(Callable(Connection.server, "delete_game"))
 			else:
 				game_info_ui = game_infos_container.get_child(i) as GameInfoUI
 			
@@ -33,4 +33,4 @@ func _on_create_game_button_pressed():
 
 func _on_exit_button_pressed():
 	# TODO Delete all games
-	get_tree().change_scene("res://menu/menu.tscn")
+	get_tree().change_scene_to_file("res://menu/menu.tscn")

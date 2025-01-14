@@ -48,18 +48,6 @@ func _ready() -> void:
 func loading_viewer():
 	Omni.change_scene_with_loading("res://viewer/viewer.tscn")
 
-func prompt_for_game_key():
-	var is_mobile_browser := false
-	if OS.has_feature('JavaScript'):
-		if JavaScript.eval("""
-		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-		"""):
-			is_mobile_browser = true
-	if is_mobile_browser:
-		join_game_game_key.text = JavaScript.eval("""
-		window.prompt('Game Key')
-		""", true)
-
 func _on_local_game_button_pressed():
 	Config.is_local = true
 	Config.is_server = false
@@ -71,7 +59,6 @@ func _on_join_game_button_pressed() -> void:
 	Config.is_local = false
 	Config.is_server = false
 	_set_menu(tab.JOIN)
-	prompt_for_game_key()
 
 func _set_menu(tab:int)->void:
 	tabs.current_tab = tab
@@ -83,7 +70,7 @@ func _on_join_game_join_action(_arg1):
 	_on_join_game_join_pressed()
 
 func _on_join_game_join_pressed() -> void:
-	Config.game_key = (find_nodes("join_game_game_key")[0] as LineEdit).text
+	Config.game_key = %join_game_game_key.text
 	
 	Connection.setup()
 	loading_viewer()
@@ -94,14 +81,14 @@ func _on_serve_game_button_pressed() -> void:
 	_set_menu(tab.SERVE)
 
 func _on_serve_game_serve_pressed()->void:
-	Config.PORT = ((find_nodes("serve_game_port")[0] as LineEdit).text as int)
+	Config.PORT = %serve_game_port.text as int
 	_serve_game()
 
 func _serve_game():
-	OS.set_window_title("[SERVER]")
+	DisplayServer.window_set_title("[SERVER]")
 	
 	Connection.setup()
-	get_tree().change_scene("res://served_games/served_games.tscn")
+	get_tree().change_scene_to_file("res://served_games/served_games.tscn")
 
 func _add_peers_to_root():
 	for p in _peers:
@@ -114,6 +101,3 @@ func _on_quit_button_pressed() -> void:
 func _delete_viewer():
 	if Connection.local_viewer != null:
 		Connection.local_viewer.queue_free()
-
-func _on_join_game_game_key_mouse_entered():
-	prompt_for_game_key()

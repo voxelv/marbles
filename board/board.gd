@@ -72,7 +72,15 @@ func connect_areas(signal_name:String, node:Node, function_name:String):
 	var any_err := false
 	var err := OK
 	for i in range(len(all_areas)):
-		err = (all_areas[i] as Area3D).connect(signal_name, Callable(node, function_name), [i])
+		match signal_name:
+			"input_event":
+				err = all_areas[i].input_event.connect(Callable(node, function_name).bind(i))
+			"mouse_entered":
+				err = all_areas[i].mouse_entered.connect(Callable(node, function_name).bind(i))
+			"mouse_exited":
+				all_areas[i].mouse_exited.connect(Callable(node, function_name).bind(i))
+			_:
+				printerr("Unknown signal name")
 		any_err = (err != OK)
 	if any_err:
 		print("Could not connect signal: %s to node: %s function: %s last err: %d" % [signal_name, node, function_name, err])
@@ -131,7 +139,7 @@ func set_board_state(board_state:BoardState):
 		for marble in range(len(marbles_in[player])):
 			assert(marbles_in[player][marble] is int)
 			(_marbles[player][marble] as Node3D).visible = true
-			(_marbles[player][marble] as Node3D).translation = all_positions[marbles_in[player][marble]]
+			(_marbles[player][marble] as Node3D).position = all_positions[marbles_in[player][marble]]
 
 func set_player_colors(colors:Array):
 	assert(len(colors) == 4)
@@ -140,13 +148,3 @@ func set_player_colors(colors:Array):
 
 func show_marbles(show:bool):
 	marbles_container.visible = show
-
-
-
-
-
-
-
-
-
-
