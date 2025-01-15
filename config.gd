@@ -1,6 +1,6 @@
 extends Node
 
-const GAME_REMOVAL_TIME = 20.0  # Seconds
+const GAME_REMOVAL_TIME = 100.0  # Seconds
 
 #var URL := "45.79.67.18"
 var URL := "localhost"

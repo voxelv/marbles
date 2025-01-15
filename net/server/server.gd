@@ -4,7 +4,6 @@ class_name Server
 signal game_closed
 
 var _tcp : TCPServer = null
-var _socket := WebSocketPeer.new()
 
 var clients := {}
 var games := {}
@@ -13,11 +12,6 @@ func _ready() -> void:
 	randomize()
 	
 	if not Config.is_local:
-		#_socket.connect("client_connected", Callable(self, "_client_connected"))
-		#_socket.connect("client_disconnected", Callable(self, "_disconnected"))
-		#_socket.connect("client_close_request", Callable(self, "_close_request"))
-		#_socket.connect("data_received", Callable(self, "_on_data_from_client"))
-		
 		# Initiate Connection
 		_tcp = TCPServer.new()
 		var err = _tcp.listen(Config.PORT)
@@ -31,29 +25,59 @@ func _ready() -> void:
 	else:
 		create_game()
 
-func process_socket():
-	_socket.poll()
-	while _tcp.is_connection_available():
-		var peer = _tcp.take_connection()
-		_socket.accept_stream(peer)
+func process_client(client:ClientInfo):
+	var s = client.socket
+	s.poll()
+	var state = s.get_ready_state()
+	if state == WebSocketPeer.STATE_OPEN:
+		if not client.connected:
+			client.connected = true
+			_client_connected(client.id, s.get_selected_protocol())
+		while s.get_available_packet_count():
+			var pkt = s.get_var(true)
+			if pkt != null:
+				_handle_pkt(client.id, pkt)
+	elif state == WebSocketPeer.STATE_CLOSING:
+		pass
+	elif state == WebSocketPeer.STATE_CLOSED:
+		var code = s.get_close_code()
+		var reason = s.get_close_reason()
+		var clean = code != -1
+		print("Client %d closed with code: %d, reason %s. Clean: %s" % [client.id, code, reason, clean])
+		_disconnected(client.id, clean)
+		client.connected = false
 
 func _process(_delta:float) -> void:
-	process_socket()
+	# Accept incoming connections
+	while _tcp.is_connection_available():
+		# id
+		var id = randi()
+		while id in clients:
+			id = randi()
+		var client = ClientInfo.new(id)
+		
+		# socket
+		client.socket = WebSocketPeer.new()
+		client.socket.accept_stream(_tcp.take_connection())
+		
+		clients[id] = client
 	
+	# Process connected clients
+	for client_id in clients.keys():
+		process_client(clients[client_id])
+	
+	# Process games
 	for game in games.values():
 		game.tick()
 
 func close_all_connections():
-	for peer_id in clients.keys():
-		if peer_id == -1 and Config.is_local:
+	for id in clients.keys():
+		if id == -1 and Config.is_local:
 			continue
-		_socket.disconnect_peer(peer_id)
+		clients[id].socket.close(0, "Server closed the connection")
 
 func _client_connected(id, proto):
-	print("Client %d connected with protocol: %s" % [id, proto])
-	var new_clientinfo = ClientInfo.new(id)
-	
-	clients[id] = new_clientinfo
+	print("Client %d connected with protocol: \"%s\"" % [id, proto])
 	
 	# Sync-up ClientInfo
 	send_set_clientinfo(clients[id])
@@ -74,10 +98,6 @@ func _disconnected(id, was_clean = false):
 	var s := "Client %d disconnected, clean: %s" % [id, str(was_clean)]
 	print(s)
 	remove_client(id)
-	
-func _on_data_from_client(id):
-	var pkt := _socket.get_peer(id).get_var() as Dictionary
-	_handle_pkt(id, pkt)
 
 func _handle_pkt(id:int, pkt:Dictionary):
 	if not id in clients:
@@ -151,7 +171,7 @@ func _handle_pkt(id:int, pkt:Dictionary):
 		PKT.type.PLAYER_MOVE_REQUEST:
 			game.player_move_request(id, pkt)
 
-func _send_pkt(pkt:Dictionary, broadcast:bool=true, peer_id:int=-1)->void:
+func _send_pkt(pkt:Dictionary, broadcast:bool=true, id:int=-1)->void:
 	if pkt.is_empty():
 		return
 	
@@ -159,11 +179,11 @@ func _send_pkt(pkt:Dictionary, broadcast:bool=true, peer_id:int=-1)->void:
 		Connection.client._handle_pkt(pkt)
 	else:
 		if broadcast:
-			for id in clients.keys():
-				_socket.get_peer(id).put_var(pkt)
+			for client_id in clients.keys():
+				clients[client_id].socket.put_var(pkt)
 		else:
-			if peer_id != -1:
-				_socket.get_peer(peer_id).put_var(pkt)
+			if id != -1:
+				clients[id].socket.put_var(pkt)
 
 func get_games()->Dictionary:
 	return(games)
@@ -226,13 +246,13 @@ func _on_game_sync_game(games_key):
 	var game := (games.get(games_key, null) as Game)
 	for p in game.players.values():
 		var client_info := (p as ClientInfo)
-		send_game_state_direct(game.game_state, client_info.peer_id)
+		send_game_state_direct(game.game_state, client_info.id)
 
 func send_command_print_text()->void:
 	_send_pkt(PKT.fmt_cmd_print_text())
 
 func send_set_clientinfo(info:ClientInfo)->void:
-	_send_pkt(PKT.fmt_set_clientinfo(info), false, info.peer_id)
+	_send_pkt(PKT.fmt_set_clientinfo(info), false, info.id)
 
 func send_player_roll_result(result:int)->void:
 	assert(Config.is_local)

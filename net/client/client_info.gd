@@ -1,9 +1,11 @@
 extends Node
 class_name ClientInfo
 
+var connected := false
+var socket : WebSocketPeer = null
+var id : int
 var game_key := ""
-var peer_id := -1
 var player := 4
 
-func _init(peer_id_in:int=-1) -> void:
-	peer_id = peer_id_in
+func _init(id:int=-1) -> void:
+	self.id = id

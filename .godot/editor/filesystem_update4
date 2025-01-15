@@ -11,3 +11,7 @@ res://served_games/served_games.gd
 res://served_games/test.gd
 res://served_games/test.tscn
 res://net/server/server.gd
+res://net/client/client_info.gd
+res://net/pkt.gd
+res://net/client/client.gd
+res://config.gd

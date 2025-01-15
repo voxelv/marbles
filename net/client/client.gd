@@ -44,7 +44,9 @@ func process_socket():
 	var state = _socket.get_ready_state()
 	if state == WebSocketPeer.STATE_OPEN:
 		while _socket.get_available_packet_count():
-			_handle_pkt(_socket.get_var() as Dictionary)
+			var pkt = _socket.get_var(true)
+			if pkt != null:
+				_handle_pkt(pkt)
 		if not connected:
 			connected = true
 			_connected_to_server()
@@ -90,7 +92,7 @@ func _handle_pkt(pkt:Dictionary):
 					Connection.client.viewer.update_ui(state)
 		
 		PKT.type.SET_CLIENTINFO:
-			info.peer_id = pkt.get('peer_id', -1)
+			info.id = pkt.get('peer_id', -1)
 			info.player = pkt.get('player', Logic.player.COUNT)
 			DisplayServer.window_set_title({
 				Logic.player.A: "[A]",
@@ -105,11 +107,9 @@ func _send_pkt(pkt:Dictionary)->void:
 		return
 	
 	if Config.is_local:
-		Connection.server._handle_pkt(info.peer_id, pkt)
+		Connection.server._handle_pkt(info.id, pkt)
 	else:
-		var message = PackedByteArray()
-		message.encode_var(0, pkt)
-		_socket.send(message)
+		_socket.put_var(pkt)
 
 func send_command_print_text()->void:
 	_send_pkt(PKT.fmt_cmd_print_text())
