@@ -1,6 +1,8 @@
 extends Node
 class_name Server
 
+signal game_closed
+
 var _tcp : TCPServer = null
 var _socket := WebSocketPeer.new()
 
@@ -214,7 +216,9 @@ func delete_game(game_key:String):
 		player_ids.append((ci as ClientInfo).peer_id)
 	for id in player_ids:
 		remove_client(id)
+	game.queue_free()
 	games.erase(game_key)
+	game_closed.emit(game_key)
 
 func _on_game_sync_game(games_key):
 	if not games_key in games.keys():

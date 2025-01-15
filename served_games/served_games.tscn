@@ -11,6 +11,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui"]
@@ -19,43 +21,31 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="ui/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="ui/HBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/HBoxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="create_game_button" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="create_game_button" type="Button" parent="ui/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Create Game"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="ui/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
-[node name="game_infos_container" type="VBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="game_infos_container" type="VBoxContainer" parent="ui/HBoxContainer/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 1
+theme_override_constants/separation = 5
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="exit_button" type="Button" parent="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="exit_button" type="Button" parent="ui/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Exit"
 
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/create_game_button" to="." method="_on_create_game_button_pressed"]
-[connection signal="pressed" from="ui/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/exit_button" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="ui/HBoxContainer/VBoxContainer/create_game_button" to="." method="_on_create_game_button_pressed"]
+[connection signal="pressed" from="ui/HBoxContainer/VBoxContainer/exit_button" to="." method="_on_exit_button_pressed"]

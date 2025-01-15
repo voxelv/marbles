@@ -1,7 +1,7 @@
 extends Node
 class_name GameInfoUI
 
-signal delete_button_pressed
+signal close_game_pressed
 
 @onready var status_label := %status_label as Label
 @onready var game_key_label := %game_key_label as Label
@@ -12,12 +12,13 @@ func _ready() -> void:
 	for c in "abcd":
 		colors.append(Omni.find_node(self, "%s_color" % c) as ColorRect)
 
-func _process(_delta: float) -> void:
-#	update_with_game(game)
-	pass
+func get_key() -> String:
+	return game_key_label.text
 
-func update_with_game(game:Game):
+func update(game:Game):
 	game_key_label.text = game.game_key
+	%timeout.text = "%1.0fs" % game.close_timer.get_time_left()
+
 	
 	if game.game_state != null:
 		status_label.text = {
@@ -36,5 +37,5 @@ func update_with_game(game:Game):
 			else:
 				(colors[i] as ColorRect).color = Color.RED
 
-func _on_delete_button_pressed():
-	emit_signal("delete_button_pressed", game_key_label.text)
+func _on_close_game_pressed():
+	close_game_pressed.emit(game_key_label.text)

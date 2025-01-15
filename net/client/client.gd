@@ -33,10 +33,10 @@ func _closed(was_clean:bool=false):
 	con_count = 0
 	con_timer.start()
 
-func _connected_to_server(proto:String):
+func _connected_to_server():
 #	info.peer_id = _socket.id
 	con_timer.stop()
-	print("Connected (%s)." % proto)
+	print("Connected.")
 	Connection.client.send_player_join_game_request(Config.game_key)
 
 func process_socket():
@@ -47,7 +47,7 @@ func process_socket():
 			_handle_pkt(_socket.get_var() as Dictionary)
 		if not connected:
 			connected = true
-			_connected_to_server(_socket.get_selected_protocol())
+			_connected_to_server()
 	elif state == WebSocketPeer.STATE_CLOSING:
 		connected = false
 		print("Connection closing...")
@@ -107,7 +107,9 @@ func _send_pkt(pkt:Dictionary)->void:
 	if Config.is_local:
 		Connection.server._handle_pkt(info.peer_id, pkt)
 	else:
-		_socket.get_peer(1).put_var(pkt)
+		var message = PackedByteArray()
+		message.encode_var(0, pkt)
+		_socket.send(message)
 
 func send_command_print_text()->void:
 	_send_pkt(PKT.fmt_cmd_print_text())

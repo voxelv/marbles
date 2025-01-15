@@ -99,5 +99,5 @@ func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
 func _delete_viewer():
-	if Connection.local_viewer != null:
-		Connection.local_viewer.queue_free()
+	if Connection.client.viewer != null:
+		Connection.client.viewer.queue_free()
