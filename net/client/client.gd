@@ -8,6 +8,7 @@ var viewer: Viewer = null
 var con_timer := Timer.new()
 var connected := false
 var con_count := 0
+var state := GameState.new()
 
 func _ready():
 	
@@ -84,12 +85,12 @@ func _handle_pkt(pkt:Dictionary):
 					print("CLIENT: PRINT_TEXT COMMAND RX")
 		
 		PKT.type.GAME_STATE:
-			var state := GameState.new()
 			state.defmt(pkt)
 			if Config.is_local:
 				info.player = state.player_turn
-				if Connection.client.viewer != null:
-					Connection.client.viewer.update_ui(state)
+			
+			if Connection.client.viewer != null:
+				Connection.client.viewer.update_ui(state)
 		
 		PKT.type.SET_CLIENTINFO:
 			info.id = pkt.get('peer_id', -1)
@@ -99,7 +100,7 @@ func _handle_pkt(pkt:Dictionary):
 				Logic.player.B: "[B]",
 				Logic.player.C: "[C]",
 				Logic.player.D: "[D]",
-				Logic.player.COUNT: "UNKNOWN",
+				Logic.player.COUNT: "[UNKNOWN]",
 			}[info.player])
 
 func _send_pkt(pkt:Dictionary)->void:

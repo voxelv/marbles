@@ -96,14 +96,17 @@ func _ready():
 		Connection.local_connection_setup()
 		Connection.client.send_player_join_game_request()
 		Connection.client.viewer = self
-	else:
-		Connection.remote_connection_setup()
+
+func _process(delta: float) -> void:
+	update_ui(Connection.client.state)
 
 func _on_pass_own_position_marbles_toggled(pressed:bool):
 	Logic.pass_own_position_marbles = pressed
 
 func update_ui(game_state:GameState):
 	deselect()
+	if game_state == state:
+		return
 	state.set_from(game_state)
 	
 	assert(state.dice_value >= 0 and state.dice_value <= 6)

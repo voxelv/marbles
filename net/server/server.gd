@@ -47,7 +47,7 @@ func process_client(client:ClientInfo):
 		_disconnected(client.id, clean)
 		client.connected = false
 
-func _process(_delta:float) -> void:
+func process_tcp():
 	# Accept incoming connections
 	while _tcp.is_connection_available():
 		# id
@@ -61,6 +61,10 @@ func _process(_delta:float) -> void:
 		client.socket.accept_stream(_tcp.take_connection())
 		
 		clients[id] = client
+
+func _process(_delta:float) -> void:
+	if not Config.is_local:
+		process_tcp()
 	
 	# Process connected clients
 	for client_id in clients.keys():

@@ -39,6 +39,3 @@ func can_control_player(player:int)->bool:
 
 func local_connection_setup():
 	server._client_connected(Connection.client.info.peer_id, "local_marbles")
-
-func remote_connection_setup():
-	pass

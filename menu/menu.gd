@@ -1,13 +1,11 @@
 extends Node
 
-var local_game_button :Button
-var join_game_button :Button
-var serve_game_button :Button
-var quit_to_desktop_button :Button
-
-var join_game_game_key :LineEdit
-
-var tabs :TabContainer
+@onready var local_game_button := %local_game_button
+@onready var join_game_button := %join_game_button
+@onready var serve_game_button := %serve_game_button
+@onready var quit_to_desktop_button := %quit_to_desktop_button
+@onready var join_game_game_key := %join_game_game_key
+@onready var tabs := %tabs
 
 enum tab {MAIN, JOIN, SERVE, HOW_TO_PLAY}
 
@@ -15,35 +13,43 @@ var viewer:Node = null
 var _peers := []
 
 func _ready() -> void:
-	local_game_button = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/local_game_button")
-	join_game_button = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/join_game_button")
-	serve_game_button = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/serve_game_button")
-	quit_to_desktop_button = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/main_menu/quit_to_desktop_button")
-	join_game_game_key = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs/join_game_menu/HBoxContainer/join_game_game_key")
-	tabs = get_node("ui/PanelContainer/HBoxContainer/PanelContainer/MarginContainer/tabs")
 	Connection.clear_peers()
 	
 	var cli_args = OS.get_cmdline_args()
+	
+	var parsed_args := {}
+	for arg in cli_args:
+		if arg.find("=") > -1:
+			var key_value = arg.split("=")
+			parsed_args[key_value[0].lstrip("-")] = key_value[1]
+	
 	if "SERVER" in cli_args:
 		print("I am SERVER...")
 		
-		# Number of games
-		var parsed_args := {}
-		for arg in cli_args:
-			if arg.find("=") > -1:
-				var key_value = arg.split("=")
-				parsed_args[key_value[0].lstrip("--")] = key_value[1]
-		if "n_games" in parsed_args:
-			Config.number_of_games = int(parsed_args["n_games"])
+		Config.number_of_games = int(parsed_args.get("n_games", 0))
 		
 		Config.is_server = true
 		Config.is_local = false
 		_serve_game()
+	else:
+		print("I am CLIENT...")
+		
+		if "j" in parsed_args:
+			client_join(parsed_args.get("j", "0"))
+		elif "join" in parsed_args:
+			client_join(parsed_args.get("join", "0"))
 		
 	if OS.get_name() in ["OSX", "Server", "Windows", "X11"]:
 		serve_game_button.set_visible(true)
 	if OS.get_name() in ["HTML5"]:
 		quit_to_desktop_button.set_visible(false)
+
+func client_join(game_key:String):
+	Config.is_local = false
+	Config.game_key = game_key
+	
+	Connection.setup()
+	loading_viewer()
 	
 func loading_viewer():
 	Omni.change_scene_with_loading("res://viewer/viewer.tscn")
@@ -90,14 +96,5 @@ func _serve_game():
 	Connection.setup()
 	get_tree().change_scene_to_file("res://served_games/served_games.tscn")
 
-func _add_peers_to_root():
-	for p in _peers:
-		get_tree().get_root().add_child(p)
-
 func _on_quit_button_pressed() -> void:
-	_delete_viewer()
 	get_tree().quit()
-
-func _delete_viewer():
-	if Connection.client.viewer != null:
-		Connection.client.viewer.queue_free()
