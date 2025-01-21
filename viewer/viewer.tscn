@@ -81,13 +81,14 @@ stretch = true
 transparent_bg = true
 handle_input_locally = false
 physics_object_picking = true
-size = Vector2i(2, 2)
+size = Vector2i(948, 648)
 render_target_clear_mode = 1
 render_target_update_mode = 4
 
 [node name="world" type="Node3D" parent="ui/MarginContainer/VBoxContainer/all_elements_h/board_viewport_container/board_viewport"]
 
 [node name="board" parent="ui/MarginContainer/VBoxContainer/all_elements_h/board_viewport_container/board_viewport/world" instance=ExtResource("1")]
+unique_name_in_owner = true
 
 [node name="gimbal" type="Node3D" parent="ui/MarginContainer/VBoxContainer/all_elements_h/board_viewport_container/board_viewport/world"]
 

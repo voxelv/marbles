@@ -11,7 +11,6 @@ var con_count := 0
 var state := GameState.new()
 
 func _ready():
-	
 	if not Config.is_local:
 		con_timer.wait_time = 1
 		_attempt_connection()

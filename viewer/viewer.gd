@@ -22,7 +22,7 @@ const dice_images := [
 
 # Nodes
 @onready var board_viewport := Omni.find_node(self, "board_viewport") as Viewport
-@onready var board := Omni.find_node(self, "board") as Board
+@onready var board := %board
 @onready var camera := Omni.find_node(self, "camera") as Camera3D
 @onready var test_idx_label := Omni.find_node(self, "test_idx_label")
 @onready var world := Omni.find_node(self, "world") as Node3D
@@ -78,6 +78,10 @@ func _ready():
 	board.connect_areas("mouse_entered", self, "_on_area_entered")
 	board.connect_areas("mouse_exited", self, "_on_area_exited")
 	board.connect_bounds("input_event", self, "_on_bounds_clicked")
+	
+	# Create board controls
+	for point in get_viewer_coords_of_board_controls():
+		print(point)
 	
 	# Connect color changing controls
 	for i in range(player_status_list.get_child_count()):

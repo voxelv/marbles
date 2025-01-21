@@ -32,7 +32,7 @@
 size = Vector2(2, 2)
 
 [sub_resource type="QuadMesh" id="2"]
-material = ExtResource( "10" )
+material = ExtResource("10")
 size = Vector2(2, 2)
 
 [sub_resource type="QuadMesh" id="3"]
@@ -45,29 +45,29 @@ size = Vector2(2, 2)
 size = Vector3(4, 34, 28)
 
 [node name="board" type="Node3D"]
-script = ExtResource( "1" )
+script = ExtResource("1")
 
 [node name="player_markers" type="Node3D" parent="."]
 
 [node name="a" type="MeshInstance3D" parent="player_markers"]
 transform = Transform3D(1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 7.5, 0.6, 7.5)
-mesh = SubResource( "1" )
-surface_material_override/0 = ExtResource( "2_ppbr7" )
+mesh = SubResource("1")
+surface_material_override/0 = ExtResource("2_ppbr7")
 
 [node name="b" type="MeshInstance3D" parent="player_markers"]
 transform = Transform3D(1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, -7.5, 0.6, 7.5)
-mesh = SubResource( "2" )
-surface_material_override/0 = ExtResource( "10" )
+mesh = SubResource("2")
+surface_material_override/0 = ExtResource("10")
 
 [node name="c" type="MeshInstance3D" parent="player_markers"]
 transform = Transform3D(1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, -7.5, 0.6, -7.5)
-mesh = SubResource( "3" )
-surface_material_override/0 = ExtResource( "4_yc73d" )
+mesh = SubResource("3")
+surface_material_override/0 = ExtResource("4_yc73d")
 
 [node name="d" type="MeshInstance3D" parent="player_markers"]
 transform = Transform3D(1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 7.5, 0.6, -7.5)
-mesh = SubResource( "4" )
-surface_material_override/0 = ExtResource( "5_wxxr1" )
+mesh = SubResource("4")
+surface_material_override/0 = ExtResource("5_wxxr1")
 
 [node name="marbles_container" type="Node3D" parent="."]
 
@@ -75,189 +75,171 @@ surface_material_override/0 = ExtResource( "5_wxxr1" )
 
 [node name="Area" type="Area3D" parent="bounds"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionShape" type="CollisionShape3D" parent="bounds/Area"]
-shape = SubResource( "5" )
+shape = SubResource("5")
 
 [node name="Area2" type="Area3D" parent="bounds"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0)
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionShape" type="CollisionShape3D" parent="bounds/Area2"]
-shape = SubResource( "5" )
+shape = SubResource("5")
 
 [node name="Area3" type="Area3D" parent="bounds"]
 transform = Transform3D(-1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 12)
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionShape" type="CollisionShape3D" parent="bounds/Area3"]
-shape = SubResource( "5" )
+shape = SubResource("5")
 
 [node name="Area4" type="Area3D" parent="bounds"]
 transform = Transform3D(-1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, -12)
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionShape" type="CollisionShape3D" parent="bounds/Area4"]
-shape = SubResource( "5" )
+shape = SubResource("5")
 
 [node name="Area5" type="Area3D" parent="bounds"]
 transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, -16, 0)
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionShape" type="CollisionShape3D" parent="bounds/Area5"]
-shape = SubResource( "5" )
+shape = SubResource("5")
 
 [node name="Area6" type="Area3D" parent="bounds"]
 transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 16, 0)
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionShape" type="CollisionShape3D" parent="bounds/Area6"]
-shape = SubResource( "5" )
+shape = SubResource("5")
 
 [node name="blender_board" type="Node3D" parent="."]
 
 [node name="center" type="MeshInstance3D" parent="blender_board"]
-mesh = ExtResource( "13" )
-surface_material_override/0 = ExtResource( "7_7tgd8" )
+mesh = ExtResource("13")
+surface_material_override/0 = ExtResource("7_7tgd8")
 
 [node name="board_home_rows" type="Node3D" parent="blender_board"]
 
 [node name="a_home_row" type="MeshInstance3D" parent="blender_board/board_home_rows"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
-mesh = ExtResource( "14" )
-surface_material_override/0 = ExtResource( "9_8avf5" )
+mesh = ExtResource("14")
+surface_material_override/0 = ExtResource("9_8avf5")
 
 [node name="b_home_row" type="MeshInstance3D" parent="blender_board/board_home_rows"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.38419e-07, 0, 4)
-mesh = ExtResource( "14" )
-surface_material_override/0 = ExtResource( "9_8avf5" )
+mesh = ExtResource("14")
+surface_material_override/0 = ExtResource("9_8avf5")
 
 [node name="c_home_row" type="MeshInstance3D" parent="blender_board/board_home_rows"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -4, 0, 0)
-mesh = ExtResource( "14" )
-surface_material_override/0 = ExtResource( "9_8avf5" )
+mesh = ExtResource("14")
+surface_material_override/0 = ExtResource("9_8avf5")
 
 [node name="d_home_row" type="MeshInstance3D" parent="blender_board/board_home_rows"]
 transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 2.38419e-07, 0, -4)
-mesh = ExtResource( "14" )
-surface_material_override/0 = ExtResource( "9_8avf5" )
+mesh = ExtResource("14")
+surface_material_override/0 = ExtResource("9_8avf5")
 
 [node name="board_main_track_section" type="Node3D" parent="blender_board"]
 
 [node name="a_pokey_hole" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5)
-mesh = ExtResource( "12" )
-surface_material_override/0 = ExtResource( "6_gf2mh" )
+mesh = ExtResource("12")
+surface_material_override/0 = ExtResource("6_gf2mh")
 
 [node name="a_5_run_1" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1.5)
-mesh = ExtResource( "15" )
-surface_material_override/0 = ExtResource( "8_yj4pq" )
+mesh = ExtResource("15")
+surface_material_override/0 = ExtResource("8_yj4pq")
 
 [node name="a_5_run_2" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.5, 0, 5)
-mesh = ExtResource( "15" )
-surface_material_override/0 = ExtResource( "8_yj4pq" )
+mesh = ExtResource("15")
+surface_material_override/0 = ExtResource("8_yj4pq")
 
 [node name="b_home_entrance" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 7.5)
-mesh = ExtResource( "16" )
-surface_material_override/0 = ExtResource( "15_iqn2w" )
+mesh = ExtResource("16")
+surface_material_override/0 = ExtResource("15_iqn2w")
 
 [node name="b_pokey_hole" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.5, 0, 7.5)
-mesh = ExtResource( "12" )
-surface_material_override/0 = ExtResource( "6_gf2mh" )
+mesh = ExtResource("12")
+surface_material_override/0 = ExtResource("6_gf2mh")
 
 [node name="b_5_run_1" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -1.5, 0, 4)
-mesh = ExtResource( "15" )
-surface_material_override/0 = ExtResource( "8_yj4pq" )
+mesh = ExtResource("15")
+surface_material_override/0 = ExtResource("8_yj4pq")
 
 [node name="b_5_run_2" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -5, 0, 1.5)
-mesh = ExtResource( "15" )
-surface_material_override/0 = ExtResource( "8_yj4pq" )
+mesh = ExtResource("15")
+surface_material_override/0 = ExtResource("8_yj4pq")
 
 [node name="c_home_entrance" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -7.5, 0, -4.76837e-07)
-mesh = ExtResource( "16" )
-surface_material_override/0 = ExtResource( "15_iqn2w" )
+mesh = ExtResource("16")
+surface_material_override/0 = ExtResource("15_iqn2w")
 
 [node name="c_pokey_hole" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -7.5, 0, -1.5)
-mesh = ExtResource( "12" )
-surface_material_override/0 = ExtResource( "6_gf2mh" )
+mesh = ExtResource("12")
+surface_material_override/0 = ExtResource("6_gf2mh")
 
 [node name="c_5_run_1" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, -4, 0, -1.5)
-mesh = ExtResource( "15" )
-surface_material_override/0 = ExtResource( "8_yj4pq" )
+mesh = ExtResource("15")
+surface_material_override/0 = ExtResource("8_yj4pq")
 
 [node name="c_5_run_2" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(3.0598e-07, 0, -1, 0, 1, 0, 1, 0, 3.0598e-07, -1.5, 0, -5)
-mesh = ExtResource( "15" )
-surface_material_override/0 = ExtResource( "8_yj4pq" )
+mesh = ExtResource("15")
+surface_material_override/0 = ExtResource("8_yj4pq")
 
 [node name="d_home_entrance" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 0, 0, -7.5)
-mesh = ExtResource( "16" )
-surface_material_override/0 = ExtResource( "15_iqn2w" )
+mesh = ExtResource("16")
+surface_material_override/0 = ExtResource("15_iqn2w")
 
 [node name="d_pokey_hole" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 1.5, 0, -7.5)
-mesh = ExtResource( "12" )
-surface_material_override/0 = ExtResource( "6_gf2mh" )
+mesh = ExtResource("12")
+surface_material_override/0 = ExtResource("6_gf2mh")
 
 [node name="d_5_run_1" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(3.0598e-07, 0, -1, 0, 1, 0, 1, 0, 3.0598e-07, 1.5, 0, -4)
-mesh = ExtResource( "15" )
-surface_material_override/0 = ExtResource( "8_yj4pq" )
+mesh = ExtResource("15")
+surface_material_override/0 = ExtResource("8_yj4pq")
 
 [node name="d_5_run_2" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(1, 0, 3.49691e-07, 0, 1, 0, -3.49691e-07, 0, 1, 5, 0, -1.5)
-mesh = ExtResource( "15" )
-surface_material_override/0 = ExtResource( "8_yj4pq" )
+mesh = ExtResource("15")
+surface_material_override/0 = ExtResource("8_yj4pq")
 
 [node name="a_home_entrance" type="MeshInstance3D" parent="blender_board/board_main_track_section"]
 transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 7.5, 0, -4.76837e-07)
-mesh = ExtResource( "16" )
-surface_material_override/0 = ExtResource( "15_iqn2w" )
+mesh = ExtResource("16")
+surface_material_override/0 = ExtResource("15_iqn2w")
 
 [node name="board_homes" type="Node3D" parent="blender_board"]
 
 [node name="a_home" type="MeshInstance3D" parent="blender_board/board_homes"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5, 0, 5)
-mesh = ExtResource( "19" )
-surface_material_override/0 = ExtResource( "17_jregy" )
+mesh = ExtResource("19")
+surface_material_override/0 = ExtResource("17_jregy")
 
 [node name="b_home" type="MeshInstance3D" parent="blender_board/board_homes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5)
-mesh = ExtResource( "19" )
-surface_material_override/0 = ExtResource( "17_jregy" )
+mesh = ExtResource("19")
+surface_material_override/0 = ExtResource("17_jregy")
 
 [node name="c_home" type="MeshInstance3D" parent="blender_board/board_homes"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5, 0, -5)
-mesh = ExtResource( "19" )
-surface_material_override/0 = ExtResource( "17_jregy" )
+mesh = ExtResource("19")
+surface_material_override/0 = ExtResource("17_jregy")
 
 [node name="d_home" type="MeshInstance3D" parent="blender_board/board_homes"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5, 0, -5)
-mesh = ExtResource( "19" )
-surface_material_override/0 = ExtResource( "17_jregy" )
+mesh = ExtResource("19")
+surface_material_override/0 = ExtResource("17_jregy")
 
 [node name="board_edges" type="Node3D" parent="blender_board"]
 
@@ -265,151 +247,151 @@ surface_material_override/0 = ExtResource( "17_jregy" )
 
 [node name="home_entrance_edge" type="MeshInstance3D" parent="blender_board/board_edges/a"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0)
-mesh = ExtResource( "17" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("17")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="pokey_hole_edge" type="MeshInstance3D" parent="blender_board/board_edges/a"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5)
-mesh = ExtResource( "18" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("18")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="home_edge" type="MeshInstance3D" parent="blender_board/board_edges/a"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 5)
-mesh = ExtResource( "20" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("20")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="b" type="Node3D" parent="blender_board/board_edges"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 
 [node name="home_entrance_edge" type="MeshInstance3D" parent="blender_board/board_edges/b"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0)
-mesh = ExtResource( "17" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("17")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="pokey_hole_edge" type="MeshInstance3D" parent="blender_board/board_edges/b"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5)
-mesh = ExtResource( "18" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("18")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="home_edge" type="MeshInstance3D" parent="blender_board/board_edges/b"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 5)
-mesh = ExtResource( "20" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("20")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="c" type="Node3D" parent="blender_board/board_edges"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="home_entrance_edge" type="MeshInstance3D" parent="blender_board/board_edges/c"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0)
-mesh = ExtResource( "17" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("17")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="pokey_hole_edge" type="MeshInstance3D" parent="blender_board/board_edges/c"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5)
-mesh = ExtResource( "18" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("18")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="home_edge" type="MeshInstance3D" parent="blender_board/board_edges/c"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 5)
-mesh = ExtResource( "20" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("20")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="d" type="Node3D" parent="blender_board/board_edges"]
 transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 0, 0, 0)
 
 [node name="home_entrance_edge" type="MeshInstance3D" parent="blender_board/board_edges/d"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0)
-mesh = ExtResource( "17" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("17")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="pokey_hole_edge" type="MeshInstance3D" parent="blender_board/board_edges/d"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 1.5)
-mesh = ExtResource( "18" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("18")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="home_edge" type="MeshInstance3D" parent="blender_board/board_edges/d"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 5)
-mesh = ExtResource( "20" )
-surface_material_override/0 = ExtResource( "19_nhw67" )
+mesh = ExtResource("20")
+surface_material_override/0 = ExtResource("19_nhw67")
 
 [node name="interaction_board" type="Node3D" parent="."]
 
-[node name="center" parent="interaction_board" instance=ExtResource( "5" )]
+[node name="center" parent="interaction_board" instance=ExtResource("5")]
 
 [node name="home_rows" type="Node3D" parent="interaction_board"]
 
-[node name="a_home_row" parent="interaction_board/home_rows" instance=ExtResource( "6" )]
+[node name="a_home_row" parent="interaction_board/home_rows" instance=ExtResource("6")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4, 0, 0)
 
-[node name="b_home_row" parent="interaction_board/home_rows" instance=ExtResource( "6" )]
+[node name="b_home_row" parent="interaction_board/home_rows" instance=ExtResource("6")]
 transform = Transform3D(-1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 4)
 
-[node name="c_home_row" parent="interaction_board/home_rows" instance=ExtResource( "6" )]
+[node name="c_home_row" parent="interaction_board/home_rows" instance=ExtResource("6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
 
-[node name="d_home_row" parent="interaction_board/home_rows" instance=ExtResource( "6" )]
+[node name="d_home_row" parent="interaction_board/home_rows" instance=ExtResource("6")]
 transform = Transform3D(-1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0, -4)
 
 [node name="main_track_section" type="Node3D" parent="interaction_board"]
 
-[node name="a_pokey" parent="interaction_board/main_track_section" instance=ExtResource( "2" )]
+[node name="a_pokey" parent="interaction_board/main_track_section" instance=ExtResource("2")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 0, 1.5)
 
-[node name="a_run_1" parent="interaction_board/main_track_section" instance=ExtResource( "7" )]
+[node name="a_run_1" parent="interaction_board/main_track_section" instance=ExtResource("7")]
 transform = Transform3D(-1, 0, -4.37114e-07, 0, 1, 0, 4.37114e-07, 0, -1, 4, 0, 1.5)
 
-[node name="a_run_2" parent="interaction_board/main_track_section" instance=ExtResource( "7" )]
+[node name="a_run_2" parent="interaction_board/main_track_section" instance=ExtResource("7")]
 transform = Transform3D(4.80825e-07, 0, -1, 0, 1, 0, 1, 0, 4.80825e-07, 1.5, 0, 5)
 
-[node name="b_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource( "3" )]
+[node name="b_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.5)
 
-[node name="b_pokey" parent="interaction_board/main_track_section" instance=ExtResource( "2" )]
+[node name="b_pokey" parent="interaction_board/main_track_section" instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 7.5)
 
-[node name="b_run_1" parent="interaction_board/main_track_section" instance=ExtResource( "7" )]
+[node name="b_run_1" parent="interaction_board/main_track_section" instance=ExtResource("7")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.5, 0, 4)
 
-[node name="b_run_2" parent="interaction_board/main_track_section" instance=ExtResource( "7" )]
+[node name="b_run_2" parent="interaction_board/main_track_section" instance=ExtResource("7")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -5, 0, 1.5)
 
-[node name="c_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource( "3" )]
+[node name="c_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource("3")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -7.5, 0, 0)
 
-[node name="c_pokey" parent="interaction_board/main_track_section" instance=ExtResource( "2" )]
+[node name="c_pokey" parent="interaction_board/main_track_section" instance=ExtResource("2")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7.5, 0, -1.5)
 
-[node name="c_run_1" parent="interaction_board/main_track_section" instance=ExtResource( "7" )]
+[node name="c_run_1" parent="interaction_board/main_track_section" instance=ExtResource("7")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -4, 0, -1.5)
 
-[node name="c_run_2" parent="interaction_board/main_track_section" instance=ExtResource( "7" )]
+[node name="c_run_2" parent="interaction_board/main_track_section" instance=ExtResource("7")]
 transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, -1.5, 0, -5)
 
-[node name="d_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource( "3" )]
+[node name="d_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource("3")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -7.5)
 
-[node name="d_pokey" parent="interaction_board/main_track_section" instance=ExtResource( "2" )]
+[node name="d_pokey" parent="interaction_board/main_track_section" instance=ExtResource("2")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 1.5, 0, -7.5)
 
-[node name="d_run_1" parent="interaction_board/main_track_section" instance=ExtResource( "7" )]
+[node name="d_run_1" parent="interaction_board/main_track_section" instance=ExtResource("7")]
 transform = Transform3D(3.0598e-07, 0, -1, 0, 1, 0, 1, 0, 3.0598e-07, 1.5, 0, -4)
 
-[node name="d_run_2" parent="interaction_board/main_track_section" instance=ExtResource( "7" )]
+[node name="d_run_2" parent="interaction_board/main_track_section" instance=ExtResource("7")]
 transform = Transform3D(1, 0, 3.49691e-07, 0, 1, 0, -3.49691e-07, 0, 1, 5, 0, -1.5)
 
-[node name="a_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource( "3" )]
+[node name="a_home_entrance" parent="interaction_board/main_track_section" instance=ExtResource("3")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 0, 4.76837e-07)
 
 [node name="homes" type="Node3D" parent="interaction_board"]
 
-[node name="a_home" parent="interaction_board/homes" instance=ExtResource( "4" )]
+[node name="a_home" parent="interaction_board/homes" instance=ExtResource("4")]
 transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 5, 0, 4.99618)
 
-[node name="b_home" parent="interaction_board/homes" instance=ExtResource( "4" )]
+[node name="b_home" parent="interaction_board/homes" instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5)
 
-[node name="c_home" parent="interaction_board/homes" instance=ExtResource( "4" )]
+[node name="c_home" parent="interaction_board/homes" instance=ExtResource("4")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5, 0, -5)
 
-[node name="d_home" parent="interaction_board/homes" instance=ExtResource( "4" )]
+[node name="d_home" parent="interaction_board/homes" instance=ExtResource("4")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 5, 0, -5)
