@@ -2,10 +2,11 @@ extends Node3D
 class_name Board
 
 enum marble_color {A, B, C, D, COUNT}
-var main_track_section :Node3D
-var marbles_container :Node3D
-var bounds :Node3D
-var player_markers :Node3D
+
+@onready var bounds := %bounds as Node3D
+@onready var main_track_section := %main_track_section as Node3D
+@onready var marbles_container := %marbles_container as Node3D
+@onready var player_markers := %player_markers as Node3D
 
 var all_positions := []
 var all_areas := []
@@ -26,9 +27,7 @@ var _marbles := []
 var _tmp_array := []
 
 func _ready() -> void:
-	main_track_section = get_node("interaction_board/main_track_section")
 	marbles_container = get_node("marbles_container")
-	bounds = get_node("bounds")
 	player_markers = get_node("player_markers")
 	
 	_positions_recurse(self)
@@ -67,23 +66,6 @@ func _clickables_recurse(node:Node)->void:
 func _get_clickables(node:Node)->void:
 	for c in node.get_children():
 		_tmp_array.append(c)
-
-func connect_areas(signal_name:String, node:Node, function_name:String):
-	var any_err := false
-	var err := OK
-	for i in range(len(all_areas)):
-		match signal_name:
-			"input_event":
-				err = all_areas[i].input_event.connect(Callable(node, function_name).bind(i))
-			"mouse_entered":
-				err = all_areas[i].mouse_entered.connect(Callable(node, function_name).bind(i))
-			"mouse_exited":
-				all_areas[i].mouse_exited.connect(Callable(node, function_name).bind(i))
-			_:
-				printerr("Unknown signal name")
-		any_err = (err != OK)
-	if any_err:
-		print("Could not connect signal: %s to node: %s function: %s last err: %d" % [signal_name, node, function_name, err])
 
 func connect_bounds(signal_name:String, node:Node, function_name:String):
 	for c in bounds.get_children():

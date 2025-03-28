@@ -27,6 +27,8 @@ func _ready() -> void:
 
 func process_client(client:ClientInfo):
 	var s = client.socket
+	if s == null:
+		return
 	s.poll()
 	var state = s.get_ready_state()
 	if state == WebSocketPeer.STATE_OPEN:

@@ -1,21 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene format=3 uid="uid://cbgsgd4401kuc"]
 
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.5, 0.5, 0.5 )
+[node name="board_home_entrance" type="Node3D"]
 
-[node name="board_home_entrance" type="Spatial"]
+[node name="positions" type="Node3D" parent="."]
 
-[node name="positions" type="Spatial" parent="."]
-
-[node name="1" type="Position3D" parent="positions"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501, 0 )
-
-[node name="clickables" type="Spatial" parent="."]
-
-[node name="1" type="Area" parent="clickables"]
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="clickables/1"]
-shape = SubResource( 1 )
+[node name="1" type="Marker3D" parent="positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501, 0)

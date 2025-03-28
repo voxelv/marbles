@@ -93,6 +93,7 @@ unique_name_in_owner = true
 [node name="gimbal" type="Node3D" parent="ui/MarginContainer/VBoxContainer/all_elements_h/board_viewport_container/board_viewport/world"]
 
 [node name="camera" type="Camera3D" parent="ui/MarginContainer/VBoxContainer/all_elements_h/board_viewport_container/board_viewport/world/gimbal"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13, 0)
 current = true
 size = 18.0

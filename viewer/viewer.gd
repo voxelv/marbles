@@ -7,7 +7,7 @@ enum layout{HORZ, VERT}
 
 # Types
 const Highlight := preload("res://viewer/select_highlight.tscn")
-const MAX_HIGHLIGHTS := 5
+const MAX_HIGHLIGHTS := 89
 
 # Constants
 const dice_images := [
@@ -73,10 +73,7 @@ func _ready():
 	pass_button.connect("pressed", Callable(self, "_on_pass_button_pressed"))
 	pass_own_position_checkbox.connect("toggled", Callable(self, "_on_pass_own_position_marbles_toggled"))
 	
-	# Connect board controls
-	board.connect_areas("input_event", self, "_on_area_clicked")
-	board.connect_areas("mouse_entered", self, "_on_area_entered")
-	board.connect_areas("mouse_exited", self, "_on_area_exited")
+	# Connect board Controls
 	board.connect_bounds("input_event", self, "_on_bounds_clicked")
 	
 	# Create board controls
@@ -100,6 +97,14 @@ func _ready():
 		Connection.local_connection_setup()
 		Connection.client.send_player_join_game_request()
 		Connection.client.viewer = self
+
+func get_viewer_coords_of_board_controls() -> Array:
+	var result = []
+	
+	for pos in board.all_positions:
+		var coords = camera.unproject_position(pos)
+		result.append(coords)
+	return result
 
 func _process(delta: float) -> void:
 	update_ui(Connection.client.state)
@@ -147,7 +152,7 @@ func update_ui(game_state:GameState):
 		player_status.set_enabled(Connection.can_control_player(player))
 		
 		# Update names
-		player_status.set_name(cci.display_name)
+		player_status.set_player_name(cci.display_name)
 		
 	board.show_marbles(game_state.game_phase == Logic.game_phase.STARTED)
 	
@@ -173,11 +178,14 @@ func update_selectors():
 func update_valid_move_highlights(valid_moves_in:Array):
 	for i in range(valid_move_highlights.get_child_count()):
 		var highlight := (valid_move_highlights.get_child(i) as Node2D)
-		if i < len(valid_moves_in):
+		if true:
+		#if i < len(valid_moves_in):
 			highlight.visible = true
-			highlight.position = camera.unproject_position(board.all_positions[valid_moves_in[i]])
+			var rando_spot = randi_range(0, len(board.all_positions) - 1)
+			var p = camera.unproject_position(board.all_positions[rando_spot])
+			highlight.position = p
 		else:
-			highlight.visible = false
+			highlight.visible = true
 
 func _on_area_entered(idx:int):
 	idx_label.text = str(idx)

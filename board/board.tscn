@@ -1,16 +1,16 @@
 [gd_scene load_steps=33 format=3 uid="uid://bcfidu4pjb5qp"]
 
 [ext_resource type="Script" path="res://board/board.gd" id="1"]
-[ext_resource type="PackedScene" path="res://board/interaction/board_pokey_hole.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://1cfc825yccaw" path="res://board/interaction/board_pokey_hole.tscn" id="2"]
 [ext_resource type="Material" path="res://board/player_materials/A.tres" id="2_ppbr7"]
-[ext_resource type="PackedScene" path="res://board/interaction/board_home_entrance.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://board/interaction/board_home.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://cbgsgd4401kuc" path="res://board/interaction/board_home_entrance.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://ow43vxsqgekv" path="res://board/interaction/board_home.tscn" id="4"]
 [ext_resource type="Material" path="res://board/player_materials/C.tres" id="4_yc73d"]
-[ext_resource type="PackedScene" path="res://board/interaction/board_center.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://ddc53ch4axpe1" path="res://board/interaction/board_center.tscn" id="5"]
 [ext_resource type="Material" path="res://board/player_materials/D.tres" id="5_wxxr1"]
-[ext_resource type="PackedScene" path="res://board/interaction/board_home_row.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://s1oj7tru6tnw" path="res://board/interaction/board_home_row.tscn" id="6"]
 [ext_resource type="Material" path="res://board/pokey_hole_material.tres" id="6_gf2mh"]
-[ext_resource type="PackedScene" path="res://board/interaction/board_5_run.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://hbseojaa4pvm" path="res://board/interaction/board_5_run.tscn" id="7"]
 [ext_resource type="Material" path="res://board/center_material.tres" id="7_7tgd8"]
 [ext_resource type="Material" path="res://board/5_run_material.tres" id="8_yj4pq"]
 [ext_resource type="Material" path="res://board/home_row_material.tres" id="9_8avf5"]
@@ -48,6 +48,7 @@ size = Vector3(4, 34, 28)
 script = ExtResource("1")
 
 [node name="player_markers" type="Node3D" parent="."]
+unique_name_in_owner = true
 
 [node name="a" type="MeshInstance3D" parent="player_markers"]
 transform = Transform3D(1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 7.5, 0.6, 7.5)
@@ -70,8 +71,10 @@ mesh = SubResource("4")
 surface_material_override/0 = ExtResource("5_wxxr1")
 
 [node name="marbles_container" type="Node3D" parent="."]
+unique_name_in_owner = true
 
 [node name="bounds" type="Node3D" parent="."]
+unique_name_in_owner = true
 
 [node name="Area" type="Area3D" parent="bounds"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
@@ -333,6 +336,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
 transform = Transform3D(-1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0, -4)
 
 [node name="main_track_section" type="Node3D" parent="interaction_board"]
+unique_name_in_owner = true
 
 [node name="a_pokey" parent="interaction_board/main_track_section" instance=ExtResource("2")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 0, 1.5)

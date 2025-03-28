@@ -38,4 +38,6 @@ func can_control_player(player:int)->bool:
 		return get_player() == player
 
 func local_connection_setup():
-	server._client_connected(Connection.client.info.peer_id, "local_marbles")
+	var ci = ClientInfo.new()
+	server.clients[ci.id] = ci
+	server._client_connected(Connection.client.info.id, "local_marbles")
